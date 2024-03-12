@@ -1,14 +1,15 @@
 # Definitions de macros
 
-CXX     = g++
-CXXFLAGS = -g -Wall -std=c++11
+EXEC     = project
 CXXFILES = project.cc simulation.cc lifeform.cc message.cc shape.cc
-OFILES = $(CXXFILES:.cc=.o)
+CXX      = g++
+CXXFLAGS = -g -Wall -std=c++11
+OFILES   = $(CXXFILES:.cc=.o)
 
 # Definition de la premiere regle
 
-project: $(OFILES)
-	$(CXX) $(OFILES) -o project
+$(EXEC): $(OFILES)
+	$(CXX) $(OFILES) -o $(EXEC)
 
 # Definitions de cibles particulieres
 
@@ -22,7 +23,7 @@ depend:
 
 clean:
 	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
-	@/bin/rm -f *.o *.x *.cc~ *.h~ project
+	@/bin/rm -f *.o *.x *.cc~ *.h~ $(TARGET)
 
 #
 # -- Regles de dependances generees automatiquement
