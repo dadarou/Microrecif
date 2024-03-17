@@ -2,5 +2,5 @@
 #include "shape.h"
 
 int main(){
-    cout << "Hello world !";
+    //test
 }
