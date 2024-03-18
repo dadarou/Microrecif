@@ -7,5 +7,6 @@ int main()
 {
     string nom_fichier;
     cin >> nom_fichier;
+    Lecture(nom_fichier);
     return 0;
 }
