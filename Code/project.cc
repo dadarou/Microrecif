@@ -5,6 +5,7 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello world!" << endl;
+    string nom_fichier;
+    cin >> nom_fichier;
     return 0;
 }
