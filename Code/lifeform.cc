@@ -9,6 +9,21 @@ public :
         pos_x = x;
         pos_y = y;
     }
+    int update_age(double age_max){
+        if (age++ == age_max){
+            return 0; //age est incremente de 1 ou pas ?
+        }else{
+            return 1; //tjrs en vie
+            //est ce que c'est juste de retourner un int
+        }
+    }
+
+    ///double age_getter(){
+    ///    return age;
+    ///}
+    ///void age_setter(double age){
+    ///    age = age;
+    ///}
 private :
     double age;
     double pos_x;
