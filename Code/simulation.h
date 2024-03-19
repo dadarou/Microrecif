@@ -1,6 +1,6 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
-using namespace std;
+#include <string>
 
 void Lecture(string nom_fichier);
 

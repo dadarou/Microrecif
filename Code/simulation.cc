@@ -4,6 +4,7 @@
 #include "shape.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
 
 void Lecture(string nom_fichier){

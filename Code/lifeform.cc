@@ -1,7 +1,35 @@
 #include "lifeform.h"
 #include "shape.h"
+#include <string>
 
-int main(){
-    //test
-    //test test test test
-}
+class Lifeform {
+public :
+
+private :
+    double age;
+    double const pos_x;
+    double const pos_y;
+};
+
+class Algue {
+public :
+
+private :
+    
+};
+
+class Corail{
+public :
+
+private :
+    int statut;
+    string rotation;
+    string st_developpement;
+};
+
+class Scavenger{
+public :
+
+private :
+    string etat;
+};
