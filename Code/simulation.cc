@@ -4,12 +4,13 @@
 #include "shape.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 using namespace std;
 
 void Lecture(string nom_fichier){
-    enum Avancement {x0, x1, x2, x3, x4};
-    int position(x0);
+    enum Etat_decodage {x0, x1, x2, x3, x4};
+    int etat(x0);
     int compteur(0);
     string ligne;
     bool donnees;
@@ -24,7 +25,7 @@ void Lecture(string nom_fichier){
             while(data >> donnees){
                 //data>>donnees est pareil qu'un cin>> mais pour les fichier 
                 cout << donnees;
-                //appel des fonctions vérifiant les erreurs 
+                //rajouter ici les appel des fonctions vérifiant les erreurs 
             }
         } // le getline donne un bool vrai si la ligne n'est pas la derniere et envoie la ligne dans la variable ligne
 

@@ -39,22 +39,22 @@ private :
 
 class Corail{
 public :
-    Corail(int statut, string sens_rot, string st_dev){
+    Corail(int statut, int sens_rot, int st_dev){
         statut = statut;
         sens_rotation = sens_rot;
         st_developpement = st_dev;
     }
 private :
     int statut;
-    string sens_rotation;
-    string st_developpement;
+    int sens_rotation;
+    int st_developpement;
 };
 
 class Scavenger{
 public :
-    Scavenger(string etat){
+    Scavenger(int etat){
         etat = etat;
     }
 private :
-    string etat;
+    int etat;
 };
