@@ -48,3 +48,5 @@ void Decodage_Algue(istringstream& data){
 
 //donner un autre nom que data
 //faire toutes les fonctions decodages
+
+//test sync
