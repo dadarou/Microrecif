@@ -7,7 +7,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     if (argc != 2){
-        //arreter le code ou appeler une erreur
+        exit(EXIT_FAILURE);
     }
     Lecture(argv[1]);
     return 0;

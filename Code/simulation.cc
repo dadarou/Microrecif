@@ -21,7 +21,7 @@ void Lecture(string nom_fichier){
         }
     }else{
         exit(EXIT_FAILURE); //si l'ouverture du fichier marche pas on arrete le code
-    }//j'ai copie de boulic mais jsp comment le exit marche
+    }
     l_fichier.close();
 }
 
@@ -35,6 +35,7 @@ void Decodage(string ligne){
         case Nb0:
             if(!(data >> total)){
                 //appel de la fonction erreru car le nombre d'algue n'est pas bien précisé
+                exit(EXIT_FAILURE);
             }
             if(total==0){
                 etat = Nb1;
@@ -49,6 +50,7 @@ void Decodage(string ligne){
         case Nb1:
             if(!(data >> total)){
                 //appel de la fonction erreru car le nombre de Corail n'est pas bien précisé
+                exit(EXIT_FAILURE);
             }
             if(total==0){
                 etat = Nb2;
@@ -62,6 +64,7 @@ void Decodage(string ligne){
         case Nb2:
             if(!(data >> total)){
                 //appel de la fonction erreru car le nombre de Scavenger n'est pas bien précisé
+                exit(EXIT_FAILURE);
             }
             if(total==0){
                 //fin de la lecture du fichier ;
