@@ -10,23 +10,134 @@ Segment::Segment(S2d base, double angle, double length)
     assert(length >= 0);
 }
 
+// Renvoie l’extrémité du segment.
 S2d Segment::extremity()
 {
     S2d extremity;
-    extremity.x = base.x + length*cos(angle);
-    extremity.y = base.y + length*sin(angle);
+    extremity.x = base.x + length * cos(angle);
+    extremity.y = base.y + length * sin(angle);
     return extremity;
 }
 
-double Segment::angularGap(Segment s)
+// Renvoie l’écart angulaire entre un segment et un vecteur
+// construit à partir de la base du segment et d’un point.
+double Segment::angularGap(S2d point)
 {
-    double gap = angle - s.angle + M_PI;
-    if (gap > M_PI)
+    double angle_point = tan((base.y - point.y) / (base.x - point.x));
+    double gap = angle - angle_point + M_PI;
+    return normalizeAngle(gap);
+}
+
+// Renvoie l’écart angulaire dans l’intervalle [-π, π] entre 2 segments (section 2.1)
+double Segment::angularGap(Segment other)
+{
+    double gap = angle - other.angle + M_PI;
+    return normalizeAngle(gap);
+}
+
+// Normalize l'angle dans l’intervalle [-π, π]
+double Segment::normalizeAngle(double angle)
+{
+    if (angle > M_PI)
     {
-        gap -= 2*M_PI;
-    } else if (gap < -M_PI)
-    {
-        gap += 2*M_PI;
+        angle -= 2 * M_PI;
     }
-    return gap;
+    else if (angle < -M_PI)
+    {
+        angle += 2 * M_PI;
+    }
+    return angle;
+}
+
+// Le booléen de superposition de 2 segments ayant un point commun (section 2.1).
+// Renvoie vrai si l'angle entre les deux segments est proche de zéro.
+bool Segment::superposition(Segment other)
+{
+    double gap = angularGap(other);
+    return gap < epsil_zero && gap > -epsil_zero;
+}
+
+// Source: https://www.geeksforgeeks.org/orientation-3-ordered-points/
+// Length est la longueur de pq, c'est la longeur du segment.
+int Segment::orientation(S2d p, S2d q, S2d r, double length)
+{
+    // Surface rectangulaire signée donnée par le produit de la longueur 
+    // du segment pq par la distance séparant le point r de la droite passant 
+    // par le segment pq.
+    double val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+
+    // Distance signée de r à la droite passant par pq.
+    // On ne recalcule pas la longueur de pq car c'est la longueur du segment.
+    double d = val / length;
+
+    if (d < epsil_zero && d > -epsil_zero)
+    {
+        // Le point est dans l'alignement du segment.
+        return 0;
+    }
+
+    // Sens horaire ou anti-horaire.
+    return (val > 0) ? 1 : 2;
+}
+
+// Renvoie vrai si le point r est dans le segment pq.
+// On suppose pq colinaire a r.
+bool Segment::onSegment(S2d p, S2d q, S2d r)
+{
+    S2d pr;
+    pr.x = r.x - p.x;
+    pr.y = r.y - p.y;
+
+    S2d pq;
+    pq.x = r.x - q.x;
+    pq.y = r.y - q.y;
+
+    // Produit scalaire pr•pq
+    double s = pr.x * pq.x + pr.y * pq.y;
+
+    // Norme de pr
+    double norme_pr = sqrt(pr.x * pr.x + pr.y * pr.y);
+
+    // Norme de la projection de pq sur pr
+    double x = s / norme_pr;
+
+    return -epsil_zero <= x and x <= norme_pr + epsil_zero;
+}
+
+// Source: https://www.geeksforgeeks.org/orientation-3-ordered-points/
+bool Segment::doIntersect(Segment other)
+{
+    S2d p1 = base;
+    S2d q1 = extremity();
+    S2d p2 = other.base;
+    S2d q2 = other.extremity();
+
+    // Find the four orientations needed for general and special cases
+    int o1 = orientation(p1, q1, p2, length);
+    int o2 = orientation(p1, q1, q2, length);
+    int o3 = orientation(p2, q2, p1, other.length);
+    int o4 = orientation(p2, q2, q1, other.length);
+
+    // General case
+    if (o1 != o2 && o3 != o4)
+        return true;
+
+    // Special Cases
+    // p1, q1 and p2 are collinear and p2 lies on segment p1q1
+    if (o1 == 0 && onSegment(p1, p2, q1))
+        return true;
+
+    // p1, q1 and q2 are collinear and q2 lies on segment p1q1
+    if (o2 == 0 && onSegment(p1, q2, q1))
+        return true;
+
+    // p2, q2 and p1 are collinear and p1 lies on segment p2q2
+    if (o3 == 0 && onSegment(p2, p1, q2))
+        return true;
+
+    // p2, q2 and q1 are collinear and q1 lies on segment p2q2
+    if (o4 == 0 && onSegment(p2, q1, q2))
+        return true;
+
+    return false; // Doesn't fall in any of the above cases
 }
