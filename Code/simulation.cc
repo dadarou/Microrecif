@@ -46,6 +46,7 @@ void Filtrage(string ligne){
 
         case Algue:
             Decodage_Algue(data);
+            //changer etat
             
         case Nb1:
             if(!(data >> total)){
