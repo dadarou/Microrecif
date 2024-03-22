@@ -17,7 +17,7 @@ void Lecture(string nom_fichier){
             if(ligne[0] == '#'){
                 continue;
             }// le getline donne un bool vrai si la ligne n'est pas la derniere et envoie la ligne dans la variable ligne
-            Decodage(ligne);
+            Filtrage(ligne);
         }
     }else{
         exit(EXIT_FAILURE); //si l'ouverture du fichier marche pas on arrete le code
@@ -25,7 +25,7 @@ void Lecture(string nom_fichier){
     l_fichier.close();
 }
 
-void Decodage(string ligne){
+void Filtrage(string ligne){
     istringstream data(ligne); //convertit la ligne en quelque chose qu'on peut tratier
     enum Etat_decodage {Nb0, Algue, Nb1, Corail, Nb2, Scavenger};
     static int etat(Nb0);
@@ -45,7 +45,7 @@ void Decodage(string ligne){
             break;
 
         case Algue:
-            
+            Decodage_Algue(data);
             
         case Nb1:
             if(!(data >> total)){
@@ -60,6 +60,7 @@ void Decodage(string ligne){
             break;
 
         case Corail:
+
 
         case Nb2:
             if(!(data >> total)){

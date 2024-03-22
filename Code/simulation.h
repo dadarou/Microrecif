@@ -3,5 +3,5 @@
 #include <string>
 
 void Lecture(string nom_fichier);
-void Decodage(string ligne);
+void Filtrage(string ligne);
 #endif
