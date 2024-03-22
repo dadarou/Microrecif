@@ -19,6 +19,7 @@ Scavenger::Scavenger(int age, double x, double y, int etat)
     : Lifeform(age, x, y), etat(etat) {}
 
 void Test_Lifeform(int age){
+    // Bla bla test
     if (age <= 0){
         //message d'erreur
         exit(EXIT_FAILURE);
