@@ -8,7 +8,7 @@ Lifeform::Lifeform(double age, double x, double y){
     pos_y = y;
 }
 
-Lifeform::int update_age(double age_max){
+int Lifeform::Update_age(double age_max){
     if (age++ == age_max){
         return 0; //age est incremente de 1 ou pas ?
     }else{
@@ -17,19 +17,11 @@ Lifeform::int update_age(double age_max){
     }
 }
 
-///double age_getter(){
-///    return age;
-///}
-///void age_setter(double age){
-///    age = age;
-///}
+Algue::Algue(double age, double x, double y)
+    : Lifeform(age, x, y){}
 
-Corail::Corail(int statut, int sens_rot, int st_dev){
-    statut = statut;
-    sens_rotation = sens_rot;
-    st_developpement = st_dev;
-}
+Corail::Corail(double age, double x, double y, int statut, int sens_rot, int st_dev)
+    : Lifeform(age, x, y), statut(statut), sens_rotation(sens_rot), st_developpement(st_dev){}
 
-Scavenger::Scavenger(int etat){
-    etat = etat;
-}
+Scavenger::Scavenger(double age, double x, double y, int etat)
+    : Lifeform(age, x, y), etat(etat) {}

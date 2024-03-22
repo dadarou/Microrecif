@@ -4,11 +4,11 @@
 #include <string>
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
-    //je crois que ici on doit faire avec les argc argv 
-    string nom_fichier;
-    cin >> nom_fichier;
-    Lecture(nom_fichier);
+    if (argc != 2){
+        //arreter le code ou appeler une erreur
+    }
+    Lecture(argv[1]);
     return 0;
 }

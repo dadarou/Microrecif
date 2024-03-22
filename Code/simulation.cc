@@ -20,14 +20,14 @@ void Lecture(string nom_fichier){
             Decodage(ligne);
         }
     }else{
-        exit(EXIT_FAILURE); //j'ai copie de boulic mais jsp comment le exit marche
-    }
+        exit(EXIT_FAILURE); //si l'ouverture du fichier marche pas on arrete le code
+    }//j'ai copie de boulic mais jsp comment le exit marche
     l_fichier.close();
 }
 
 void Decodage(string ligne){
     istringstream data(ligne); //convertit la ligne en quelque chose qu'on peut tratier
-    enum Etat_decodage {Nb0, Algue, Nb1, Corail, Nb2, Scavenger, Fin}; //est ce que y'a un autre enum pour fin
+    enum Etat_decodage {Nb0, Algue, Nb1, Corail, Nb2, Scavenger};
     static int etat(Nb0);
     static int total(0);
 
@@ -44,6 +44,7 @@ void Decodage(string ligne){
             break;
 
         case Algue:
+            
             
         case Nb1:
             if(!(data >> total)){
@@ -63,7 +64,7 @@ void Decodage(string ligne){
                 //appel de la fonction erreru car le nombre de Scavenger n'est pas bien précisé
             }
             if(total==0){
-                etat = Fin;
+                //fin de la lecture du fichier ;
             }else{
                 etat = Scavenger;
             }
@@ -71,6 +72,5 @@ void Decodage(string ligne){
             
         case Scavenger:
 
-        case Fin:
     }
 }

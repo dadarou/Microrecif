@@ -4,7 +4,7 @@
 class Lifeform {
 public :
     Lifeform(double age, double x, double y);
-    int update_age(double age_max);
+    int Update_age(double age_max);
 
 private :
     double age;
@@ -12,25 +12,26 @@ private :
     double pos_y;
 };
 
-class Algue {
+class Algue : public Lifeform {
 public :
-
+    Algue(double age, double x, double y);
+//pour appel de constructeur de la super class on pourrakt utiliser nouvelle methode de c++11
 private :
     
 };
 
-class Corail{
+class Corail : public Lifeform {
 public :
-    Corail(int statut, int sens_rot, int st_dev);
+    Corail(double age, double x, double y, int statut, int sens_rot, int st_dev);
 private :
     int statut;
     int sens_rotation;
     int st_developpement;
 };
 
-class Scavenger{
+class Scavenger : public Lifeform {
 public :
-    Scavenger(int etat);
+    Scavenger(double age, double x, double y, int etat);
 private :
     int etat;
 };
