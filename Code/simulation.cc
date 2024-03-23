@@ -29,6 +29,7 @@ void Filtrage(string ligne){
     istringstream data(ligne); //convertit la ligne en quelque chose qu'on peut tratier
     enum Etat_decodage {Nb0, Algue, Nb1, Corail, Nb2, Scavenger};
     static int etat(Nb0);
+    static int compteur(0);
     static int total(0);
 
     switch(etat){
@@ -46,7 +47,11 @@ void Filtrage(string ligne){
 
         case Algue:
             Decodage_Algue(data);
-            //changer etat
+            ++compteur;
+            if (compteur == total){
+                etat = Nb1;
+            }
+            break;
             
         case Nb1:
             if(!(data >> total)){

@@ -18,13 +18,11 @@ Corail::Corail(int age, double x, double y, int statut, int sens_rot, int st_dev
 Scavenger::Scavenger(int age, double x, double y, int etat)
     : Lifeform(age, x, y), etat(etat) {}
 
-void Test_Lifeform(int age){
-    // Bla bla test
+void Test_Lifeform(double x, double y, int age){
+    //il manque verif position
     if (age <= 0){
         //message d'erreur
         exit(EXIT_FAILURE);
-    }else{
-        //initialisation de l'âge
     }
 }
 
@@ -38,8 +36,17 @@ void Test_Scavenger(){
 //est ce que faudrais pas faire des méthode à la place ?
 
 void Decodage_Algue(istringstream& data){
-    //la faire le decodage de la ligne donné en paramètre
-
+    double pos_x;
+    double pos_y;
+    int age;
+    if (!(data >> pos_x >> pos_y >> age)){
+        //gestion erreur lecture
+    }
+    Test_Lifeform(pos_x, pos_y, age);
+    Algue algue(pos_x, pos_y, age);
+    //inclusion dans vector qui est donné avec &
+    //ca va pas causer des porblemes la création d'une algue comme ca ?
+    //ca va faire une copie dans le vectore ou mettre l'élément d'origine
 }
 
 
@@ -49,5 +56,3 @@ void Decodage_Algue(istringstream& data){
 
 //donner un autre nom que data
 //faire toutes les fonctions decodages
-
-//test sync

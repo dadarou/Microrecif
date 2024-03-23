@@ -34,7 +34,7 @@ private :
     int etat;
 };
 
-void Test_Lifeform(int age);
+void Test_Lifeform(double x, double y, int age);
 void Test_Algue();
 void Test_Corail();
 void Test_Scavenger();
