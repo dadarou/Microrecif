@@ -3,35 +3,39 @@
 
 class Lifeform {
 public :
-    Lifeform(int age, double x, double y);
+    Lifeform(double x, double y, int age);
 
 private :
-    int age;
     double pos_x;
     double pos_y;
+    int age;
 };
 
 class Algue : public Lifeform {
 public :
-    Algue(int age, double x, double y);
+    Algue(double x, double y, int age);
 private :
     
 };
 
 class Corail : public Lifeform {
 public :
-    Corail(int age, double x, double y, int statut, int sens_rot, int st_dev);
+    Corail(double x, double y, int age, int id, int statut, int sens_rot, int st_dev, int nb_seg);
 private :
+    int identite;
     int statut;
     int sens_rotation;
     int st_developpement;
+    int nb_segment;
 };
 
 class Scavenger : public Lifeform {
 public :
-    Scavenger(int age, double x, double y, int etat);
+    Scavenger(double x, double y, int age, int r, int etat, int id_cible);
 private :
+    int rayon;
     int etat;
+    int identite_cible;
 };
 
 void Test_Lifeform(double x, double y, int age);
@@ -40,6 +44,6 @@ void Test_Corail();
 void Test_Scavenger();
 
 void Decodage_Algue(istringstream& data);
-
+void Decodage_Corail(istringstream& data);
 
 #endif
