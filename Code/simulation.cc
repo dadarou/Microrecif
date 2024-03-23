@@ -27,7 +27,7 @@ void Lecture(string nom_fichier){
 
 void Filtrage(string ligne){
     istringstream data(ligne); //convertit la ligne en quelque chose qu'on peut tratier
-    enum Etat_decodage {Nb0, Algue, Nb1, Corail, Nb2, Scavenger};
+    enum Etat_decodage {Nb0, Algue, Nb1, Corail, Nb1_1, Segment, Nb2, Scavenger};
     static int etat(Nb0);
     static int compteur(0);
     static int total(0);
@@ -57,6 +57,8 @@ void Filtrage(string ligne){
             if(!(data >> total)){
                 //appel de la fonction erreru car le nombre de Corail n'est pas bien précisé
                 exit(EXIT_FAILURE);
+            }else{
+                compteur=0;
             }
             if(total==0){
                 etat = Nb2;
@@ -66,12 +68,26 @@ void Filtrage(string ligne){
             break;
 
         case Corail:
+            Decodage_Corail(data);
+            etat = Segment;
+            break;
 
+        case Segment:
+            //appeler la fonction qui decodera les lignes segments
+            //si compteru nombre segment != nombre segment total continuer
+            //sinon
+            //++compteur;
+            //if (compteur == total){
+            //    etat = Nb2;
+            //}
+            break;
 
         case Nb2:
             if(!(data >> total)){
                 //appel de la fonction erreru car le nombre de Scavenger n'est pas bien précisé
                 exit(EXIT_FAILURE);
+            }else{
+                compteur=0;
             }
             if(total==0){
                 //fin de la lecture du fichier ;
@@ -81,6 +97,11 @@ void Filtrage(string ligne){
             break;
             
         case Scavenger:
-
+            Decodage_Scavenger(data);
+            ++compteur;
+            if (compteur == total){
+                //fin de la lecture du fichier
+            }
+            break;
     }
 }

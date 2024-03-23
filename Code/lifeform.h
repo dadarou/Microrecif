@@ -45,5 +45,6 @@ void Test_Scavenger();
 
 void Decodage_Algue(istringstream& data);
 void Decodage_Corail(istringstream& data);
+void Decodage_Scavenger(istringstream& data);
 
 #endif
