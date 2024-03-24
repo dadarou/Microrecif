@@ -5,7 +5,7 @@ CXX      = g++
 CXXFLAGS = -g -Wall -std=c++11
 
 $(EXEC): $(FILE)
-	$(CXX) $(FILE) -o $(EXEC)
+	$(CXX) $(CXXFLAGS) $(FILE) -o $(EXEC)
 
 clean:
 	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
