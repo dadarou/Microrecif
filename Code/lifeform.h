@@ -1,50 +1,60 @@
 #ifndef LIFEFORM_H
 #define LIFEFORM_H
+#include "shape.h"
+#include <sstream>
+using namespace std;
 
-class Lifeform {
-public :
-    Lifeform(double x, double y, int age);
+class Lifeform
+{
+public:
+    // Nécessaire pour initialiser un Corail vide
+    Lifeform() = default;
+    Lifeform(int age);
 
-private :
-    double pos_x;
-    double pos_y;
+protected:
     int age;
 };
 
-class Algue : public Lifeform {
-public :
-    Algue(double x, double y, int age);
-private :
-    
+class Algue : Lifeform
+{
+public:
+    Algue(istringstream &data);
+
+private:
+    Cercle cercle;
 };
 
-class Corail : public Lifeform {
-public :
-    Corail(double x, double y, int age, int id, int statut, int sens_rot, int st_dev, int nb_seg);
-private :
-    int identite;
+class Corail : Lifeform
+{
+public:
+    // Nécessaire pour initialiser corail_actuel dans decodage_line de Lifeform
+    Corail() = default;
+    Corail(istringstream &data);
+    // Corail(double x, double y, int age, int id,
+    //        int statut, int sens_rot, int st_dev, int nb_seg);
+    int getNbSeg() const { return nb_seg; };
+    void addSeg(istringstream &data);
+
+private:
+    Carre base;
+    int id;
     int statut;
-    int sens_rotation;
-    int st_developpement;
-    int nb_segment;
+    int sens_rot;
+    int st_dev;
+    int nb_seg;
+    vector<Segment> segs;
 };
 
-class Scavenger : public Lifeform {
-public :
-    Scavenger(double x, double y, int age, int r, int etat, int id_cible);
-private :
-    int rayon;
+class Scavenger : Lifeform
+{
+public:
+    // Scavenger(double x, double y, int age, int r, int etat, int id_cible);
+    Scavenger(istringstream &data);
+
+private:
+    Cercle cercle;
     int etat;
-    int identite_cible;
+    int id_cible;
 };
-
-void Test_Lifeform(double x, double y, int age);
-void Test_Algue();
-void Test_Corail();
-void Test_Scavenger();
-
-void Decodage_Algue(istringstream& data);
-void Decodage_Corail(istringstream& data);
-void Decodage_Scavenger(istringstream& data);
 
 #endif

@@ -6,7 +6,39 @@ constexpr double epsil_zero(0.5);
 struct S2d
 {
     double x;
-    double y; // test
+    double y;
+};
+
+class Carre
+{
+public:
+    Carre() = default;
+    Carre(S2d pos, double side)
+        : pos(pos), side(side){};
+    Carre(double pos_x, double pos_y, double side)
+        : pos({pos_x, pos_y}), side(side){};
+    S2d getPos() const { return pos; }
+    double getSide() const { return side; }
+
+private:
+    S2d pos;
+    double side;
+};
+
+class Cercle
+{
+public:
+    Cercle() = default;
+    Cercle(S2d pos, double rayon)
+        : pos(pos), rayon(rayon){};
+    Cercle(double pos_x, double pos_y, double rayon)
+        : pos({pos_x, pos_y}), rayon(rayon){};
+    S2d getPos() const { return pos; }
+    double getRayon() const { return rayon; }
+
+private:
+    S2d pos;
+    double rayon;
 };
 
 class Segment
