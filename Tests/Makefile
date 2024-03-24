@@ -24,7 +24,7 @@ depend:
 
 clean:
 	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
-	@/bin/rm -f *.o *.x *.cc~ *.h~ $(EXEC)
+	@/bin/rm -f *.o *.x *.cc~ *.h~ $(EXEC) $(OFILES)
 
 # Regles de dependances generees automatiquement
 # DO NOT DELETE THIS LINE
