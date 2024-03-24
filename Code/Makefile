@@ -9,7 +9,7 @@ OFILES   = $(CXXFILES:.cc=.o)
 # Definition de la premiere regle
 
 $(EXEC): $(OFILES)
-	$(CXX) $(CXXFLAGS) $(OFILES) -o $(EXEC)
+	$(CXX) $(OFILES) -o $(EXEC)
 
 # Definitions de cibles particulieres
 
@@ -29,7 +29,7 @@ clean:
 # -- Regles de dependances generees automatiquement
 #
 # DO NOT DELETE THIS LINE
-project.o: project.cc project.h simulation.h
+project.o: project.cc simulation.h
 simulation.o: simulation.cc simulation.h message.h lifeform.h shape.h
 lifeform.o: lifeform.cc lifeform.h shape.h
 message.o: message.cc message.h
