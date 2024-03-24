@@ -1,6 +1,5 @@
 .ccls-cache
 .replit
-.vscode
 replit.nix
 *.o
 Code/project
