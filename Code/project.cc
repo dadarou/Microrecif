@@ -1,4 +1,3 @@
-#include "project.h"
 #include "simulation.h"
 #include <iostream>
 #include <string>
