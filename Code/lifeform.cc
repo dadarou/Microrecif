@@ -1,6 +1,7 @@
 #include "lifeform.h"
 #include "shape.h"
 #include "constantes.h"
+#include "message.h"
 #include <sstream>
 #include <iostream>
 #include <vector>
@@ -57,7 +58,15 @@ void Corail::addSeg(istringstream &data)
         // Sinon, c'est l’extrémité du segment précédent.
         base_pos = segs[size - 1].extremity();
     }
-    segs.push_back(Segment(base_pos, angle, length));
+
+    Segment new_seg = Segment(base_pos, angle, length);
+    if (size != 0 && new_seg.superposition(segs[size - 1], true))
+    {
+        cout << message::segment_superposition(id, size - 1, size);
+        exit(EXIT_FAILURE);
+    }
+
+    segs.push_back(new_seg);
 }
 
 Scavenger::Scavenger(istringstream &data)
@@ -86,7 +95,7 @@ Scavenger::Scavenger(istringstream &data)
  * [x] unicité des identificateurs de coraux 
  * [x] existence d’un corail identifié avec l’identificateur mémorisé par un scavenger dans l’état MANGE 
  * [x] intersection des coraux
- * superposition des coraux
+ * [x] superposition des coraux
  * 
  * Joshua:
  * l’age est strictement positif 

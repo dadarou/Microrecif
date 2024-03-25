@@ -130,7 +130,7 @@ void Simulation::ajouter_corail(Corail corail)
     if (id_corail_existe(id))
     {
         cout << message::lifeform_duplicated_id(id);
-        std ::exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
     corails.push_back(corail);
@@ -161,7 +161,7 @@ void Simulation::test_intersection_coraux(Corail corail)
                 if (!no_test && seg.intersection(autre_seg, true))
                 {
                     cout << message::segment_collision(id1, i, id2, j);
-                    std ::exit(EXIT_FAILURE);
+                    exit(EXIT_FAILURE);
                 }
             }
         }
@@ -187,7 +187,7 @@ void Simulation::ajouter_scavenger(Scavenger scavenger)
     if (scavenger.getEtat() == MANGE && !id_corail_existe(id))
     {
         cout << message::lifeform_invalid_id(id);
-        std ::exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
     scavengers.push_back(scavenger);
 }

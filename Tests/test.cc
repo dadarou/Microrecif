@@ -68,7 +68,7 @@ int main()
     base = {10, 10};
     seg1 = Segment(base, M_PI / 4, 1);
     seg2 = Segment(base, M_PI / 4, 1);
-    assert(seg1.superposition(seg2) == true);
+    assert(seg1.superposition(seg2) == false);
 
     base = {0, 0};
     seg1 = Segment(base, 3 * M_PI / 4, 1);
@@ -79,6 +79,12 @@ int main()
     seg1 = Segment(base, 3 * M_PI / 4, 1);
     seg2 = Segment(base, M_PI / 4, 1);
     assert(seg1.superposition(seg2) == false);
+
+    S2d base1 = {0, 0};
+    S2d base2 = {10, 0};
+    seg1 = Segment(base1, 0, 10);
+    seg2 = Segment(base2, M_PI, 10);
+    assert(seg1.superposition(seg2, true) == true);
 
     cout << "Tested  Segment::superposition(Segment other, bool lecture_fichier) !" << endl;
 

@@ -54,9 +54,9 @@ double Segment::normalizeAngle(double angle)
 // Renvoie vrai si l'angle entre les deux segments est proche de zéro.
 bool Segment::superposition(Segment other, bool lecture_fichier)
 {
-    double gap = angle - other.angle;
+    double gap = angularGap(other);
     double tolerance = lecture_fichier ? 0 : epsil_zero;
-    return gap < tolerance && gap > -tolerance;
+    return gap <= tolerance && gap >= -tolerance;
 }
 
 // Source: https://www.geeksforgeeks.org/orientation-3-ordered-points/
