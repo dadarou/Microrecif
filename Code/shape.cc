@@ -103,7 +103,7 @@ bool Segment::onSegment(S2d p, S2d q, S2d r, double tolerance)
     // Norme de la projection de pq sur pr
     double x = s / norme_pr;
 
-    return -epsil_zero <= x and x <= norme_pr + epsil_zero;
+    return -epsil_zero <= x && x <= norme_pr + epsil_zero;
 }
 
 // Renvoie le booléen d’intersection ou de superposition de 2 segments indépendants (section 2.2)

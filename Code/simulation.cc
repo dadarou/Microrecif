@@ -125,21 +125,52 @@ void Simulation::ajouter_algue(Algue algue)
 
 void Simulation::ajouter_corail(Corail corail)
 {
-    // Collisions
-
-    // Unicité des identificateurs de coraux
+    // Unicité de l'identificateur de coraux
     int id = corail.getId();
     if (id_corail_existe(id))
     {
         cout << message::lifeform_duplicated_id(id);
-        std ::exit(EXIT_FAILURE) ;
+        std ::exit(EXIT_FAILURE);
     }
+
     corails.push_back(corail);
+
+    test_intersection_coraux(corail);
+}
+
+// Intersections intra ou inter corail
+// L'agorithme actuel est en O(n^3)
+// On pourrait l'optimiser mais ce n'est pas demandé pour l'instant ¯\_(ツ)_/¯
+void Simulation::test_intersection_coraux(Corail corail)
+{
+    auto segs = corail.getSegs();
+    for (unsigned int i = 0; i < segs.size(); i++) 
+    {
+        Segment seg = segs[i];
+        for (auto& autre_cor : corails)
+        {
+            auto other_segs = autre_cor.getSegs();
+            for (unsigned int j = 0; j < other_segs.size(); j++) 
+            {
+                Segment autre_seg = other_segs[j];
+                int id1 = corail.getId();
+                int id2 = autre_cor.getId();
+                // On ne teste pas l'intersection entre le même segments ou des 
+                // segments consecutifs d'un même corail.
+                bool no_test = (id1 == id2) && (i == j || i == j + 1 || i == j - 1);
+                if (!no_test && seg.intersection(autre_seg, true))
+                {
+                    cout << message::segment_collision(id1, i, id2, j);
+                    std ::exit(EXIT_FAILURE);
+                }
+            }
+        }
+    }
 }
 
 bool Simulation::id_corail_existe(int id)
 {
-    for (const auto& corail : corails)
+    for (auto& corail : corails)
     {
         if (id == corail.getId())
         {
@@ -151,11 +182,12 @@ bool Simulation::id_corail_existe(int id)
 
 void Simulation::ajouter_scavenger(Scavenger scavenger)
 {
+    // Existence du corail mémorisé par le scavenger
     int id = scavenger.getCible();
-    if (scavenger.getEtat() == MANGE and !id_corail_existe(id))
+    if (scavenger.getEtat() == MANGE && !id_corail_existe(id))
     {
         cout << message::lifeform_invalid_id(id);
-        std ::exit(EXIT_FAILURE) ;
+        std ::exit(EXIT_FAILURE);
     }
     scavengers.push_back(scavenger);
 }

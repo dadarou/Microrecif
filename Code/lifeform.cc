@@ -84,8 +84,9 @@ Scavenger::Scavenger(istringstream &data)
  * Tests à effectuer: 
  * Daniel:
  * [x] unicité des identificateurs de coraux 
- * existence d’un corail identifié avec l’identificateur mémorisé par un scavenger dans l’état MANGE 
- * intersection/superposition des coraux
+ * [x] existence d’un corail identifié avec l’identificateur mémorisé par un scavenger dans l’état MANGE 
+ * [x] intersection des coraux
+ * superposition des coraux
  * 
  * Joshua:
  * l’age est strictement positif 
