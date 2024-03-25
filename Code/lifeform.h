@@ -1,8 +1,8 @@
 #ifndef LIFEFORM_H
 #define LIFEFORM_H
 #include "shape.h"
+#include <vector>
 #include <sstream>
-using namespace std;
 
 class Lifeform
 {
@@ -13,12 +13,13 @@ public:
 
 protected:
     int age;
+    void erreur_lecture(std::string type);
 };
 
 class Algue : Lifeform
 {
 public:
-    Algue(istringstream &data);
+    Algue(std::istringstream &data);
 
 private:
     Cercle cercle;
@@ -29,11 +30,9 @@ class Corail : Lifeform
 public:
     // Nécessaire pour initialiser corail_actuel dans decodage_line de Lifeform
     Corail() = default;
-    Corail(istringstream &data);
-    // Corail(double x, double y, int age, int id,
-    //        int statut, int sens_rot, int st_dev, int nb_seg);
+    Corail(std::istringstream &data);
     int getNbSeg() const { return nb_seg; };
-    void addSeg(istringstream &data);
+    void addSeg(std::istringstream &data);
 
 private:
     Carre base;
@@ -42,14 +41,13 @@ private:
     int sens_rot;
     int st_dev;
     int nb_seg;
-    vector<Segment> segs;
+    std::vector<Segment> segs;
 };
 
 class Scavenger : Lifeform
 {
 public:
-    // Scavenger(double x, double y, int age, int r, int etat, int id_cible);
-    Scavenger(istringstream &data);
+    Scavenger(std::istringstream &data);
 
 private:
     Cercle cercle;

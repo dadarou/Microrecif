@@ -9,24 +9,17 @@ using namespace std;
 Lifeform::Lifeform(int age)
     : age(age) {}
 
-// Algue::Algue(double x, double y, int age)
-//     : Lifeform(x, y, age){}
-
-// Corail::Corail(double x, double y, int age, int id, int statut, int sens_rot, int st_dev, int nb_seg)
-//     : Lifeform(x, y, age), identite(id), statut(statut), sens_rotation(sens_rot), st_developpement(st_dev), nb_segment(nb_seg){}
-
-// Scavenger::Scavenger(double x, double y, int age, int r, int etat, int id_cible)
-//     : Lifeform(x, y, age), rayon(r), etat(etat), identite_cible(id_cible){}
+void Lifeform::erreur_lecture(string type)
+{
+    cout << "Error reading " << type << " data" << endl;
+    exit(EXIT_FAILURE);   
+}
 
 Algue::Algue(istringstream &data)
 {
     double pos_x, pos_y;
     if (!(data >> pos_x >> pos_y >> age))
-    {
-        // Les données de l'algue sont invalides.
-        cout << "Error reading algue data" << endl;
-        exit(EXIT_FAILURE);
-    }
+        erreur_lecture("algue");
     cercle = Cercle(pos_x, pos_y, r_alg);
 
     // TODO: Detection d'erreurs
@@ -36,12 +29,9 @@ Algue::Algue(istringstream &data)
 Corail::Corail(istringstream &data)
 {
     double pos_x, pos_y;
-    if (!(data >> pos_x >> pos_y >> age >> id >> statut >> sens_rot >> st_dev >> nb_seg))
-    {
-        // Les données du corail sont invalides.
-        cout << "Error reading coral data" << endl;
-        exit(EXIT_FAILURE);
-    }
+    if (!(data >> pos_x >> pos_y >> age >> id 
+               >> statut >> sens_rot >> st_dev >> nb_seg))
+        erreur_lecture("coral");
     base = Carre(pos_x, pos_y, d_cor);
 
     // TODO: Detection d'erreurs
@@ -53,11 +43,7 @@ void Corail::addSeg(istringstream &data)
 {
     double angle, length;
     if (!(data >> angle >> length))
-    {
-        // Les données du segment sont invalides.
-        cout << "Error reading segment data" << endl;
-        exit(EXIT_FAILURE);
-    }
+        erreur_lecture("segment");
 
     S2d base_pos;
     int size = segs.size();
@@ -77,12 +63,12 @@ void Corail::addSeg(istringstream &data)
 Scavenger::Scavenger(istringstream &data)
 {
     double pos_x, pos_y, rayon;
-    if (!(data >> pos_x >> pos_y >> age >> rayon >> etat >> id_cible))
-    {
-        // Les données du scavenger sont invalides.
-        cout << "Error reading scavenger data" << endl;
-        exit(EXIT_FAILURE);
-    }
+    if (!(data >> pos_x >> pos_y >> age >> rayon >> etat))
+        erreur_lecture("scavenger");
+    if (etat == MANGE)
+        if (!(data >> id_cible))
+            erreur_lecture("scavenger");
+            
     cercle = Cercle(pos_x, pos_y, rayon);
 
     // TODO: Detection d'erreurs

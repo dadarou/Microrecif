@@ -9,7 +9,7 @@ OFILES   = $(CXXFILES:.cc=.o)
 # Definition de la premiere regle
 
 $(EXEC): $(OFILES)
-	$(CXX) $(OFILES) -o $(EXEC)
+	$(CXX) $(CXXFLAGS) $(OFILES) -o $(EXEC)
 
 # Definitions de cibles particulieres
 

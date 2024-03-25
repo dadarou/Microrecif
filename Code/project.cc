@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     if (argc != 2)
     {
         // Le nom de fichier est manquant.
-        cout << "Missing filename" << endl;
+        cout << "Error: missing filename" << endl;
         exit(EXIT_FAILURE);
     }
 
