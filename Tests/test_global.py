@@ -2,6 +2,18 @@ import subprocess
 import difflib
 import os
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    GREEN = '\033[92m'
+    WARNING = '\033[93m'
+    RED = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
 def run_test(prog_name, input_file, output_file):
     # Read the expected output from the file
     with open(output_file, 'r') as f:
@@ -13,10 +25,10 @@ def run_test(prog_name, input_file, output_file):
 
     # Compare the result and the expected output
     if result == expected_output:
-        print(f"Test {input_file}: PASSED")
+        print(f"Test {input_file}: {bcolors.GREEN}PASSED{bcolors.ENDC}")
         return True
     else:
-        print(f"Test {input_file}: FAILED")
+        print(f"Test {input_file}: {bcolors.RED}FAILED{bcolors.ENDC}")
         # print("Program output:")
         # print(result)
         # print("Expected output:")
@@ -42,10 +54,11 @@ def run_tests(tests_location, prog_name):
             if run_test(prog_name, input_file, output_file):
                 passed_tests += 1
 
-    print(f"\n{passed_tests}/{tests} tests of {tests_location} passed.")
+    print(bcolors.BOLD + f"{passed_tests}/{tests} tests of {tests_location} passed." + bcolors.ENDC)
 
 if __name__ == "__main__":
     prog_name = "Code/project"  # Change this to the actual name of your program
 
     run_tests("Tests/public", prog_name)
+    print()
     run_tests("Tests/private", prog_name)
