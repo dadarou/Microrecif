@@ -16,11 +16,17 @@ void Lifeform::erreur_lecture(string type)
     exit(EXIT_FAILURE);   
 }
 
+void Lifeform::test_age(int age)
+{
+    if (age <= 0) exit(EXIT_FAILURE);
+}
+
 Algue::Algue(istringstream &data)
 {
     double pos_x, pos_y;
     if (!(data >> pos_x >> pos_y >> age))
         erreur_lecture("algue");
+        test_age(age);
     cercle = Cercle(pos_x, pos_y, r_alg);
 
     // TODO: Detection d'erreurs
@@ -33,6 +39,7 @@ Corail::Corail(istringstream &data)
     if (!(data >> pos_x >> pos_y >> age >> id 
                >> statut >> sens_rot >> st_dev >> nb_seg))
         erreur_lecture("coral");
+        test_age(age);
     base = Carre(pos_x, pos_y, d_cor);
 
     // TODO: Detection d'erreurs
@@ -45,6 +52,8 @@ void Corail::addSeg(istringstream &data)
     double angle, length;
     if (!(data >> angle >> length))
         erreur_lecture("segment");
+        test_longueur_segment(length);
+        test_angle(angle);
 
     S2d base_pos;
     int size = segs.size();
@@ -69,11 +78,23 @@ void Corail::addSeg(istringstream &data)
     segs.push_back(new_seg);
 }
 
+void Corail::test_longueur_segment(double l_seg)
+{
+    double l0(l_repro - l_seg_interne);
+    if ( (l_seg < l0) or (l_seg >= l_repro)) exit(EXIT_FAILURE);
+}
+
+void Corail::test_angle(double angle)
+{
+    if((angle < -M_PI) or (angle > M_PI)) exit(EXIT_FAILURE);
+}
+
 Scavenger::Scavenger(istringstream &data)
 {
     double pos_x, pos_y, rayon;
     if (!(data >> pos_x >> pos_y >> age >> rayon >> etat))
         erreur_lecture("scavenger");
+        test_age(age);
     if (etat == MANGE)
     {
         if (!(data >> id_cible))
