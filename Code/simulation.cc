@@ -2,6 +2,7 @@
 #include "message.h"
 #include "lifeform.h"
 #include "shape.h"
+#include "constantes.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -60,7 +61,7 @@ void Simulation::decodage(string ligne)
     {
         ++compteur_entite;
         Algue algue(data);
-        algues.push_back(algue);
+        ajouter_algue(algue);
         if (compteur_entite == total_entite) etat = NbCor;
     }
     break;
@@ -80,7 +81,7 @@ void Simulation::decodage(string ligne)
         total_segments = corail_actuel.getNbSeg();
         if (total_segments == 0)  
         {
-            corails.push_back(corail_actuel);
+            ajouter_corail(corail_actuel);
             if (compteur_entite == total_entite) etat = NbSca;   
         }
         else etat = Seg;
@@ -92,7 +93,7 @@ void Simulation::decodage(string ligne)
         corail_actuel.addSeg(data);
         if (compteur_segments == total_segments) 
         {
-            corails.push_back(corail_actuel);
+            ajouter_corail(corail_actuel);
             if (compteur_entite == total_entite) etat = NbSca; 
             else etat = Cor; 
         }
@@ -110,11 +111,53 @@ void Simulation::decodage(string ligne)
     {
         ++compteur_entite;
         Scavenger scavenger(data);
-        scavengers.push_back(scavenger);
+        ajouter_scavenger(scavenger);
         if (compteur_entite == total_entite) succes_lecture();
     }
     break;
     }
+}
+
+void Simulation::ajouter_algue(Algue algue)
+{
+    algues.push_back(algue);
+}
+
+void Simulation::ajouter_corail(Corail corail)
+{
+    // Collisions
+
+    // Unicité des identificateurs de coraux
+    int id = corail.getId();
+    if (id_corail_existe(id))
+    {
+        cout << message::lifeform_duplicated_id(id);
+        std ::exit(EXIT_FAILURE) ;
+    }
+    corails.push_back(corail);
+}
+
+bool Simulation::id_corail_existe(int id)
+{
+    for (const auto& corail : corails)
+    {
+        if (id == corail.getId())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Simulation::ajouter_scavenger(Scavenger scavenger)
+{
+    int id = scavenger.getCible();
+    if (scavenger.getEtat() == MANGE and !id_corail_existe(id))
+    {
+        cout << message::lifeform_invalid_id(id);
+        std ::exit(EXIT_FAILURE) ;
+    }
+    scavengers.push_back(scavenger);
 }
 
 int Simulation::read_nb(istringstream &data, string section)

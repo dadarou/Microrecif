@@ -49,6 +49,8 @@ class Scavenger : Lifeform
 {
 public:
     Scavenger(std::istringstream &data);
+    int getEtat() const { return etat; };
+    int getCible() const { return id_cible; };
 
 private:
     Cercle cercle;
