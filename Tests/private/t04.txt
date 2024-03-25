@@ -1,0 +1,15 @@
+#
+# Correct file
+#
+
+1 Bla bla bla autres données
+    128. 128. 3 Bla bla bla autres données
+
+1 Bla bla bla autres données
+    100. 200. 545 99 1 0 0 1 Bla bla bla autres données
+        0. 12 Bla bla bla autres données
+
+2 Bla bla bla autres données
+    200. 100. 1 5 0 Bla bla bla autres données
+    200. 100. 1 5 1 99 Bla bla bla autres données
+    
