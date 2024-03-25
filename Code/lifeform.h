@@ -32,6 +32,7 @@ public:
     Corail() = default;
     Corail(std::istringstream &data);
     int getNbSeg() const { return nb_seg; };
+    int getId() const { return id; };
     void addSeg(std::istringstream &data);
 
 private:
