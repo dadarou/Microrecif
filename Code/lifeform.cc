@@ -74,8 +74,10 @@ void Corail::addSeg(istringstream &data)
         // Sinon, c'est l’extrémité du segment précédent.
         base_pos = segs[size - 1].extremity();
     }
-
+    inclusion_segment(base_pos);
     Segment new_seg = Segment(base_pos, angle, length);
+    S2d extremite(new_seg.extremity());
+    inclusion_segment(extremite);
     if (size != 0 && new_seg.superposition(segs[size - 1], true))
     {
         cout << message::segment_superposition(id, size - 1, size);
@@ -94,6 +96,13 @@ void Corail::test_longueur_segment(double l_seg)
 void Corail::test_angle(double angle)
 {
     if((angle < -M_PI) or (angle > M_PI)) exit(EXIT_FAILURE);
+}
+
+void Corail::inclusion_segment(S2d pos)
+{
+    if ((pos.x <= epsil_zero) or (pos.x >= (max - epsil_zero)) 
+    or  (pos.y <= epsil_zero) or (pos.y >= (max - epsil_zero))) 
+        exit(EXIT_FAILURE);
 }
 
 Scavenger::Scavenger(istringstream &data)

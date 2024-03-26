@@ -40,6 +40,7 @@ public:
     int getId() const { return id; };
     std::vector<Segment> getSegs() const { return segs; };
     void addSeg(std::istringstream &data);
+    void inclusion_segment(S2d base);
 
 private:
     Carre base;
