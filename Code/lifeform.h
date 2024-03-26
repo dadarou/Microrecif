@@ -15,6 +15,7 @@ protected:
     int age;
     void erreur_lecture(std::string type);
     void test_age(int age);
+    void test_pos(double x, double y);
 
 };
 
@@ -56,6 +57,7 @@ public:
     Scavenger(std::istringstream &data);
     int getEtat() const { return etat; };
     int getCible() const { return id_cible; };
+    void test_rayon(double r);
 
 private:
     Cercle cercle;

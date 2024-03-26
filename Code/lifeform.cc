@@ -21,11 +21,17 @@ void Lifeform::test_age(int age)
     if (age <= 0) exit(EXIT_FAILURE);
 }
 
+void Lifeform::test_pos(double x, double y)
+{
+    if ((x < 1) or (x > (max - 1)) or (y < 1) or (y > (max - 1))) exit(EXIT_FAILURE);
+}//max est ambigu car c'est une constantes mais aussi un truc dans std peut etre
+
 Algue::Algue(istringstream &data)
 {
     double pos_x, pos_y;
     if (!(data >> pos_x >> pos_y >> age))
         erreur_lecture("algue");
+        test_pos(pos_x, pos_y);
         test_age(age);
     cercle = Cercle(pos_x, pos_y, r_alg);
 
@@ -39,6 +45,7 @@ Corail::Corail(istringstream &data)
     if (!(data >> pos_x >> pos_y >> age >> id 
                >> statut >> sens_rot >> st_dev >> nb_seg))
         erreur_lecture("coral");
+        test_pos(pos_x, pos_y);
         test_age(age);
     base = Carre(pos_x, pos_y, d_cor);
 
@@ -94,7 +101,9 @@ Scavenger::Scavenger(istringstream &data)
     double pos_x, pos_y, rayon;
     if (!(data >> pos_x >> pos_y >> age >> rayon >> etat))
         erreur_lecture("scavenger");
+        test_pos(pos_x, pos_y);
         test_age(age);
+        test_rayon(rayon);
     if (etat == MANGE)
     {
         if (!(data >> id_cible))
@@ -109,6 +118,10 @@ Scavenger::Scavenger(istringstream &data)
     // Test_Scavenger();
 }
 
+void Scavenger::test_rayon(double r)
+{
+    if ((r < r_sca) or (r >= r_sca_repro)) exit(EXIT_FAILURE);
+}
 
 /* 
  * Tests à effectuer: 
