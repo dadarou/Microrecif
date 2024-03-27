@@ -14,6 +14,9 @@ public:
 protected:
     int age;
     void erreur_lecture(std::string type);
+    void test_age(int age);
+    void test_pos(double x, double y);
+
 };
 
 class Algue : Lifeform
@@ -31,10 +34,13 @@ public:
     // Nécessaire pour initialiser corail_actuel dans decodage_line de Lifeform
     Corail() = default;
     Corail(std::istringstream &data);
+    void test_longueur_segment(int id, double seg);
+    void test_angle(int id, double angle);
     int getNbSeg() const { return nb_seg; };
     int getId() const { return id; };
     std::vector<Segment> getSegs() const { return segs; };
-    void addSeg(std::istringstream &data);
+    void addSeg(std::istringstream &data, int id);
+    void inclusion_segment(int id, S2d base);
 
 private:
     Carre base;
@@ -52,6 +58,7 @@ public:
     Scavenger(std::istringstream &data);
     int getEtat() const { return etat; };
     int getCible() const { return id_cible; };
+    void test_rayon(double r);
 
 private:
     Cercle cercle;

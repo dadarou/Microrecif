@@ -90,7 +90,7 @@ void Simulation::decodage(string ligne)
     case Seg:
     {
         ++compteur_segments;
-        corail_actuel.addSeg(data);
+        corail_actuel.addSeg(data, corail_actuel.getId());
         if (compteur_segments == total_segments) 
         {
             ajouter_corail(corail_actuel);
