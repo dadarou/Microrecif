@@ -1,13 +1,13 @@
-#include "simulation.h"
-#include "message.h"
-#include "lifeform.h"
-#include "shape.h"
-#include "constantes.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <vector>
+#include "simulation.h"
+#include "message.h"
+#include "lifeform.h"
+#include "shape.h"
+#include "constantes.h"
 using namespace std;
 
 void Simulation::lecture(string nom_fichier)
@@ -31,6 +31,7 @@ void Simulation::lecture(string nom_fichier)
     else
     {
         // Si l'ouverture du fichier marche pas on arrête le code.
+        cout << "Error opening file" << endl;
         exit(EXIT_FAILURE);
     }
     l_fichier.close();
@@ -184,7 +185,7 @@ void Simulation::ajouter_scavenger(Scavenger scavenger)
 {
     // Existence du corail mémorisé par le scavenger
     int id = scavenger.getCible();
-    if (scavenger.getEtat() == MANGE && !id_corail_existe(id))
+    if (scavenger.getEtat() == EATING && !id_corail_existe(id))
     {
         cout << message::lifeform_invalid_id(id);
         exit(EXIT_FAILURE);

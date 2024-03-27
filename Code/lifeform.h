@@ -1,9 +1,11 @@
 #ifndef LIFEFORM_H
 #define LIFEFORM_H
-#include "shape.h"
+
 #include <vector>
 #include <sstream>
-
+#include "shape.h"
+#include "constantes.h"
+    
 class Lifeform
 {
 public:
@@ -45,9 +47,9 @@ public:
 private:
     Carre base;
     int id;
-    int statut;
-    int sens_rot;
-    int st_dev;
+    Status_cor statut;
+    Dir_rot_cor sens_rot;
+    Status_dev st_dev;
     int nb_seg;
     std::vector<Segment> segs;
 };
@@ -56,13 +58,13 @@ class Scavenger : Lifeform
 {
 public:
     Scavenger(std::istringstream &data);
-    int getEtat() const { return etat; };
+    Status_sca getEtat() const { return etat; };
     int getCible() const { return id_cible; };
     void test_rayon(double r);
 
 private:
     Cercle cercle;
-    int etat;
+    Status_sca etat;
     int id_cible;
 };
 

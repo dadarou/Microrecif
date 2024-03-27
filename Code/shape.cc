@@ -1,6 +1,6 @@
-#include "shape.h"
 #include <cmath>
 #include <cassert>
+#include "shape.h"
 using namespace std;
 
 Segment::Segment(S2d base, double angle, double length)
@@ -106,7 +106,7 @@ bool Segment::onSegment(S2d p, S2d q, S2d r, double tolerance)
     return -epsil_zero <= x && x <= norme_pr + epsil_zero;
 }
 
-// Renvoie le booléen d’intersection ou de superposition de 2 segments indépendants (section 2.2)
+// Renvoie le booléen d’intersection ou de superposition de 2 segments indépendants
 // Si lecture_fichier est vrai, epsil_zero est mis a zéro
 // Source: https://www.geeksforgeeks.org/orientation-3-ordered-points/
 bool Segment::intersection(Segment other, bool lecture_fichier)

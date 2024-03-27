@@ -7,7 +7,7 @@
 1
     10. 10. 545 99 1 0 0 3
         0.7854 14.14 # Angle de pi/4, longueur de 10*sqrt(2)
-        -1.571 10    # Angle de -pi/2, longueur de 10
+        -1.571 14    # Angle de -pi/2, longueur de 10
         2.356 14.14  # Angle de 3pi/4, longueur de 10*sqrt(2)
 
 0
