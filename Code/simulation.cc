@@ -157,8 +157,8 @@ void Simulation::test_intersection_coraux(Corail corail)
                 int id2 = autre_cor.getId();
                 // On ne teste pas l'intersection entre le même segments ou des 
                 // segments consecutifs d'un même corail.
-                bool no_test = (id1 == id2) && (i == j || i == j + 1 || i == j - 1);
-                if (!no_test && seg.intersection(autre_seg, true))
+                bool consec = (id1 == id2) && (i == j || i == j + 1 || i == j - 1);
+                if (!consec && seg.intersection(autre_seg, true))
                 {
                     cout << message::segment_collision(id1, i, id2, j);
                     exit(EXIT_FAILURE);
