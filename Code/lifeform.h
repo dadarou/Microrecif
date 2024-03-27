@@ -34,13 +34,13 @@ public:
     // Nécessaire pour initialiser corail_actuel dans decodage_line de Lifeform
     Corail() = default;
     Corail(std::istringstream &data);
-    void test_longueur_segment(double seg);
-    void test_angle(double angle);
+    void test_longueur_segment(int id, double seg);
+    void test_angle(int id, double angle);
     int getNbSeg() const { return nb_seg; };
     int getId() const { return id; };
     std::vector<Segment> getSegs() const { return segs; };
-    void addSeg(std::istringstream &data);
-    void inclusion_segment(S2d base);
+    void addSeg(std::istringstream &data, int id);
+    void inclusion_segment(int id, S2d base);
 
 private:
     Carre base;
