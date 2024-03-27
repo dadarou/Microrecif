@@ -119,7 +119,7 @@ void Corail::inclusion_segment(int id,S2d pos)
     if ((pos.x <= epsil_zero) or (pos.x >= (dmax - epsil_zero)) 
     or  (pos.y <= epsil_zero) or (pos.y >= (dmax - epsil_zero)))
     {
-        message::lifeform_computed_outside(id, x, y);
+        message::lifeform_computed_outside(id, pos.x, pos.y);
         exit(EXIT_FAILURE);
     }
 }
