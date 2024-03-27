@@ -1,3 +1,8 @@
+// project.cc : Point d'entrée du projet
+// Auteurs : Daniel Roulin & Joshua Hurlimann
+// Version 1 
+
+
 #include <iostream>
 #include <string>
 #include "simulation.h"

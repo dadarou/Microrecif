@@ -1,5 +1,10 @@
+// simulation.h : Gestion de la simulation
+// Auteurs : Daniel Roulin & Joshua Hurlimann
+// Version 1 
+
 #ifndef SIMULATION_H
 #define SIMULATION_H
+
 #include <string>
 #include <vector>
 #include <sstream>
@@ -12,13 +17,13 @@ public:
 
 private:
     void decodage(std::string ligne);
-    int read_nb(std::istringstream &data, std::string section);
-    void succes_lecture();
     void ajouter_algue(Algue algue);
     void ajouter_corail(Corail corail);
-    void ajouter_scavenger(Scavenger scavenger);
-    bool id_corail_existe(int id);
     void test_intersection_coraux(Corail corail);
+    bool id_corail_existe(int id);
+    void ajouter_scavenger(Scavenger scavenger);
+    int read_nb(std::istringstream &data, std::string section);
+    void succes_lecture();
     std::vector<Algue> algues;
     std::vector<Corail> corails;
     std::vector<Scavenger> scavengers;

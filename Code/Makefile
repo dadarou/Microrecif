@@ -1,7 +1,7 @@
 # Definitions de macros
 
-EXEC     = project
-CXXFILES = project.cc simulation.cc lifeform.cc message.cc shape.cc
+EXEC     = projet
+CXXFILES = projet.cc simulation.cc lifeform.cc message.cc shape.cc
 CXX      = g++
 CXXFLAGS = -g -Wall -std=c++11
 OFILES   = $(CXXFILES:.cc=.o)
@@ -29,8 +29,9 @@ clean:
 # -- Regles de dependances generees automatiquement
 #
 # DO NOT DELETE THIS LINE
-project.o: project.cc simulation.h
-simulation.o: simulation.cc simulation.h message.h lifeform.h shape.h
-lifeform.o: lifeform.cc lifeform.h shape.h
+projet.o: projet.cc simulation.h lifeform.h shape.h constantes.h
+simulation.o: simulation.cc simulation.h lifeform.h shape.h constantes.h \
+ message.h
+lifeform.o: lifeform.cc lifeform.h shape.h constantes.h message.h
 message.o: message.cc message.h
 shape.o: shape.cc shape.h

@@ -1,3 +1,7 @@
+// simulation.cc : Gestion de la simulation
+// Auteurs : Daniel Roulin & Joshua Hurlimann
+// Version 1 
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -79,7 +83,7 @@ void Simulation::decodage(string ligne)
         ++compteur_entite;
         compteur_segments = 0;
         corail_actuel = Corail(data);
-        total_segments = corail_actuel.getNbSeg();
+        total_segments = corail_actuel.get_nb_seg();
         if (total_segments == 0)  
         {
             ajouter_corail(corail_actuel);
@@ -91,7 +95,7 @@ void Simulation::decodage(string ligne)
     case Seg:
     {
         ++compteur_segments;
-        corail_actuel.addSeg(data, corail_actuel.getId());
+        corail_actuel.add_seg(data, corail_actuel.get_id());
         if (compteur_segments == total_segments) 
         {
             ajouter_corail(corail_actuel);
@@ -127,7 +131,7 @@ void Simulation::ajouter_algue(Algue algue)
 void Simulation::ajouter_corail(Corail corail)
 {
     // Unicité de l'identificateur de coraux
-    int id = corail.getId();
+    int id = corail.get_id();
     if (id_corail_existe(id))
     {
         cout << message::lifeform_duplicated_id(id);
@@ -144,18 +148,18 @@ void Simulation::ajouter_corail(Corail corail)
 // On pourrait l'optimiser mais ce n'est pas demandé pour l'instant ¯\_(ツ)_/¯
 void Simulation::test_intersection_coraux(Corail corail)
 {
-    auto segs = corail.getSegs();
+    auto segs = corail.get_segs();
     for (unsigned int i = 0; i < segs.size(); i++) 
     {
         Segment seg = segs[i];
         for (auto& autre_cor : corails)
         {
-            auto other_segs = autre_cor.getSegs();
+            auto other_segs = autre_cor.get_segs();
             for (unsigned int j = 0; j < other_segs.size(); j++) 
             {
                 Segment autre_seg = other_segs[j];
-                int id1 = corail.getId();
-                int id2 = autre_cor.getId();
+                int id1 = corail.get_id();
+                int id2 = autre_cor.get_id();
                 // On ne teste pas l'intersection entre le même segments ou des 
                 // segments consecutifs d'un même corail.
                 bool consec = (id1 == id2) && (i == j || i == j + 1 || i == j - 1);
@@ -173,7 +177,7 @@ bool Simulation::id_corail_existe(int id)
 {
     for (auto& corail : corails)
     {
-        if (id == corail.getId())
+        if (id == corail.get_id())
         {
             return true;
         }
@@ -183,9 +187,9 @@ bool Simulation::id_corail_existe(int id)
 
 void Simulation::ajouter_scavenger(Scavenger scavenger)
 {
-    // Existence du corail mémorisé par le scavenger
-    int id = scavenger.getCible();
-    if (scavenger.getEtat() == EATING && !id_corail_existe(id))
+    // Test d'existence du corail mémorisé par le scavenger
+    int id = scavenger.get_cible();
+    if (scavenger.get_etat() == EATING && !id_corail_existe(id))
     {
         cout << message::lifeform_invalid_id(id);
         exit(EXIT_FAILURE);

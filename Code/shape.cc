@@ -1,3 +1,7 @@
+// shape.cc : Bibliothèque de formes
+// Auteurs : Daniel Roulin & Joshua Hurlimann
+// Version 1 
+
 #include <cmath>
 #include <cassert>
 #include "shape.h"
@@ -21,22 +25,22 @@ S2d Segment::extremity()
 
 // Renvoie l’écart angulaire entre un segment et un vecteur
 // construit à partir de la base du segment et d’un point.
-double Segment::angularGap(S2d point)
+double Segment::angular_gap(S2d point)
 {
     double angle_point = atan2(point.y - base.y, point.x - base.x);
     double gap = angle_point - angle;
-    return normalizeAngle(gap);
+    return normalize_angle(gap);
 }
 
 // Renvoie l’écart angulaire dans l’intervalle [-π, π] entre 2 segments (section 2.1)
-double Segment::angularGap(Segment other)
+double Segment::angular_gap(Segment other)
 {
     double gap = angle - other.angle + M_PI;
-    return normalizeAngle(gap);
+    return normalize_angle(gap);
 }
 
 // Normalize l'angle dans l’intervalle [-π, π]
-double Segment::normalizeAngle(double angle)
+double Segment::normalize_angle(double angle)
 {
     if (angle > M_PI)
     {
@@ -54,7 +58,7 @@ double Segment::normalizeAngle(double angle)
 // Renvoie vrai si l'angle entre les deux segments est proche de zéro.
 bool Segment::superposition(Segment other, bool lecture_fichier)
 {
-    double gap = angularGap(other);
+    double gap = angular_gap(other);
     double tolerance = lecture_fichier ? 0 : epsil_zero;
     return gap <= tolerance && gap >= -tolerance;
 }
@@ -84,7 +88,7 @@ int Segment::orientation(S2d p, S2d q, S2d r, double length, double tolerance)
 
 // Renvoie vrai si le point r est dans le segment pq.
 // On suppose pq colinaire a r.
-bool Segment::onSegment(S2d p, S2d q, S2d r, double tolerance)
+bool Segment::on_segment(S2d p, S2d q, S2d r, double tolerance)
 {
     S2d pr;
     pr.x = r.x - p.x;
@@ -130,19 +134,19 @@ bool Segment::intersection(Segment other, bool lecture_fichier)
 
     // Special Cases
     // p1, q1 and p2 are collinear and p2 lies on segment p1q1
-    if (o1 == 0 && onSegment(p1, p2, q1, tolerance))
+    if (o1 == 0 && on_segment(p1, p2, q1, tolerance))
         return true;
 
     // p1, q1 and q2 are collinear and q2 lies on segment p1q1
-    if (o2 == 0 && onSegment(p1, q2, q1, tolerance))
+    if (o2 == 0 && on_segment(p1, q2, q1, tolerance))
         return true;
 
     // p2, q2 and p1 are collinear and p1 lies on segment p2q2
-    if (o3 == 0 && onSegment(p2, p1, q2, tolerance))
+    if (o3 == 0 && on_segment(p2, p1, q2, tolerance))
         return true;
 
     // p2, q2 and q1 are collinear and q1 lies on segment p2q2
-    if (o4 == 0 && onSegment(p2, q1, q2, tolerance))
+    if (o4 == 0 && on_segment(p2, q1, q2, tolerance))
         return true;
 
     return false; // Doesn't fall in any of the above cases

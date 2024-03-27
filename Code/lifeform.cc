@@ -1,3 +1,7 @@
+// lifeform.cc : Entités de la simulation
+// Auteurs : Daniel Roulin & Joshua Hurlimann
+// Version 1 
+
 #include <sstream>
 #include <iostream>
 #include <vector>
@@ -60,10 +64,11 @@ Corail::Corail(istringstream &data)
 
     test_pos(pos_x, pos_y);
     test_age(age);
+
     base = Carre(pos_x, pos_y, d_cor);
 }
 
-void Corail::addSeg(istringstream &data, int id)
+void Corail::add_seg(istringstream &data, int id)
 {
     double angle, length;
     if (!(data >> angle >> length))
@@ -75,15 +80,9 @@ void Corail::addSeg(istringstream &data, int id)
     S2d base_pos;
     int size = segs.size();
     if (size == 0)
-    {
-        // La base du premier segment est la position du corail.
-        base_pos = base.getPos();
-    }
+        base_pos = base.get_pos();
     else
-    {
-        // Sinon, c'est l’extrémité du segment précédent.
         base_pos = segs[size - 1].extremity();
-    }
 
     inclusion_segment(id, base_pos);
     Segment new_seg = Segment(base_pos, angle, length);
@@ -117,10 +116,11 @@ void Corail::test_angle(int id, double angle)
     }
 }
 
+// Vérifie que le segment est dans la simulation
 void Corail::inclusion_segment(int id, S2d pos)
 {
     if ((pos.x <= epsil_zero) or (pos.x >= (dmax - epsil_zero)) 
-     or (pos.y <= epsil_zero) or (pos.y >= (dmax - epsil_zero)))
+    or  (pos.y <= epsil_zero) or (pos.y >= (dmax - epsil_zero)))
     {
         cout << message::lifeform_computed_outside(id, pos.x, pos.y);
         exit(EXIT_FAILURE);

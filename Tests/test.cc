@@ -6,62 +6,62 @@ using namespace std;
 
 int main()
 {
-    /// Segment::angularGap(Segment segment) ///
-    cout << "Testing Segment::angularGap(Segment segment) ..." << endl;
+    /// Segment::angular_gap(Segment segment) ///
+    cout << "Testing Segment::angular_gap(Segment segment) ..." << endl;
 
     S2d base = {0, 0};
     Segment seg1 = Segment(base, 0, 1);
     Segment seg2 = Segment(base, 0, 1);
-    assert(seg1.angularGap(seg2) == M_PI);
+    assert(seg1.angular_gap(seg2) == M_PI);
 
     seg1 = Segment(base, 0, 1);
     seg2 = Segment(base, -M_PI, 1);
-    assert(seg1.angularGap(seg2) == 0);
+    assert(seg1.angular_gap(seg2) == 0);
 
     seg1 = Segment(base, M_PI / 4, 1);
     seg2 = Segment(base, M_PI / 2, 1);
-    assert(seg1.angularGap(seg2) == 3 * M_PI / 4);
+    assert(seg1.angular_gap(seg2) == 3 * M_PI / 4);
 
     seg1 = Segment(base, M_PI / 4, 1);
     seg2 = Segment(base, -M_PI / 4, 1);
-    assert(seg1.angularGap(seg2) == -M_PI / 2);
+    assert(seg1.angular_gap(seg2) == -M_PI / 2);
 
     seg1 = Segment(base, -M_PI / 4, 1);
     seg2 = Segment(base, M_PI / 4, 1);
-    assert(seg1.angularGap(seg2) == M_PI / 2);
+    assert(seg1.angular_gap(seg2) == M_PI / 2);
 
     seg1 = Segment(base, -M_PI / 4, 1);
     seg2 = Segment(base, -M_PI / 2, 1);
-    assert(seg1.angularGap(seg2) == -3 * M_PI / 4);
+    assert(seg1.angular_gap(seg2) == -3 * M_PI / 4);
 
-    cout << "Tested  Segment::angularGap(Segment segment) !" << endl;
+    cout << "Tested  Segment::angular_gap(Segment segment) !" << endl;
 
-    /// Segment::angularGap(S2d point) ///
-    cout << "Testing Segment::angularGap(S2d point) ..." << endl;
+    /// Segment::angular_gap(S2d point) ///
+    cout << "Testing Segment::angular_gap(S2d point) ..." << endl;
 
     S2d point = {0, 1};
     seg1 = Segment(base, 0, 1);
-    assert(seg1.angularGap(point) == M_PI / 2);
+    assert(seg1.angular_gap(point) == M_PI / 2);
 
     point = {1, 1};
     seg1 = Segment(base, 0, 1);
-    assert(seg1.angularGap(point) == M_PI / 4);
+    assert(seg1.angular_gap(point) == M_PI / 4);
 
     point = {1, -1};
     seg1 = Segment(base, 0, 1);
-    assert(seg1.angularGap(point) == -M_PI / 4);
+    assert(seg1.angular_gap(point) == -M_PI / 4);
 
     base = {1, 1};
     point = {0, 0};
     seg1 = Segment(base, 0, 1);
-    assert(seg1.angularGap(point) == -3 * M_PI / 4);
+    assert(seg1.angular_gap(point) == -3 * M_PI / 4);
 
     base = {1, 1};
     point = {0, 2};
     seg1 = Segment(base, M_PI / 4, 1);
-    assert(seg1.angularGap(point) == M_PI / 2);
+    assert(seg1.angular_gap(point) == M_PI / 2);
 
-    cout << "Tested  Segment::angularGap(S2d point) !" << endl;
+    cout << "Tested  Segment::angular_gap(S2d point) !" << endl;
 
     /// Segment::superposition(Segment other, bool lecture_fichier) ///
     cout << "Testing Segment::superposition(Segment other, bool lecture_fichier) ..." << endl;

@@ -57,7 +57,7 @@ def run_tests(tests_location, prog_name):
     print(bcolors.BOLD + f"{passed_tests}/{tests} tests of {tests_location} passed." + bcolors.ENDC)
 
 if __name__ == "__main__":
-    prog_name = "Code/project"  # Change this to the actual name of your program
+    prog_name = "Code/projet"  # Change this to the actual name of your program
 
     run_tests("Tests/public", prog_name)
     print()

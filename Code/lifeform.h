@@ -1,3 +1,7 @@
+// lifeform.h : Entités de la simulation
+// Auteurs : Daniel Roulin & Joshua Hurlimann
+// Version 1 
+
 #ifndef LIFEFORM_H
 #define LIFEFORM_H
 
@@ -18,7 +22,6 @@ protected:
     void erreur_lecture(std::string type);
     void test_age(int age);
     void test_pos(double x, double y);
-
 };
 
 class Algue : Lifeform
@@ -36,13 +39,13 @@ public:
     // Nécessaire pour initialiser corail_actuel dans decodage_line de Lifeform
     Corail() = default;
     Corail(std::istringstream &data);
+    void add_seg(std::istringstream &data, int id);
     void test_longueur_segment(int id, double seg);
     void test_angle(int id, double angle);
-    int getNbSeg() const { return nb_seg; };
-    int getId() const { return id; };
-    std::vector<Segment> getSegs() const { return segs; };
-    void addSeg(std::istringstream &data, int id);
     void inclusion_segment(int id, S2d base);
+    int get_nb_seg() const { return nb_seg; };
+    int get_id() const { return id; };
+    std::vector<Segment> get_segs() const { return segs; };
 
 private:
     Carre base;
@@ -58,9 +61,9 @@ class Scavenger : Lifeform
 {
 public:
     Scavenger(std::istringstream &data);
-    Status_sca getEtat() const { return etat; };
-    int getCible() const { return id_cible; };
     void test_rayon(double r);
+    Status_sca get_etat() const { return etat; };
+    int get_cible() const { return id_cible; };
 
 private:
     Cercle cercle;
