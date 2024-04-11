@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cassert>
 #include "shape.h"
+#include "graphic.h"
 using namespace std;
 
 Segment::Segment(S2d base, double angle, double length)

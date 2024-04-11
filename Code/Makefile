@@ -1,7 +1,7 @@
 # Definitions de macros
 
 EXEC     = projet
-CXXFILES = projet.cc simulation.cc lifeform.cc message.cc shape.cc
+CXXFILES = $(wildcard *.cc)
 CXX      = g++
 CXXFLAGS = -g -Wall -std=c++11
 OFILES   = $(CXXFILES:.cc=.o)
@@ -29,9 +29,12 @@ clean:
 # -- Regles de dependances generees automatiquement
 #
 # DO NOT DELETE THIS LINE
-projet.o: projet.cc simulation.h lifeform.h shape.h constantes.h
-simulation.o: simulation.cc simulation.h lifeform.h shape.h constantes.h \
- message.h
+graphic.o: graphic.cc graphic.h
+gui.o: gui.cc gui.h simulation.h lifeform.h shape.h constantes.h \
+ graphic.h
 lifeform.o: lifeform.cc lifeform.h shape.h constantes.h message.h
 message.o: message.cc message.h
-shape.o: shape.cc shape.h
+projet.o: projet.cc simulation.h lifeform.h shape.h constantes.h gui.h
+shape.o: shape.cc shape.h graphic.h
+simulation.o: simulation.cc simulation.h lifeform.h shape.h constantes.h \
+ message.h
