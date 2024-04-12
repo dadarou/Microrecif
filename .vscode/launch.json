@@ -9,9 +9,6 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/Code/project",
-            "args": [
-                "${workspaceFolder}/Tests/public/t00.txt"
-            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

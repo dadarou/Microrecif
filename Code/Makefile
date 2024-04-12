@@ -1,15 +1,17 @@
 # Definitions de macros
 
 EXEC     = projet
-CXXFILES = $(wildcard *.cc)
+PACKAGES = gtkmm-4.0
+CXXFLAGS = -g -Wall -std=c++17 `pkg-config --cflags $(PACKAGES)`
 CXX      = g++
-CXXFLAGS = -g -Wall -std=c++11
+LDLIBS   = `pkg-config --libs $(PACKAGES)`
+CXXFILES = $(wildcard *.cc)
 OFILES   = $(CXXFILES:.cc=.o)
 
 # Definition de la premiere regle
 
 $(EXEC): $(OFILES)
-	$(CXX) $(CXXFLAGS) $(OFILES) -o $(EXEC)
+	$(CXX) $(CXXFLAGS) $(OFILES) -o $(EXEC) $(LDLIBS)
 
 # Definitions de cibles particulieres
 
