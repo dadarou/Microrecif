@@ -42,5 +42,9 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "files.exclude": {
+        "**/*.o": true
+    },
+    "C_Cpp.intelliSenseEngine": "Tag Parser"
 }

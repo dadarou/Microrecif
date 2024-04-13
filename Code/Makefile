@@ -18,7 +18,7 @@ $(EXEC): $(OFILES)
 depend:
 	@echo " *** MISE A JOUR DES DEPENDANCES ***"
 	@(sed '/^# DO NOT DELETE THIS LINE/q' Makefile && \
-	  $(CXX) -MM $(CXXFLAGS) $(CXXFILES) | \
+	  $(CXX) -MM $(CXXFILES) | \
 	  egrep -v "/usr/include" \
 	 ) >Makefile.new
 	@mv Makefile.new Makefile
@@ -31,9 +31,9 @@ clean:
 # -- Regles de dependances generees automatiquement
 #
 # DO NOT DELETE THIS LINE
-graphic.o: graphic.cc graphic.h
+graphic.o: graphic.cc graphic.h graphic_gui.h
 gui.o: gui.cc gui.h simulation.h lifeform.h shape.h constantes.h \
- graphic.h
+ graphic_gui.h
 lifeform.o: lifeform.cc lifeform.h shape.h constantes.h message.h
 message.o: message.cc message.h
 projet.o: projet.cc simulation.h lifeform.h shape.h constantes.h gui.h
