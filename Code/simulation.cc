@@ -213,3 +213,8 @@ void Simulation::succes_lecture()
     cout << message::success();
     exit(0);
 }
+
+void Simulation::dessin()
+{
+    //TODO
+}

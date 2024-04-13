@@ -1,24 +1,28 @@
 // project.cc : Point d'entrée du projet
 // Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 1 
-
+// Version 1
 
 #include <iostream>
 #include <string>
+#include <gtkmm/application.h>
+#include <gtkmm/window.h>
 #include "simulation.h"
 #include "gui.h"
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2)
+    Simulation simulation;
+    if (argc == 2)
     {
-        // Le nom de fichier est manquant.
-        cout << "Error: missing filename" << endl;
+        simulation.lecture(argv[1]);
+    }
+    else if (argc > 2)
+    {
+        cout << "Error: too many arguments" << endl;
         exit(EXIT_FAILURE);
     }
 
-    Simulation simulation;
-    simulation.lecture(argv[1]);
-    return 0;
+    auto app = Gtk::Application::create();
+    return app->make_window_and_run<Window>(argc, argv, simulation);
 }
