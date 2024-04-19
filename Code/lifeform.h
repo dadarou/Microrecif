@@ -16,6 +16,7 @@ public:
     // Nécessaire pour initialiser un Corail vide
     Lifeform() = default;
     Lifeform(int age);
+    virtual void dessin() = 0;
 
 protected:
     int age;
@@ -28,7 +29,7 @@ class Algue : Lifeform
 {
 public:
     Algue(std::istringstream &data);
-
+    void dessin() override;
 private:
     Cercle cercle;
 };
@@ -46,6 +47,7 @@ public:
     int get_nb_seg() const { return nb_seg; };
     int get_id() const { return id; };
     std::vector<Segment> get_segs() const { return segs; };
+    void dessin() override;
 
 private:
     Carre base;
@@ -64,6 +66,7 @@ public:
     void test_rayon(double r);
     Status_sca get_etat() const { return etat; };
     int get_cible() const { return id_cible; };
+    void dessin() override;
 
 private:
     Cercle cercle;

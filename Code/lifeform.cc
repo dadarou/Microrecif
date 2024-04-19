@@ -39,6 +39,7 @@ void Lifeform::test_pos(double x, double y)
     }
 }
 
+
 Algue::Algue(istringstream &data)
 {
     double pos_x, pos_y;
@@ -49,6 +50,11 @@ Algue::Algue(istringstream &data)
     test_age(age);
 
     cercle = Cercle(pos_x, pos_y, r_alg);
+}
+
+void Algue::dessin()
+{
+    cercle.dessin(VERT);
 }
 
 Corail::Corail(istringstream &data)
@@ -82,11 +88,11 @@ void Corail::add_seg(istringstream &data, int id)
     if (size == 0)
         base_pos = base.get_pos();
     else
-        base_pos = segs[size - 1].extremity();
+        base_pos = segs[size - 1].get_extremity();
 
     inclusion_segment(id, base_pos);
     Segment new_seg = Segment(base_pos, angle, length);
-    S2d extremite(new_seg.extremity());
+    S2d extremite(new_seg.get_extremity());
     inclusion_segment(id, extremite);
 
     if (size != 0 && new_seg.superposition(segs[size - 1], true))
@@ -127,6 +133,16 @@ void Corail::inclusion_segment(int id, S2d pos)
     }
 }
 
+void Corail::dessin()
+{
+    base.dessin(BLEU);
+    for (auto& seg : segs)
+    {
+        seg.dessin(BLEU);
+    }
+}
+
+
 Scavenger::Scavenger(istringstream &data)
 {
     double pos_x, pos_y, rayon;
@@ -152,4 +168,9 @@ void Scavenger::test_rayon(double r)
         cout << message::scavenger_radius_outside(r);
         exit(EXIT_FAILURE);
     }
+}
+
+void Scavenger::dessin()
+{
+    cercle.dessin(ROUGE);
 }
