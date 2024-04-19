@@ -51,6 +51,11 @@ Algue::Algue(istringstream &data)
     cercle = Cercle(pos_x, pos_y, r_alg);
 }
 
+string Algue::Ecriture_Algue("je met quoi la ")
+{
+    return "age + pos + ..."
+}
+
 Corail::Corail(istringstream &data)
 {
     double pos_x, pos_y;
@@ -66,6 +71,11 @@ Corail::Corail(istringstream &data)
     test_age(age);
 
     base = Carre(pos_x, pos_y, d_cor);
+}
+
+string Corail::Ecriture_Corail("...")
+{
+    return "age + pos + ..."
 }
 
 void Corail::add_seg(istringstream &data, int id)
@@ -143,6 +153,11 @@ Scavenger::Scavenger(istringstream &data)
     test_rayon(rayon);
 
     cercle = Cercle(pos_x, pos_y, rayon);
+}
+
+string Scavenger::Ecriture_Scavenger("...")
+{
+    return "age + pos + ..."
 }
 
 void Scavenger::test_rayon(double r)

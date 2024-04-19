@@ -214,6 +214,29 @@ void Simulation::succes_lecture()
     exit(0);
 }
 
+void Simulation::Sauvegarde()
+{
+    #partie initialisation de la Sauvegarde
+    #>> len(algues) 
+    #for (auto& algue : algues)
+    #corail.Ecriture_Algue()
+
+    #>> len(corails) 
+    #for (auto& corail : corails)
+    #corail.Ecriture_Corail()
+    #for (auto& segment : corail.segs)
+    #ecriture segment
+
+
+    #>> len(Scavengers) 
+    #for (auto& scavenger : scavengers)
+    #corail.Ecriture_Scavenger()
+
+    
+    
+    
+}
+
 void Simulation::dessin()
 {
     //TODO
