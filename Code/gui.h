@@ -29,6 +29,8 @@ private:
     Gtk::Box main_box;
     Gtk::Box buttons_box;
     Gtk::Button button_exit;
+    Gtk::Button button_open;
+    Gtk::Button button_save;
     DrawingArea drawing_area;
 
     // Button signal handlers

@@ -13,6 +13,8 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
                                 // 2 pixels de marge entre les boutons
                                 buttons_box(Gtk::Orientation::VERTICAL, 2),
                                 button_exit("exit"),
+                                button_open("open")
+                                button_save("save")
                                 drawing_area(s)
 {
     set_title("Microrécif");
@@ -23,11 +25,22 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
     // Taille minium de la colonne de droite
     buttons_box.set_size_request(200, -1);
     buttons_box.append(button_exit);
+    buttons_box.append(button_open)
+    buttons_box.append(button_save)
 
     button_exit.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_exit));
 
+    button_save.signal_clicked().connect(
+        sigc::mem_fun(*this, &Window::on_button_clicked_save));
+
     simulation = s;
+}
+
+void Window::on_button_clicked_exit()
+{
+    cout << "Button exit clicked" << endl;
+    exit(EXIT_SUCCESS);
 }
 
 void Window::on_button_clicked_exit()
