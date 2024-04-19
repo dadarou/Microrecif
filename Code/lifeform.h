@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <sstream>
+#include <string>
 #include "shape.h"
 #include "constantes.h"
     
