@@ -29,12 +29,8 @@ class Algue : Lifeform
 {
 public:
     Algue(std::istringstream &data);
-<<<<<<< HEAD
     string Ecriture_Algue("je met quoi la ")
 
-=======
-    void dessin() override;
->>>>>>> 5b05b79cf3c5be39acb4f7774a6c1b87bbc18111
 private:
     Cercle cercle;
 };
@@ -52,11 +48,7 @@ public:
     int get_nb_seg() const { return nb_seg; };
     int get_id() const { return id; };
     std::vector<Segment> get_segs() const { return segs; };
-<<<<<<< HEAD
     string Ecriture_Corail("...")
-=======
-    void dessin() override;
->>>>>>> 5b05b79cf3c5be39acb4f7774a6c1b87bbc18111
 
 private:
     Carre base;
@@ -75,11 +67,7 @@ public:
     void test_rayon(double r);
     Status_sca get_etat() const { return etat; };
     int get_cible() const { return id_cible; };
-<<<<<<< HEAD
     string Ecriture_Scavenger("...")
-=======
-    void dessin() override;
->>>>>>> 5b05b79cf3c5be39acb4f7774a6c1b87bbc18111
 
 private:
     Cercle cercle;

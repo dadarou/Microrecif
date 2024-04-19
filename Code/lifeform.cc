@@ -52,15 +52,9 @@ Algue::Algue(istringstream &data)
     cercle = Cercle(pos_x, pos_y, r_alg);
 }
 
-<<<<<<< HEAD
-string Algue::Ecriture_Algue("je met quoi la ")
+string Algue::ecriture_algue("je met quoi la ")
 {
     return "age + pos + ..."
-=======
-void Algue::dessin()
-{
-    cercle.dessin(VERT);
->>>>>>> 5b05b79cf3c5be39acb4f7774a6c1b87bbc18111
 }
 
 Corail::Corail(istringstream &data)
@@ -80,7 +74,7 @@ Corail::Corail(istringstream &data)
     base = Carre(pos_x, pos_y, d_cor);
 }
 
-string Corail::Ecriture_Corail("...")
+string Corail::ecriture_corail("...")
 {
     return "age + pos + ..."
 }
@@ -172,7 +166,7 @@ Scavenger::Scavenger(istringstream &data)
     cercle = Cercle(pos_x, pos_y, rayon);
 }
 
-string Scavenger::Ecriture_Scavenger("...")
+string Scavenger::ecriture_scavenger("...")
 {
     return "age + pos + ..."
 }
@@ -184,9 +178,4 @@ void Scavenger::test_rayon(double r)
         cout << message::scavenger_radius_outside(r);
         exit(EXIT_FAILURE);
     }
-}
-
-void Scavenger::dessin()
-{
-    cercle.dessin(ROUGE);
 }
