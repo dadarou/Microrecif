@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <string>
 #include "lifeform.h"
 #include "shape.h"
 #include "constantes.h"
