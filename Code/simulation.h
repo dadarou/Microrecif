@@ -15,6 +15,7 @@ class Simulation
 public:
     void lecture(std::string nom_fichier);
     void dessin();
+    void sauvegarde();
 
 private:
     void decodage(std::string ligne);
