@@ -211,7 +211,7 @@ int Simulation::read_nb(istringstream &data, string section)
 void Simulation::succes_lecture()
 {
     cout << message::success();
-    exit(0);
+    // exit(0);
 }
 
 void Simulation::Sauvegarde()
@@ -239,5 +239,16 @@ void Simulation::Sauvegarde()
 
 void Simulation::dessin()
 {
-    //TODO
+    for (auto& algue : algues)
+    {
+        algue.dessin();
+    }
+    for (auto& corail : corails)
+    {
+        corail.dessin();
+    }
+    for (auto& scavenger : scavengers)
+    {
+        scavenger.dessin();
+    }
 }

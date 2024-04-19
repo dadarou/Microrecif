@@ -54,20 +54,11 @@ void DrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context> &cr,
     graphic_set_context(cr);
     projection(cr, width, height);
 
-    // Background
-    cr->set_source_rgb(1., 1., 1.);
-    cr->paint();
+    set_color(BLANC);
+    background();
 
-    // TODO: le carré devrait etre fait dans simulation via le module shape
-    // Square
-    cr->set_line_width(1.0);
-    cr->set_source_rgb(0.5, 0.5, 0.5);
-    cr->move_to(0, 0);
-    cr->line_to(256, 0);
-    cr->line_to(256, 256);
-    cr->line_to(0, 256);
-    cr->line_to(0, 0);
-    cr->stroke();
+    set_color(GRIS);
+    dessin_carre(0, 0, 256);
 
     simulation.dessin();
 }

@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Code/project",
+            "program": "${workspaceFolder}/Code/projet",
             "args": [
                 "${workspaceFolder}/Tests/public/t00.txt"
             ],

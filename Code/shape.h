@@ -5,6 +5,8 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
+#include "graphic.h"
+
 constexpr double epsil_zero(0.5);
 
 struct S2d
@@ -23,6 +25,7 @@ public:
         : pos({pos_x, pos_y}), side(side){};
     S2d get_pos() const { return pos; }
     double get_side() const { return side; }
+    void dessin(Color color);
 
 private:
     S2d pos;
@@ -39,6 +42,7 @@ public:
         : pos({pos_x, pos_y}), rayon(rayon){};
     S2d get_pos() const { return pos; }
     double get_rayon() const { return rayon; }
+    void dessin(Color color);
 
 private:
     S2d pos;
@@ -49,11 +53,12 @@ class Segment
 {
 public:
     Segment(S2d base, double angle, double length);
-    S2d extremity();
+    S2d get_extremity();
     double angular_gap(S2d point);
     double angular_gap(Segment other);
     bool superposition(Segment other, bool lecture_fichier = false);
     bool intersection(Segment other, bool lecture_fichier = false);
+    void dessin(Color color);
 
 private:
     S2d base;

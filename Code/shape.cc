@@ -8,6 +8,21 @@
 #include "graphic.h"
 using namespace std;
 
+
+void Cercle::dessin(Color color)
+{
+    set_color(color);
+    dessin_cercle(pos.x, pos.y, rayon);
+}
+
+
+void Carre::dessin(Color color)
+{
+    set_color(color);
+    dessin_carre(pos.x - side/2., pos.y - side/2., side);
+}
+
+
 Segment::Segment(S2d base, double angle, double length)
     : base(base), angle(angle), length(length)
 {
@@ -16,7 +31,7 @@ Segment::Segment(S2d base, double angle, double length)
 }
 
 // Renvoie l’extrémité du segment.
-S2d Segment::extremity()
+S2d Segment::get_extremity()
 {
     S2d extremity;
     extremity.x = base.x + length * cos(angle);
@@ -119,9 +134,9 @@ bool Segment::intersection(Segment other, bool lecture_fichier)
     double tolerance = lecture_fichier ? 0 : epsil_zero;
 
     S2d p1 = base;
-    S2d q1 = extremity();
+    S2d q1 = get_extremity();
     S2d p2 = other.base;
-    S2d q2 = other.extremity();
+    S2d q2 = other.get_extremity();
 
     // Find the four orientations needed for general and special cases
     int o1 = orientation(p1, q1, p2, length, tolerance);
@@ -151,4 +166,12 @@ bool Segment::intersection(Segment other, bool lecture_fichier)
         return true;
 
     return false; // Doesn't fall in any of the above cases
+}
+
+
+void Segment::dessin(Color color)
+{
+    S2d extremity = get_extremity();
+    set_color(color);
+    dessin_line(base.x, base.y, extremity.x, extremity.y);
 }
