@@ -13,8 +13,8 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
                                 // 2 pixels de marge entre les boutons
                                 buttons_box(Gtk::Orientation::VERTICAL, 2),
                                 button_exit("exit"),
-                                button_open("open")
-                                button_save("save")
+                                button_open("open"),
+                                button_save("save"),
                                 drawing_area(s)
 {
     set_title("Microrécif");
