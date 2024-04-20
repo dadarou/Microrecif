@@ -31,6 +31,9 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
     button_exit.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_exit));
 
+    button_open.signal_clicked().connect(
+        sigc::mem_fun(*this, &Window::on_button_clicked_open));
+
     button_save.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_save));
 
@@ -43,7 +46,13 @@ void Window::on_button_clicked_exit()
     exit(EXIT_SUCCESS);
 }
 
-void Window::on_button_clicked_exit()
+void Window::on_button_clicked_open()
+{
+    cout << "Button exit clicked" << endl;
+    exit(EXIT_SUCCESS);
+}
+
+void Window::on_button_clicked_save()
 {
     cout << "Button exit clicked" << endl;
     exit(EXIT_SUCCESS);

@@ -35,6 +35,8 @@ private:
 
     // Button signal handlers
     void on_button_clicked_exit();
+    void on_button_clicked_open();
+    void on_button_clicked_save();
 };
 
 #endif
