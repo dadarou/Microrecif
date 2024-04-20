@@ -46,10 +46,65 @@ void Window::on_button_clicked_exit()
     exit(EXIT_SUCCESS);
 }
 
-void Window::on_button_clicked_open()
+void Window::on_button_clicked_open() """est ce qu il faut optimiser la fonstion ou en crer deux"""
 {
-    cout << "Button exit clicked" << endl;
-    exit(EXIT_SUCCESS);
+    auto dialog = new Gtk::FileChooserDialog("Selectioner un fichier",
+                                    Gtk::FileChooser::Action::OPEN); """quest ce qu une Action"""
+
+    dialog->set_transient_for(*this);
+    dialog->set_modal(true);
+    dialog->signal_response().connect(sigc::bind(
+        sigc::mem_fun(*this, &Window::on_file_dialog_response), dialog));
+    
+    //Add response buttons to the dialog:
+    dialog->add_button("_Stop", Gtk::ResponseType::ARRET);
+    dialog->add_button("_Ouvrir", Gtk::ResponseType::OK);
+
+    //Add filters, so that only certain file types can be selected:
+    auto filter_text = Gtk::FileFilter::create();
+    filter_text->set_name("Text files");
+    filter_text->add_mime_type("text/plain");
+    dialog->add_filter(filter_text);
+    auto filter_cpp = Gtk::FileFilter::create();
+    filter_cpp->set_name("C/C++ files");
+    filter_cpp->add_mime_type("text/x-c");
+    filter_cpp->add_mime_type("text/x-c++");
+    filter_cpp->add_mime_type("text/x-c-header");
+    dialog->add_filter(filter_cpp);
+    auto filter_any = Gtk::FileFilter::create();
+    filter_any->set_name("Any files");
+    filter_any->add_pattern("*");
+    dialog->add_filter(filter_any);
+
+    //Show the dialog and wait for a user response:
+    dialog->show();
+}
+
+void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog)
+{
+    //Handle the response:
+    switch (response_id)
+    {
+    case Gtk::ResponseType::OK:
+    {
+    cout << "Open or Save clicked." << endl;
+    //Notice that this is a std::string, not a Glib::ustring.
+    auto filename = dialog->get_file()->get_path();
+    cout << "File selected: " << filename << endl;
+    break;
+    }
+    case Gtk::ResponseType::ARRET:
+    {
+    cout << "Cancel clicked." << endl;
+    break;
+    }
+    default:
+    {
+    cout << "Unexpected button clicked." << endl;
+    break;
+    }
+    }
+    delete dialog;
 }
 
 void Window::on_button_clicked_save()
