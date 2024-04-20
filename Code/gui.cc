@@ -25,8 +25,8 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
     // Taille minium de la colonne de droite
     buttons_box.set_size_request(200, -1);
     buttons_box.append(button_exit);
-    buttons_box.append(button_open)
-    buttons_box.append(button_save)
+    buttons_box.append(button_open);
+    buttons_box.append(button_save);
 
     button_exit.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_exit));
