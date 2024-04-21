@@ -46,10 +46,10 @@ void Window::on_button_clicked_exit()
     exit(EXIT_SUCCESS);
 }
 
-void Window::on_button_clicked_open() """est ce qu il faut optimiser la fonstion ou en crer deux"""
+void Window::on_button_clicked_open()
 {
     auto dialog = new Gtk::FileChooserDialog("Selectioner un fichier",
-                                    Gtk::FileChooser::Action::OPEN); """quest ce qu une Action"""
+                                    Gtk::FileChooser::Action::OPEN);
 
     dialog->set_transient_for(*this);
     dialog->set_modal(true);
