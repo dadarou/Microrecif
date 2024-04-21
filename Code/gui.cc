@@ -61,7 +61,7 @@ void Window::on_button_clicked_open()
         sigc::mem_fun(*this, &Window::on_file_dialog_response), dialog));
     
     //Add response buttons to the dialog:
-    dialog->add_button("_Stop", Gtk::ResponseType::ARRET);
+    dialog->add_button("_Stop", Gtk::ResponseType::CANCEL);
     dialog->add_button("_Ouvrir", Gtk::ResponseType::OK);
 
     //Add filters, so that only certain file types can be selected:
@@ -96,7 +96,7 @@ void Window::on_button_cliked_save()
 	    sigc::mem_fun(*this, &Window::on_file_dialog_response), dialog));
 	
 	//Add response buttons to the dialog:
-	dialog->add_button("_Cancel", Gtk::ResponseType::ARRET);
+	dialog->add_button("_Cancel", Gtk::ResponseType::CANCEL);
 	dialog->add_button("_Save", Gtk::ResponseType::OK);
 	
 	//Add filters, so that only certain file types can be selected:
