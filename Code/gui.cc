@@ -86,7 +86,7 @@ void Window::on_button_clicked_open()
     dialog->show();
 }
 
-void Window::on_button_cliked_save()
+void Window:on_button_clicked_save()
 {
 	auto dialog = new Gtk::FileChooserDialog("Séléctioner un fichier",
 		  Gtk::FileChooser::Action::SAVE);
