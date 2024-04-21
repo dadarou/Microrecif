@@ -1,6 +1,7 @@
 #ifndef GUI_H
 #define GUI_H
 
+#include <gtkmm.h>
 #include <gtkmm/button.h>
 #include <gtkmm/window.h>
 #include <gtkmm/box.h>
@@ -23,6 +24,7 @@ class Window : public Gtk::Window
 {
 public:
     Window(Simulation &s);
+    virtual ~Window();
 
 private:
     Simulation simulation;

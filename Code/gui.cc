@@ -40,6 +40,10 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
     simulation = s;
 }
 
+Window::~Window()
+{
+}
+
 void Window::on_button_clicked_exit()
 {
     cout << "Button exit clicked" << endl;
