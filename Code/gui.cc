@@ -65,12 +65,14 @@ void Window::on_button_clicked_open()
     filter_text->set_name("Text files");
     filter_text->add_mime_type("text/plain");
     dialog->add_filter(filter_text);
+
     auto filter_cpp = Gtk::FileFilter::create();
     filter_cpp->set_name("C/C++ files");
     filter_cpp->add_mime_type("text/x-c");
     filter_cpp->add_mime_type("text/x-c++");
     filter_cpp->add_mime_type("text/x-c-header");
     dialog->add_filter(filter_cpp);
+
     auto filter_any = Gtk::FileFilter::create();
     filter_any->set_name("Any files");
     filter_any->add_pattern("*");
@@ -78,6 +80,42 @@ void Window::on_button_clicked_open()
 
     //Show the dialog and wait for a user response:
     dialog->show();
+}
+
+void Window::on_button_cliked_save()
+{
+	auto dialog = new Gtk::FileChooserDialog("Séléctioner un fichier",
+		  Gtk::FileChooser::Action::SAVE);
+	dialog->set_transient_for(*this);
+	dialog->set_modal(true);
+	dialog->signal_response().connect(sigc::bind(
+	    sigc::mem_fun(*this, &Window::on_file_dialog_response), dialog));
+	
+	//Add response buttons to the dialog:
+	dialog->add_button("_Cancel", Gtk::ResponseType::ARRET);
+	dialog->add_button("_Save", Gtk::ResponseType::OK);
+	
+	//Add filters, so that only certain file types can be selected:
+	
+	auto filter_text = Gtk::FileFilter::create();
+	filter_text->set_name("Text files");
+	filter_text->add_mime_type("text/plain");
+	dialog->add_filter(filter_text);
+	
+	auto filter_cpp = Gtk::FileFilter::create();
+	filter_cpp->set_name("C/C++ files");
+	filter_cpp->add_mime_type("text/x-c");
+	filter_cpp->add_mime_type("text/x-c++");
+	filter_cpp->add_mime_type("text/x-c-header");
+	dialog->add_filter(filter_cpp);
+	
+	auto filter_any = Gtk::FileFilter::create();
+	filter_any->set_name("Any files");
+	filter_any->add_pattern("*");
+	dialog->add_filter(filter_any);
+	
+	//Show the dialog and wait for a user response:
+	dialog->show();
 }
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog)
@@ -107,11 +145,6 @@ void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* di
     delete dialog;
 }
 
-void Window::on_button_clicked_save()
-{
-    cout << "Button exit clicked" << endl;
-    exit(EXIT_SUCCESS);
-}
 
 DrawingArea::DrawingArea(Simulation &s)
 {
