@@ -86,7 +86,7 @@ void Window::on_button_clicked_open()
     dialog->show();
 }
 
-void Window:on_button_clicked_save()
+void Window::on_button_clicked_save()
 {
 	auto dialog = new Gtk::FileChooserDialog("Séléctioner un fichier",
 		  Gtk::FileChooser::Action::SAVE);
@@ -135,7 +135,7 @@ void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* di
     cout << "File selected: " << filename << endl;
     break;
     }
-    case Gtk::ResponseType::ARRET:
+    case Gtk::ResponseType::CANCEL:
     {
     cout << "Cancel clicked." << endl;
     break;
