@@ -214,27 +214,28 @@ void Simulation::succes_lecture()
     // exit(0);
 }
 
-void Simulation::Sauvegarde(string nom_fichier)
+void Simulation::sauvegarde(string nom_fichier)
 {
     int total, i;
     ofstream fichier(nom_fichier);
     if(!fichier.fail())
     {
         //délégation
-        >> len(algues) 
+        fichier << len(algues) << endl; 
         for (auto& algue : algues)
-        corail.Ecriture_Algue()
+            fichier << algue.ecriture_algue(fichier) << endl;
 
-        >> len(corails) 
+        fichier << len(corails) << endl;
         for (auto& corail : corails)
-        corail.Ecriture_Corail()
-        for (auto& segment : corail.segs)
-        ecriture segment
+            fichier << corail.ecriture_corail(fichier) << endl;
+
+            for (auto& segment : corail.segs)
+                fichier << corail.ecriture_segment(fichier) << endl;
 
 
-        >> len(Scavengers) 
+        fichier << len(Scavengers) << endl;
         for (auto& scavenger : scavengers)
-        corail.Ecriture_Scavenger()
+            fichier << scavenger.ecriture_scavenger(fichier) << endl;
     }
     fichier.close();
 }

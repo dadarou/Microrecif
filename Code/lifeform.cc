@@ -55,7 +55,8 @@ Algue::Algue(istringstream &data)
 
 string Algue::ecriture_algue(ofstream &fichier)
 {
-    return "age + pos + ..."
+
+    return "    " + to_string(pos) + to_string(age);
 }
 
 Corail::Corail(istringstream &data)
@@ -77,7 +78,13 @@ Corail::Corail(istringstream &data)
 
 string Corail::ecriture_corail(ofstream &fichier)
 {
-    return "age + pos + ..."
+    return "    " + to_string(pos) + to_string(age) + to_string(id) + to_string(statut)
+            + to_string(sens_rot) + to_string(st_dev) + to_string(nb_seg);
+}
+
+string Corail::ecriture_segment(ofstream &fichier)
+{
+    return "        " + to_string(angle) + to_string(length);
 }
 
 void Corail::add_seg(istringstream &data, int id)
@@ -169,7 +176,8 @@ Scavenger::Scavenger(istringstream &data)
 
 string Scavenger::ecriture_scavenger(ofstream &fichier)
 {
-    return "age + pos + ..."
+    return "    " + to_string(pos) + to_string(age) +to_string(rayon) + to_string(etat)
+            + to_string(id_cible);
 }
 
 void Scavenger::test_rayon(double r)
