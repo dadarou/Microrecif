@@ -214,27 +214,29 @@ void Simulation::succes_lecture()
     // exit(0);
 }
 
-void Simulation::Sauvegarde()
+void Simulation::Sauvegarde(string nom_fichier)
 {
-    #partie initialisation de la Sauvegarde
-    #>> len(algues) 
-    #for (auto& algue : algues)
-    #corail.Ecriture_Algue()
+    int total, i;
+    ofstream fichier(nom_fichier);
+    if(!fichier.fail())
+    {
+        //délégation
+        >> len(algues) 
+        for (auto& algue : algues)
+        corail.Ecriture_Algue()
 
-    #>> len(corails) 
-    #for (auto& corail : corails)
-    #corail.Ecriture_Corail()
-    #for (auto& segment : corail.segs)
-    #ecriture segment
+        >> len(corails) 
+        for (auto& corail : corails)
+        corail.Ecriture_Corail()
+        for (auto& segment : corail.segs)
+        ecriture segment
 
 
-    #>> len(Scavengers) 
-    #for (auto& scavenger : scavengers)
-    #corail.Ecriture_Scavenger()
-
-    
-    
-    
+        >> len(Scavengers) 
+        for (auto& scavenger : scavengers)
+        corail.Ecriture_Scavenger()
+    }
+    fichier.close();
 }
 
 void Simulation::dessin()

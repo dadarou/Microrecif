@@ -60,7 +60,6 @@ void Window::on_button_clicked_open()
     dialog->signal_response().connect(sigc::bind(
         sigc::mem_fun(*this, &Window::on_file_dialog_response), dialog));
     
-    //Add response buttons to the dialog:
     dialog->add_button("_Stop", Gtk::ResponseType::CANCEL);
     dialog->add_button("_Ouvrir", Gtk::ResponseType::OK);
 
@@ -129,15 +128,15 @@ void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* di
     {
     case Gtk::ResponseType::OK:
     {
-    cout << "Open or Save clicked." << endl;
+    cout << "Ouverture/Sauvegarde séléctioné." << endl;
     //Notice that this is a std::string, not a Glib::ustring.
     auto filename = dialog->get_file()->get_path();
-    cout << "File selected: " << filename << endl;
+    cout << "Fichier choisi: " << filename << endl;
     break;
     }
     case Gtk::ResponseType::CANCEL:
     {
-    cout << "Cancel clicked." << endl;
+    cout << "Arret." << endl;
     break;
     }
     default:

@@ -53,7 +53,7 @@ Algue::Algue(istringstream &data)
     cercle = Cercle(pos_x, pos_y, r_alg);
 }
 
-string Algue::ecriture_algue()
+string Algue::ecriture_algue(ofstream &fichier)
 {
     return "age + pos + ..."
 }
@@ -75,7 +75,7 @@ Corail::Corail(istringstream &data)
     base = Carre(pos_x, pos_y, d_cor);
 }
 
-string Corail::ecriture_corail()
+string Corail::ecriture_corail(ofstream &fichier)
 {
     return "age + pos + ..."
 }
@@ -167,7 +167,7 @@ Scavenger::Scavenger(istringstream &data)
     cercle = Cercle(pos_x, pos_y, rayon);
 }
 
-string Scavenger::ecriture_scavenger()
+string Scavenger::ecriture_scavenger(ofstream &fichier)
 {
     return "age + pos + ..."
 }
