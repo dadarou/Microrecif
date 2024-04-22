@@ -128,10 +128,9 @@ void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* di
     {
     case Gtk::ResponseType::OK:
     {
-    cout << "Ouverture/Sauvegarde séléctioné." << endl;
-    //Notice that this is a std::string, not a Glib::ustring.
-    auto filename = dialog->get_file()->get_path();
-    cout << "Fichier choisi: " << filename << endl;
+    auto fichier = dialog->get_file()->get_path();
+    simulation.sauvegarde(fichier); // est ce que je devrais pas mettre ca dans on button cliked...
+    simulation.lecture(fichier);    //simulatoin ou s ou Simulation
     break;
     }
     case Gtk::ResponseType::CANCEL:
