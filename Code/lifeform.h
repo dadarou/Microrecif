@@ -30,7 +30,8 @@ class Algue : Lifeform
 {
 public:
     Algue(std::istringstream &data);
-    std::string ecriture_algue(std::ofstream &fichier);
+    void dessin() override;
+    std::string ecriture();
 
 private:
     Cercle cercle;
@@ -43,14 +44,14 @@ public:
     Corail() = default;
     Corail(std::istringstream &data);
     void add_seg(std::istringstream &data, int id);
-    void test_longueur_segment(int id, double seg);
+    void test_longueur_segment(int id, unsigned int l_seg);
     void test_angle(int id, double angle);
     void inclusion_segment(int id, S2d base);
     int get_nb_seg() const { return nb_seg; };
     int get_id() const { return id; };
     std::vector<Segment> get_segs() const { return segs; };
-    std::string ecriture_corail(std::ofstream &fichier);
-    std::string ecriture_segment(std::ofstream &fichier);
+    void dessin() override;
+    std::string ecriture();
 
 private:
     Carre base;
@@ -66,10 +67,11 @@ class Scavenger : Lifeform
 {
 public:
     Scavenger(std::istringstream &data);
-    void test_rayon(double r);
+    void test_rayon(unsigned int r);
     Status_sca get_etat() const { return etat; };
     int get_cible() const { return id_cible; };
-    std::string ecriture_scavenger(std::ofstream &fichier);
+    void dessin() override;
+    std::string ecriture();
 
 private:
     Cercle cercle;

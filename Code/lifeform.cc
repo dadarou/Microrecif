@@ -53,10 +53,15 @@ Algue::Algue(istringstream &data)
     cercle = Cercle(pos_x, pos_y, r_alg);
 }
 
-string Algue::ecriture_algue(ofstream &fichier)
+void Algue::dessin()
+{
+    cercle.dessin(VERT);
+}
+
+string Algue::ecriture()
 {
 
-    return "    " + to_string(pos) + to_string(age);
+    return to_string(cercle.get_pos()) + " " + to_string(age);
 }
 
 Corail::Corail(istringstream &data)
@@ -76,20 +81,10 @@ Corail::Corail(istringstream &data)
     base = Carre(pos_x, pos_y, d_cor);
 }
 
-string Corail::ecriture_corail(ofstream &fichier)
-{
-    return "    " + to_string(pos) + to_string(age) + to_string(id) + to_string(statut)
-            + to_string(sens_rot) + to_string(st_dev) + to_string(nb_seg);
-}
-
-string Corail::ecriture_segment(ofstream &fichier)
-{
-    return "        " + to_string(angle) + to_string(length);
-}
-
 void Corail::add_seg(istringstream &data, int id)
 {
-    double angle, length;
+    double angle;
+    int length;
     if (!(data >> angle >> length))
         erreur_lecture("segment");
 
@@ -116,7 +111,7 @@ void Corail::add_seg(istringstream &data, int id)
     segs.push_back(new_seg);
 }
 
-void Corail::test_longueur_segment(int id, double l_seg)
+void Corail::test_longueur_segment(int id, unsigned int l_seg)
 {
     double l0(l_repro - l_seg_interne);
     if ((l_seg < l0) or (l_seg >= l_repro))
@@ -155,11 +150,18 @@ void Corail::dessin()
     }
 }
 
+string Corail::ecriture()
+{
+    return to_string(base.get_pos()) + " " + to_string(age) + " " + to_string(id)
+         + " " + to_string(statut) + " " + to_string(sens_rot) + " "
+         + to_string(st_dev) + " " + to_string(segs.size());
+}
+
 
 Scavenger::Scavenger(istringstream &data)
 {
-    double pos_x, pos_y, rayon;
-    int etat_int;
+    double pos_x, pos_y;
+    int rayon, etat_int;
     if (!(data >> pos_x >> pos_y >> age >> rayon >> etat_int))
         erreur_lecture("scavenger");
     etat = static_cast<Status_sca>(etat_int);
@@ -174,17 +176,25 @@ Scavenger::Scavenger(istringstream &data)
     cercle = Cercle(pos_x, pos_y, rayon);
 }
 
-string Scavenger::ecriture_scavenger(ofstream &fichier)
-{
-    return "    " + to_string(pos) + to_string(age) +to_string(rayon) + to_string(etat)
-            + to_string(id_cible);
-}
-
-void Scavenger::test_rayon(double r)
+void Scavenger::test_rayon(unsigned int r)
 {
     if ((r < r_sca) or (r >= r_sca_repro))
     {
         cout << message::scavenger_radius_outside(r);
         exit(EXIT_FAILURE);
     }
+}
+
+void Scavenger::dessin()
+{
+    cercle.dessin(ROUGE);
+}
+
+string Scavenger::ecriture()
+{
+    string scavenger = to_string(cercle.get_pos()) + " " + to_string(age) + " "
+                     + to_string(cercle.get_rayon()) + " " + to_string(etat);
+    if (etat == EATING)
+        return scavenger + " " + to_string(id_cible);
+    return scavenger;
 }

@@ -9,6 +9,12 @@
 using namespace std;
 
 
+std::string to_string(const S2d& pos)
+{
+    return to_string(pos.x) + " " + to_string(pos.y);
+}
+
+
 void Cercle::dessin(Color color)
 {
     set_color(color);
@@ -23,7 +29,7 @@ void Carre::dessin(Color color)
 }
 
 
-Segment::Segment(S2d base, double angle, double length)
+Segment::Segment(S2d base, double angle, int length)
     : base(base), angle(angle), length(length)
 {
     assert(angle >= -M_PI && angle <= M_PI);
@@ -81,7 +87,7 @@ bool Segment::superposition(Segment other, bool lecture_fichier)
 
 // Source: https://www.geeksforgeeks.org/orientation-3-ordered-points/
 // Length est la longueur de pq, c'est la longeur du segment.
-int Segment::orientation(S2d p, S2d q, S2d r, double length, double tolerance)
+int Segment::orientation(S2d p, S2d q, S2d r, int length, double tolerance)
 {
     // Surface rectangulaire signée donnée par le produit de la longueur
     // du segment pq par la distance séparant le point r de la droite passant
@@ -168,10 +174,14 @@ bool Segment::intersection(Segment other, bool lecture_fichier)
     return false; // Doesn't fall in any of the above cases
 }
 
-
 void Segment::dessin(Color color)
 {
     S2d extremity = get_extremity();
     set_color(color);
     dessin_line(base.x, base.y, extremity.x, extremity.y);
+}
+
+std::string Segment::ecriture()
+{
+    return to_string(angle) + " " + to_string(length);
 }

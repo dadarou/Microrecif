@@ -4,3 +4,5 @@ replit.nix
 *.o
 Code/projet
 Tests/test
+Code/out.txt
+Code/test

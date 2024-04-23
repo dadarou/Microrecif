@@ -87,7 +87,7 @@ void Window::on_button_clicked_open()
 
 void Window::on_button_clicked_save()
 {
-	auto dialog = new Gtk::FileChooserDialog("Séléctioner un fichier",
+	auto dialog = new Gtk::FileChooserDialog("Sélectionner un fichier",
 		  Gtk::FileChooser::Action::SAVE);
 	dialog->set_transient_for(*this);
 	dialog->set_modal(true);
@@ -123,25 +123,25 @@ void Window::on_button_clicked_save()
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog)
 {
-    //Handle the response:
+    // Handle the response:
     switch (response_id)
     {
     case Gtk::ResponseType::OK:
     {
-    auto fichier = dialog->get_file()->get_path();
-    simulation.sauvegarde(fichier); // est ce que je devrais pas mettre ca dans on button cliked...
-    simulation.lecture(fichier);    //simulatoin ou s ou Simulation
-    break;
+        auto fichier = dialog->get_file()->get_path();
+        simulation.sauvegarde(fichier); // est ce que je devrais pas mettre ca dans on button cliked...
+        simulation.lecture(fichier);    // simulatoin ou s ou Simulation
+        break;
     }
     case Gtk::ResponseType::CANCEL:
     {
-    cout << "Arret." << endl;
-    break;
+        cout << "Arret." << endl;
+        break;
     }
     default:
     {
-    cout << "Unexpected button clicked." << endl;
-    break;
+        cout << "Unexpected button clicked." << endl;
+        break;
     }
     }
     delete dialog;
