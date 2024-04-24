@@ -126,12 +126,10 @@ void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* di
     if (response_id == Gtk::ResponseType::OK)
     {
         if (saving)
-            cout << "saving" << endl;
+            simulation.sauvegarde(fichier);
         else
-            cout << "not saving" << endl;
+            simulation.lecture(fichier);
         auto fichier = dialog->get_file()->get_path();
-        simulation.sauvegarde(fichier);
-        simulation.lecture(fichier);
     }
     delete dialog;
 }
