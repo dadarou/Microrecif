@@ -20,10 +20,10 @@ Window::Window(Simulation &s) : simulation(s),
                                 button_step("step"),
                                 button_birth("Naissance des algues"),
                                 titre("INFO : - nombre de"),
-                                nb_misaj("0"),
-                                nb_algue("0"),
-                                nb_corail("0"),
-                                nb_scavenger("0"),
+                                nb_misaj("mise à jour : 0"),
+                                nb_algue("algues : 0"),
+                                nb_corail("corails : 0"),
+                                nb_scavenger("scavengers : 0"),
                                 drawing_area(s)
 {
     set_title("Microrécif");
@@ -60,6 +60,10 @@ Window::Window(Simulation &s) : simulation(s),
     
     button_step.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_step));
+    
+    button_birth.signal_toggled().connect(sigc::mem_fun(*this,
+              &Window::on_button_clicked_birth) );
+
 
     simulation = s;
 }
@@ -153,6 +157,11 @@ void Window::on_button_clicked_step()
 {
     simulation.update();
     drawing_area.queue_draw();
+}
+
+void Window::on_button_clicked_birth()
+{
+    simulation.set_birth(button_birth.get_active())
 }
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving)
