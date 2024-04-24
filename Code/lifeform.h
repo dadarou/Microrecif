@@ -23,9 +23,9 @@ public:
 
 protected:
     unsigned int age;
-    void erreur_lecture(std::string type);
-    void test_age(unsigned int age);
-    void test_pos(double x, double y);
+    bool erreur_lecture(std::string type);
+    bool test_age(unsigned int age);
+    bool test_pos(double x, double y);
 };
 
 class Algue : public Lifeform
@@ -47,9 +47,9 @@ public:
     Corail() = default;
     Corail(std::istringstream &data);
     void add_seg(std::istringstream &data, int id);
-    void test_longueur_segment(int id, unsigned int l_seg);
-    void test_angle(int id, double angle);
-    void inclusion_segment(int id, S2d base);
+    bool test_longueur_segment(int id, unsigned int l_seg);
+    bool test_angle(int id, double angle);
+    bool inclusion_segment(int id, S2d base);
     int get_nb_seg() const { return nb_seg; };
     int get_id() const { return id; };
     std::vector<Segment> get_segs() const { return segs; };
@@ -70,7 +70,7 @@ class Scavenger : public Lifeform
 {
 public:
     Scavenger(std::istringstream &data);
-    void test_rayon(unsigned int r);
+    bool test_rayon(unsigned int r);
     Status_sca get_etat() const { return etat; };
     int get_cible() const { return id_cible; };
     void dessin() override;

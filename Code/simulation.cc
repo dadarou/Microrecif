@@ -41,7 +41,6 @@ void Simulation::lecture(string nom_fichier)
     {
         // Si l'ouverture du fichier marche pas on arrête le code.
         cout << "Error opening file" << endl;
-        exit(EXIT_FAILURE);
     }
     l_fichier.close();
 }
@@ -140,7 +139,7 @@ void Simulation::ajouter_corail(Corail corail)
     if (id_corail_existe(id))
     {
         cout << message::lifeform_duplicated_id(id);
-        exit(EXIT_FAILURE);
+        reset();
     }    // simulatoin ou s ou Simulation
 
     corails.push_back(corail);
@@ -171,7 +170,7 @@ void Simulation::test_intersection_coraux(Corail corail)
                 if (!consec && seg.intersection(autre_seg, true))
                 {
                     cout << message::segment_collision(id1, i, id2, j);
-                    exit(EXIT_FAILURE);
+                    reset();
                 }
             }
         }
@@ -197,7 +196,7 @@ void Simulation::ajouter_scavenger(Scavenger scavenger)
     if (scavenger.get_etat() == EATING && !id_corail_existe(id))
     {
         cout << message::lifeform_invalid_id(id);
-        exit(EXIT_FAILURE);
+        reset();
     }
     scavengers.push_back(scavenger);
 }
@@ -208,7 +207,7 @@ int Simulation::read_nb(istringstream &data, string section)
     if (!(data >> nb) or nb < 0)
     {
         cout << "Error reading " << section << endl;
-        exit(EXIT_FAILURE);
+        reset();
     }
     return nb;
 }

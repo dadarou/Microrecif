@@ -13,27 +13,27 @@
 #include "message.h"
 using namespace std;
 
-void Lifeform::erreur_lecture(string type)
+bool Lifeform::erreur_lecture(string type)
 {
     cout << "Error reading " << type << endl;
-    exit(EXIT_FAILURE);
+    return false;
 }
 
-void Lifeform::test_age(unsigned int age)
+bool Lifeform::test_age(unsigned int age)
 {
     if (age <= 0)
     {
         cout << message::lifeform_age(age);
-        exit(EXIT_FAILURE);
+        return false;
     }
 }
 
-void Lifeform::test_pos(double x, double y)
+bool Lifeform::test_pos(double x, double y)
 {
     if ((x < 1) or (x > (dmax - 1)) or (y < 1) or (y > (dmax - 1)))
     {
         cout << message::lifeform_center_outside(x, y);
-        exit(EXIT_FAILURE);
+        return false;
     }
 }
 
@@ -109,38 +109,38 @@ void Corail::add_seg(istringstream &data, int id)
     if (size != 0 && new_seg.superposition(segs[size - 1], true))
     {
         cout << message::segment_superposition(id, size - 1, size);
-        exit(EXIT_FAILURE);
+        return false;
     }
     segs.push_back(new_seg);
 }
 
-void Corail::test_longueur_segment(int id, unsigned int l_seg)
+bool Corail::test_longueur_segment(int id, unsigned int l_seg)
 {
     double l0(l_repro - l_seg_interne);
     if ((l_seg < l0) or (l_seg >= l_repro))
     {
         cout << message::segment_length_outside(id, l_seg);
-        exit(EXIT_FAILURE);
+        return false;
     }
 }
 
-void Corail::test_angle(int id, double angle)
+bool Corail::test_angle(int id, double angle)
 {
     if ((angle < -M_PI) or (angle > M_PI))
     {
         cout << message::segment_angle_outside(id, angle);
-        exit(EXIT_FAILURE);
+        return false;
     }
 }
 
 // Vérifie que le segment est dans la simulation
-void Corail::inclusion_segment(int id, S2d pos)
+bool Corail::inclusion_segment(int id, S2d pos)
 {
     if ((pos.x <= epsil_zero) or (pos.x >= (dmax - epsil_zero)) 
     or  (pos.y <= epsil_zero) or (pos.y >= (dmax - epsil_zero)))
     {
         cout << message::lifeform_computed_outside(id, pos.x, pos.y);
-        exit(EXIT_FAILURE);
+        return false;
     }
 }
 
@@ -179,12 +179,12 @@ Scavenger::Scavenger(istringstream &data)
     cercle = Cercle(pos_x, pos_y, rayon);
 }
 
-void Scavenger::test_rayon(unsigned int r)
+bool Scavenger::test_raybooln(unsigned int r)
 {
     if ((r < r_sca) or (r >= r_sca_repro))
     {
         cout << message::scavenger_radius_outside(r);
-        exit(EXIT_FAILURE);
+        return false;
     }
 }
 
