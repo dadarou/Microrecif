@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "gui.h"
 #include "simulation.h"
 #include "graphic_gui.h"
@@ -6,45 +7,49 @@
 
 using namespace std;
 
+static const unsigned int TIMEOUT = 250; // Time between updates in ms
+
 Window::Window(Simulation &s) : simulation(s),
                                 // Horizontal: buttons a droite, dessins a gauche
                                 // 0 pixels de marge entre les deux
                                 main_box(Gtk::Orientation::HORIZONTAL, 0),
                                 // Vertical: buttons de haut en bas
                                 // 2 pixels de marge entre les boutons
-                                buttons_box(Gtk::Orientation::VERTICAL, 2),
+                                gui_box(Gtk::Orientation::VERTICAL, 2),
                                 button_exit("exit"),
                                 button_open("open"),
                                 button_save("save"),
                                 button_start_stop("start"),
                                 button_step("step"),
                                 button_birth("Naissance des algues"),
-                                titre("INFO : - nombre de"),
-                                nb_misaj("mise à jour : 0"),
-                                nb_algue("algues : 0"),
-                                nb_corail("corails : 0"),
-                                nb_scavenger("scavengers : 0"),
-                                drawing_area(s)
+                                label_titre("Info : nombre de..."),
+                                // label_nb_sim("mise à jour: 0"),
+                                // label_nb_algues("algues: 0"),
+                                // label_nb_corails("corails: 0"),
+                                // label_nb_scavengers("scavengers: 0"),
+                                drawing_area(s),
+                                timer_exists(false),
+                                timer_disconnect(false)
 {
     set_title("Microrécif");
     set_child(main_box);
-    main_box.append(buttons_box);
+    main_box.append(gui_box);
     main_box.append(drawing_area);
 
     // Taille minium de la colonne de droite
-    buttons_box.set_size_request(200, -1);
-    buttons_box.append(button_exit);
-    buttons_box.append(button_open);
-    buttons_box.append(button_save);
-    buttons_box.append(button_start_stop);
-    buttons_box.append(button_step);
-    buttons_box.append(button_birth);
-    buttons_box.append(titre);
-    buttons_box.append(nb_algue);
-    buttons_box.append(nb_corail);
-    buttons_box.append(nb_scavenger);
+    gui_box.set_size_request(200, -1);
+    gui_box.append(button_exit);
+    gui_box.append(button_open);
+    gui_box.append(button_save);
+    gui_box.append(button_start_stop);
+    gui_box.append(button_step);
+    gui_box.append(button_birth);
 
-    
+    gui_box.append(label_titre);
+    gui_box.append(label_nb_sim);
+    gui_box.append(label_nb_algues);
+    gui_box.append(label_nb_corails);
+    gui_box.append(label_nb_scavengers);
 
     button_exit.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_exit));
@@ -62,10 +67,9 @@ Window::Window(Simulation &s) : simulation(s),
         sigc::mem_fun(*this, &Window::on_button_clicked_step));
     
     button_birth.signal_toggled().connect(sigc::mem_fun(*this,
-              &Window::on_button_clicked_birth) );
-
-
-    simulation = s;
+              &Window::on_button_clicked_birth));
+    
+    update_labels();
 }
 
 Window::~Window()
@@ -150,17 +154,41 @@ void Window::on_button_clicked_save()
 
 void Window::on_button_clicked_start_stop()
 {
-    // TODO
+    if (not timer_exists)
+    {
+		sigc::slot<bool()> my_slot = sigc::bind(sigc::mem_fun(*this,
+		                                        &Window::on_timer_timeout));
+        Glib::signal_timeout().connect(my_slot, TIMEOUT);
+		timer_exists = true;
+        button_start_stop.set_label("stop");
+    }
+    else
+    {
+        timer_disconnect = true;   
+		timer_exists = false;
+        button_start_stop.set_label("start");
+    }
+}
+
+bool Window::on_timer_timeout()
+{
+    if (timer_disconnect)
+    {
+        timer_disconnect = false;
+        return false;
+    }
+    step();
+    return true;
 }
 
 void Window::on_button_clicked_step()
 {
-    simulation.update();
+    step();
 }
 
 void Window::on_button_clicked_birth()
 {
-    simulation.set_birth(button_birth.get_active())
+    simulation.set_birth(button_birth.get_active());
 }
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving)
@@ -174,6 +202,27 @@ void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* di
             simulation.lecture(fichier);
     }
     delete dialog;
+}
+
+void Window::step()
+{
+    simulation.step();
+    update_labels();
+    drawing_area.queue_draw();
+}
+
+void Window::update_labels()
+{
+    string sim_text = "mise à jour: " + to_string(simulation.get_nb_sim());
+    string algues_text = "algues: " + to_string(simulation.get_nb_algues());
+    string corails_text = "corails: " + to_string(simulation.get_nb_corails());
+    string scavengers_text = "charognards: " 
+                             + to_string(simulation.get_nb_scavengers());
+    
+    label_nb_sim.set_text(sim_text);
+    label_nb_algues.set_text(algues_text);
+    label_nb_corails.set_text(corails_text);
+    label_nb_scavengers.set_text(scavengers_text);
 }
 
 

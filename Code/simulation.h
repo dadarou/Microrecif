@@ -18,13 +18,17 @@ public:
     void lecture(std::string nom_fichier);
     void dessin();
     void sauvegarde(std::string nom_fichier);
-    void update();
+    void step();
     void spawn_algue();
     void reset();
     void set_birth(bool b) { naissance_algue = b; };
+    int get_nb_sim() { return nb_sim; };
+    int get_nb_algues() { return algues.size(); };
+    int get_nb_corails() { return corails.size(); };
+    int get_nb_scavengers() { return scavengers.size(); };
 
 private:
-    int nbSim;
+    int nb_sim;
     bool naissance_algue;
     default_random_engine random_engine;
     void decodage(std::string ligne);
