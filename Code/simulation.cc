@@ -258,4 +258,4 @@ void Simulation::dessin()
     {
         scavenger.dessin();
     }
-}
+} 
