@@ -58,7 +58,7 @@ void Window::on_button_clicked_open()
     dialog->set_transient_for(*this);
     dialog->set_modal(true);
     dialog->signal_response().connect(sigc::bind(
-        sigc::mem_fun(*this, &Window::on_file_dialog_response), dialog));
+        sigc::mem_fun(*this, &Window::on_file_dialog_response), dialog, false));
     
     dialog->add_button("_Stop", Gtk::ResponseType::CANCEL);
     dialog->add_button("_Ouvrir", Gtk::ResponseType::OK);
@@ -87,12 +87,12 @@ void Window::on_button_clicked_open()
 
 void Window::on_button_clicked_save()
 {
-	auto dialog = new Gtk::FileChooserDialog("Sélectionner un fichier",
+    auto dialog = new Gtk::FileChooserDialog("Sélectionner un fichier",
 		  Gtk::FileChooser::Action::SAVE);
 	dialog->set_transient_for(*this);
 	dialog->set_modal(true);
 	dialog->signal_response().connect(sigc::bind(
-	    sigc::mem_fun(*this, &Window::on_file_dialog_response), dialog));
+	    sigc::mem_fun(*this, &Window::on_file_dialog_response), dialog, true));
 	
 	//Add response buttons to the dialog:
 	dialog->add_button("_Stop", Gtk::ResponseType::CANCEL);
@@ -121,13 +121,15 @@ void Window::on_button_clicked_save()
 	dialog->show();
 }
 
-void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog)
+void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving)
 {
     if (response_id == Gtk::ResponseType::OK)
     {
+        if (saving)
+            simulation.sauvegarde(fichier);
+        else
+            simulation.lecture(fichier);
         auto fichier = dialog->get_file()->get_path();
-        simulation.sauvegarde(fichier);
-        simulation.lecture(fichier);
     }
     delete dialog;
 }
