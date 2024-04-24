@@ -161,7 +161,7 @@ void Window::on_button_clicked_step()
 
 void Window::on_button_clicked_birth()
 {
-    simulation.set_birth(button_birth.get_active())
+    simulation.set_birth(button_birth.get_active());
 }
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving)
