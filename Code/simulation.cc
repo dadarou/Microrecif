@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <random>
 #include "simulation.h"
 #include "message.h"
 #include "lifeform.h"
@@ -136,7 +137,7 @@ void Simulation::ajouter_corail(Corail corail)
     {
         cout << message::lifeform_duplicated_id(id);
         exit(EXIT_FAILURE);
-    }
+    }    // simulatoin ou s ou Simulation
 
     corails.push_back(corail);
 
@@ -259,3 +260,46 @@ void Simulation::dessin()
         scavenger.dessin();
     }
 } 
+
+void update()
+{
+    nbSim += 1;
+    for (unsigned int i = 0; i < algues.size(); i++) 
+    {
+        Algue algue = algues[i];
+        algue.update_age();
+        if (algue.get_age() == max_life_alg)
+        {
+            swap(algue, algues.back());
+            algues.pop_back();
+        }
+        if (naissance_algue)
+        {
+            spawn_algue()
+        }
+    }
+}
+
+void spawn_algue()
+{
+    double p(alg_birth_rate);
+    bernoulli_distribution b(p);
+    if (b(e))
+    {
+        uniform_int_distribution<unsigned> u(1, dmax-1);
+        double x = u(e);
+        double y = u(e);
+        Algue nouvelle_algue(x, y);
+        ajouter_algue(nouvelle_algue);
+    }
+}
+
+void reset()
+{
+    nbSim = 0;
+    naissance_algue = false;
+    random_engine.seed(1);
+    algues.clear();
+    corails.clear();
+    scavengers.clear();
+}
