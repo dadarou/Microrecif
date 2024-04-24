@@ -95,8 +95,8 @@ void Window::on_button_clicked_save()
 	    sigc::mem_fun(*this, &Window::on_file_dialog_response), dialog));
 	
 	//Add response buttons to the dialog:
-	dialog->add_button("_Cancel", Gtk::ResponseType::CANCEL);
-	dialog->add_button("_Save", Gtk::ResponseType::OK);
+	dialog->add_button("_Stop", Gtk::ResponseType::CANCEL);
+	dialog->add_button("_Ouvrir", Gtk::ResponseType::OK);
 	
 	//Add filters, so that only certain file types can be selected:
 	
@@ -135,12 +135,10 @@ void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* di
     }
     case Gtk::ResponseType::CANCEL:
     {
-        cout << "Arret." << endl;
         break;
     }
     default:
     {
-        cout << "Unexpected button clicked." << endl;
         break;
     }
     }
