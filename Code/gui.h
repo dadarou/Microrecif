@@ -33,12 +33,16 @@ private:
     Gtk::Button button_exit;
     Gtk::Button button_open;
     Gtk::Button button_save;
+    Gtk::Button button_start;
+    Gtk::Button button_step;
     DrawingArea drawing_area;
 
     // Button signal handlers
     void on_button_clicked_exit();
     void on_button_clicked_open();
     void on_button_clicked_save();
+    void on_button_clicked_start();
+    void on_button_clicked_step();
     void on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving);
 };
 

@@ -15,6 +15,8 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
                                 button_exit("exit"),
                                 button_open("open"),
                                 button_save("save"),
+                                button_start("start"),
+                                button_step("step"),
                                 drawing_area(s)
 {
     set_title("Microrécif");
@@ -27,6 +29,10 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
     buttons_box.append(button_exit);
     buttons_box.append(button_open);
     buttons_box.append(button_save);
+    buttons_box.append(button_start);
+    buttons_box.append(button_step);
+    label.set_text("")
+    
 
     button_exit.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_exit));
@@ -36,6 +42,12 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
 
     button_save.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_save));
+
+    button_start.signal_clicked().connect(
+        sigc::mem_fun(*this, &Window::on_button_clicked_start))
+    
+    button_step.signal_clicked().connect(
+        sigc::mem_fun(*this, &Window::on_button_clicked_step));
 
     simulation = s;
 }
@@ -119,6 +131,18 @@ void Window::on_button_clicked_save()
 	
 	//Show the dialog and wait for a user response:
 	dialog->show();
+}
+
+void Window::on_button_clicked_start()
+{
+    cout << "Button exit clicked" << endl;
+    exit(EXIT_SUCCESS);
+}
+
+void Window::on_button_clicked_step()
+{
+    cout << "Button exit clicked" << endl;
+    exit(EXIT_SUCCESS);
 }
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving)
