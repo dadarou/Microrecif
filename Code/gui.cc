@@ -152,6 +152,7 @@ void Window::on_button_clicked_start_stop()
 void Window::on_button_clicked_step()
 {
     simulation.update();
+    drawing_area.queue_draw();
 }
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving)
