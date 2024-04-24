@@ -61,9 +61,6 @@ Window::Window(Simulation &s) : simulation(s),
     button_step.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_step));
 
-    button_birth.signal_clicked().connect(
-        sigc::mem_fun(*this, &ExampleWindow::on_button_clicked_birth));
-
     simulation = s;
 }
 
@@ -155,11 +152,6 @@ void Window::on_button_clicked_start_stop()
 void Window::on_button_clicked_step()
 {
     simulation.update();
-}
-
-void Window::on_button_clicked_birth()
-{
-    cout << "Button birth clicked" << endl;
 }
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving)
