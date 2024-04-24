@@ -123,24 +123,11 @@ void Window::on_button_clicked_save()
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog)
 {
-    // Handle the response:
-    switch (response_id)
-    {
-    case Gtk::ResponseType::OK:
+    if (response_id == Gtk::ResponseType::OK)
     {
         auto fichier = dialog->get_file()->get_path();
-        simulation.sauvegarde(fichier); // est ce que je devrais pas mettre ca dans on button cliked...
-        simulation.lecture(fichier);    // simulatoin ou s ou Simulation
-        break;
-    }
-    case Gtk::ResponseType::CANCEL:
-    {
-        break;
-    }
-    default:
-    {
-        break;
-    }
+        simulation.sauvegarde(fichier);
+        simulation.lecture(fichier);
     }
     delete dialog;
 }
