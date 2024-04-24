@@ -40,6 +40,11 @@ void Lifeform::test_pos(double x, double y)
     }
 }
 
+void Lifeforme::updateAge()
+{
+    age += 1;
+}
+
 
 Algue::Algue(istringstream &data)
 {
@@ -63,6 +68,7 @@ string Algue::ecriture()
 
     return to_string(cercle.get_pos()) + " " + to_string(age);
 }
+
 
 Corail::Corail(istringstream &data)
 {

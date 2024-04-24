@@ -1,6 +1,6 @@
 // lifeform.h : Entités de la simulation
 // Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 1 
+// Version 1
 
 #ifndef LIFEFORM_H
 #define LIFEFORM_H
@@ -10,14 +10,16 @@
 #include <string>
 #include "shape.h"
 #include "constantes.h"
-    
+
 class Lifeform
 {
 public:
     // Nécessaire pour initialiser un Corail vide
     Lifeform() = default;
     Lifeform(int age);
+    void get_age() const { return age; };
     virtual void dessin() = 0;
+    void update_age();
 
 protected:
     int age;
@@ -30,6 +32,7 @@ class Algue : Lifeform
 {
 public:
     Algue(std::istringstream &data);
+    Algue(double pos_x, double pos_y) : cercle(pos_x, pos_y, r_alg);
     void dessin() override;
     std::string ecriture();
 
