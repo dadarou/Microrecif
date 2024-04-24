@@ -20,10 +20,10 @@ Window::Window(Simulation &s) : simulation(s),
                                 button_step("step"),
                                 button_birth("Naissance des algues"),
                                 titre("INFO : - nombre de"),
-                                nb_misaj("0"),
-                                nb_algue("0"),
-                                nb_corail("0"),
-                                nb_scavenger("0"),
+                                nb_misaj("mise à jour : 0"),
+                                nb_algue("algues : 0"),
+                                nb_corail("corails : 0"),
+                                nb_scavenger("scavengers : 0"),
                                 drawing_area(s)
 {
     set_title("Microrécif");
