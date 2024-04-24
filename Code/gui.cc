@@ -6,7 +6,8 @@
 
 using namespace std;
 
-Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauche
+Window::Window(Simulation &s) : simulation(s),
+                                // Horizontal: buttons a droite, dessins a gauche
                                 // 0 pixels de marge entre les deux
                                 main_box(Gtk::Orientation::HORIZONTAL, 0),
                                 // Vertical: buttons de haut en bas
@@ -15,7 +16,7 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
                                 button_exit("exit"),
                                 button_open("open"),
                                 button_save("save"),
-                                button_start("start"),
+                                button_start_stop("start"),
                                 button_step("step"),
                                 drawing_area(s)
 {
@@ -29,9 +30,9 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
     buttons_box.append(button_exit);
     buttons_box.append(button_open);
     buttons_box.append(button_save);
-    buttons_box.append(button_start);
+    buttons_box.append(button_start_stop);
     buttons_box.append(button_step);
-    label.set_text("")
+    // label.set_text("")
     
 
     button_exit.signal_clicked().connect(
@@ -43,13 +44,11 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
     button_save.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_save));
 
-    button_start.signal_clicked().connect(
-        sigc::mem_fun(*this, &Window::on_button_clicked_start))
+    button_start_stop.signal_clicked().connect(
+        sigc::mem_fun(*this, &Window::on_button_clicked_start_stop));
     
     button_step.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_step));
-
-    simulation = s;
 }
 
 Window::~Window()
@@ -133,35 +132,32 @@ void Window::on_button_clicked_save()
 	dialog->show();
 }
 
-void Window::on_button_clicked_start()
+void Window::on_button_clicked_start_stop()
 {
-    cout << "Button exit clicked" << endl;
-    exit(EXIT_SUCCESS);
+    // TODO
 }
 
 void Window::on_button_clicked_step()
 {
-    cout << "Button exit clicked" << endl;
-    exit(EXIT_SUCCESS);
+    simulation.update();
 }
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving)
 {
     if (response_id == Gtk::ResponseType::OK)
     {
+        auto fichier = dialog->get_file()->get_path();
         if (saving)
             simulation.sauvegarde(fichier);
         else
             simulation.lecture(fichier);
-        auto fichier = dialog->get_file()->get_path();
     }
     delete dialog;
 }
 
 
-DrawingArea::DrawingArea(Simulation &s)
+DrawingArea::DrawingArea(Simulation &s) : simulation(s)
 {
-    simulation = s;
     // On choisis arbitrairement que la taille initiale de la fenêtre de dessin
     // soit le double de sa taille minimale
     set_content_width(dmax*2);

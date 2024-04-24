@@ -10,6 +10,7 @@
 #include <sstream>
 #include "lifeform.h" // Pour utiliser les types dans les vectors.
 #include <random>
+using namespace std;
 
 class Simulation
 {
@@ -23,7 +24,7 @@ public:
 
 private:
     int nbSim;
-    bool naissance;
+    bool naissance_algue;
     default_random_engine random_engine;
     void decodage(std::string ligne);
     void ajouter_algue(Algue algue);

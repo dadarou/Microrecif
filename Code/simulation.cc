@@ -17,6 +17,9 @@ using namespace std;
 
 void Simulation::lecture(string nom_fichier)
 {
+    //
+    naissance_algue = true;
+    //
     string ligne;
     ifstream l_fichier(nom_fichier);
 
@@ -261,40 +264,41 @@ void Simulation::dessin()
     }
 } 
 
-void update()
+void Simulation::update()
 {
     nbSim += 1;
     for (unsigned int i = 0; i < algues.size(); i++) 
     {
-        Algue algue = algues[i];
+        Algue& algue = algues[i];
         algue.update_age();
-        if (algue.get_age() == max_life_alg)
+        if (algue.get_age() >= max_life_alg)
         {
             swap(algue, algues.back());
             algues.pop_back();
+            i--;
         }
-        if (naissance_algue)
-        {
-            spawn_algue()
-        }
+    }
+    if (naissance_algue)
+    {
+        spawn_algue();
     }
 }
 
-void spawn_algue()
+void Simulation::spawn_algue()
 {
     double p(alg_birth_rate);
     bernoulli_distribution b(p);
-    if (b(e))
+    if (b(random_engine))
     {
         uniform_int_distribution<unsigned> u(1, dmax-1);
-        double x = u(e);
-        double y = u(e);
+        double x = u(random_engine);
+        double y = u(random_engine);
         Algue nouvelle_algue(x, y);
         ajouter_algue(nouvelle_algue);
     }
 }
 
-void reset()
+void Simulation::reset()
 {
     nbSim = 0;
     naissance_algue = false;

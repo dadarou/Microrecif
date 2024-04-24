@@ -16,23 +16,23 @@ class Lifeform
 public:
     // Nécessaire pour initialiser un Corail vide
     Lifeform() = default;
-    Lifeform(int age);
-    void get_age() const { return age; };
+    Lifeform(unsigned int a) : age(a){};
+    unsigned int get_age() const { return age; };
     virtual void dessin() = 0;
     void update_age();
 
 protected:
-    int age;
+    unsigned int age;
     void erreur_lecture(std::string type);
-    void test_age(int age);
+    void test_age(unsigned int age);
     void test_pos(double x, double y);
 };
 
-class Algue : Lifeform
+class Algue : public Lifeform
 {
 public:
     Algue(std::istringstream &data);
-    Algue(double pos_x, double pos_y) : cercle(pos_x, pos_y, r_alg);
+    Algue(double pos_x, double pos_y) : Lifeform(0), cercle(pos_x, pos_y, r_alg){};
     void dessin() override;
     std::string ecriture();
 
@@ -40,7 +40,7 @@ private:
     Cercle cercle;
 };
 
-class Corail : Lifeform
+class Corail : public Lifeform
 {
 public:
     // Nécessaire pour initialiser corail_actuel dans decodage_line de Lifeform
@@ -66,7 +66,7 @@ private:
     std::vector<Segment> segs;
 };
 
-class Scavenger : Lifeform
+class Scavenger : public Lifeform
 {
 public:
     Scavenger(std::istringstream &data);

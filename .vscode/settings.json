@@ -41,7 +41,8 @@
         "tuple": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "numbers": "cpp"
     },
     "files.exclude": {
         "**/*.o": true

@@ -14,7 +14,7 @@ public:
     DrawingArea(Simulation &s);
 
 private:
-    Simulation simulation;
+    Simulation& simulation;
     void on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height);
     void projection(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height);
 };
@@ -27,13 +27,13 @@ public:
     virtual ~Window();
 
 private:
-    Simulation simulation;
+    Simulation& simulation;
     Gtk::Box main_box;
     Gtk::Box buttons_box;
     Gtk::Button button_exit;
     Gtk::Button button_open;
     Gtk::Button button_save;
-    Gtk::Button button_start;
+    Gtk::Button button_start_stop;
     Gtk::Button button_step;
     DrawingArea drawing_area;
 
@@ -41,7 +41,7 @@ private:
     void on_button_clicked_exit();
     void on_button_clicked_open();
     void on_button_clicked_save();
-    void on_button_clicked_start();
+    void on_button_clicked_start_stop();
     void on_button_clicked_step();
     void on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving);
 };

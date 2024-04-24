@@ -13,16 +13,13 @@
 #include "message.h"
 using namespace std;
 
-Lifeform::Lifeform(int age)
-    : age(age) {}
-
 void Lifeform::erreur_lecture(string type)
 {
     cout << "Error reading " << type << endl;
     exit(EXIT_FAILURE);
 }
 
-void Lifeform::test_age(int age)
+void Lifeform::test_age(unsigned int age)
 {
     if (age <= 0)
     {
@@ -40,7 +37,7 @@ void Lifeform::test_pos(double x, double y)
     }
 }
 
-void Lifeforme::updateAge()
+void Lifeform::update_age()
 {
     age += 1;
 }
