@@ -35,6 +35,13 @@ private:
     Gtk::Button button_save;
     Gtk::Button button_start;
     Gtk::Button button_step;
+    Gtk::Label titre;
+    Gtk::Label nb_misaj;
+    Gtk::Label nb_algue;
+    Gtk::Label nb_corail;
+    Gtk::Label nb_scavenger;
+
+
     DrawingArea drawing_area;
 
     // Button signal handlers

@@ -17,6 +17,11 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
                                 button_save("save"),
                                 button_start("start"),
                                 button_step("step"),
+                                titre("INFO : - nombre de"),
+                                nb_misaj("0"),
+                                nb_algue("0"),
+                                nb_corail("0"),
+                                nb_scavenger("0"),
                                 drawing_area(s)
 {
     set_title("Microrécif");
@@ -31,7 +36,6 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
     buttons_box.append(button_save);
     buttons_box.append(button_start);
     buttons_box.append(button_step);
-    label.set_text("")
     
 
     button_exit.signal_clicked().connect(
