@@ -21,6 +21,7 @@ public:
     void update();
     void spawn_algue();
     void reset();
+    void set_birth(bool b) { naissance_algue = b; };
 
 private:
     int nbSim;

@@ -51,6 +51,7 @@ private:
     void on_button_clicked_save();
     void on_button_clicked_start_stop();
     void on_button_clicked_step();
+    void on_button_clicked_birth();
     void on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving);
 };
 
