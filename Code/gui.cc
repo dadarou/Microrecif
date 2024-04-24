@@ -6,6 +6,8 @@
 
 using namespace std;
 
+static const unsigned int TIMEOUT = 250; // Time between updates in ms
+
 Window::Window(Simulation &s) : simulation(s),
                                 // Horizontal: buttons a droite, dessins a gauche
                                 // 0 pixels de marge entre les deux
@@ -24,7 +26,9 @@ Window::Window(Simulation &s) : simulation(s),
                                 nb_algue("algues : 0"),
                                 nb_corail("corails : 0"),
                                 nb_scavenger("scavengers : 0"),
-                                drawing_area(s)
+                                drawing_area(s),
+                                timer_exists(false),
+                                timer_disconnect(false)
 {
     set_title("Microrécif");
     set_child(main_box);
@@ -150,13 +154,36 @@ void Window::on_button_clicked_save()
 
 void Window::on_button_clicked_start_stop()
 {
-    // TODO
+    if (not timer_exists)
+    {
+		sigc::slot<bool()> my_slot = sigc::bind(sigc::mem_fun(*this,
+		                                        &Window::on_timer_timeout));
+        Glib::signal_timeout().connect(my_slot, TIMEOUT);
+		timer_exists = true;
+        button_start_stop.set_label("stop");
+    }
+    else
+    {
+        timer_disconnect = true;   
+		timer_exists = false;
+        button_start_stop.set_label("start");
+    }
+}
+
+bool Window::on_timer_timeout()
+{
+    if (timer_disconnect)
+    {
+        timer_disconnect = false;
+        return false;
+    }
+    update();
+    return true;
 }
 
 void Window::on_button_clicked_step()
 {
-    simulation.update();
-    drawing_area.queue_draw();
+    update();
 }
 
 void Window::on_button_clicked_birth()
@@ -175,6 +202,13 @@ void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* di
             simulation.lecture(fichier);
     }
     delete dialog;
+}
+
+void Window::update()
+{
+    simulation.update();
+    // TODO: Update labels
+    drawing_area.queue_draw();
 }
 
 

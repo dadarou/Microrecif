@@ -41,8 +41,6 @@ private:
     Gtk::Label nb_algue;
     Gtk::Label nb_corail;
     Gtk::Label nb_scavenger;
-
-
     DrawingArea drawing_area;
 
     // Button signal handlers
@@ -53,6 +51,12 @@ private:
     void on_button_clicked_step();
     void on_button_clicked_birth();
     void on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving);
+
+    bool timer_exists;
+    bool timer_disconnect;
+    bool on_timer_timeout();
+
+    void update();
 };
 
 #endif
