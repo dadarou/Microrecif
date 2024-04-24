@@ -29,18 +29,18 @@ public:
 private:
     Simulation& simulation;
     Gtk::Box main_box;
-    Gtk::Box buttons_box;
+    Gtk::Box gui_box;
     Gtk::Button button_exit;
     Gtk::Button button_open;
     Gtk::Button button_save;
     Gtk::Button button_start_stop;
     Gtk::Button button_step;
     Gtk::CheckButton button_birth;
-    Gtk::Label titre;
-    Gtk::Label nb_misaj;
-    Gtk::Label nb_algue;
-    Gtk::Label nb_corail;
-    Gtk::Label nb_scavenger;
+    Gtk::Label label_titre;
+    Gtk::Label label_nb_sim;
+    Gtk::Label label_nb_algues;
+    Gtk::Label label_nb_corails;
+    Gtk::Label label_nb_scavengers;
     DrawingArea drawing_area;
 
     // Button signal handlers
@@ -56,7 +56,8 @@ private:
     bool timer_disconnect;
     bool on_timer_timeout();
 
-    void update();
+    void step();
+    void update_labels();
 };
 
 #endif

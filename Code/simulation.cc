@@ -18,8 +18,9 @@ using namespace std;
 void Simulation::lecture(string nom_fichier)
 {
     //
-    naissance_algue = true;
+    reset(); // jsp si on va garder ça la mais bon.
     //
+
     string ligne;
     ifstream l_fichier(nom_fichier);
 
@@ -264,9 +265,9 @@ void Simulation::dessin()
     }
 } 
 
-void Simulation::update()
+void Simulation::step()
 {
-    nbSim += 1;
+    nb_sim += 1;
     for (unsigned int i = 0; i < algues.size(); i++) 
     {
         Algue& algue = algues[i];
@@ -300,7 +301,7 @@ void Simulation::spawn_algue()
 
 void Simulation::reset()
 {
-    nbSim = 0;
+    nb_sim = 0;
     naissance_algue = false;
     random_engine.seed(1);
     algues.clear();
