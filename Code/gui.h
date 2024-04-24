@@ -35,6 +35,7 @@ private:
     Gtk::Button button_save;
     Gtk::Button button_start;
     Gtk::Button button_step;
+    Gtk::CheckButton button_birth
     Gtk::Label titre;
     Gtk::Label nb_misaj;
     Gtk::Label nb_algue;

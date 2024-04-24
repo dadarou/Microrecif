@@ -17,6 +17,7 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
                                 button_save("save"),
                                 button_start("start"),
                                 button_step("step"),
+                                button_birth("Naissance des algues"),
                                 titre("INFO : - nombre de"),
                                 nb_misaj("0"),
                                 nb_algue("0"),
@@ -36,6 +37,12 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
     buttons_box.append(button_save);
     buttons_box.append(button_start);
     buttons_box.append(button_step);
+    buttons_box.append(button_birth);
+    buttons_box.append(titre);
+    buttons_box.append(nb_algue);
+    buttons_box.append(nb_corail);
+    buttons_box.append(nb_scavenger);
+
     
 
     button_exit.signal_clicked().connect(
@@ -53,6 +60,9 @@ Window::Window(Simulation &s) : // Horizontal: buttons a droite, dessins a gauch
     button_step.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_step));
 
+    button_birth.signal_clicked().connect(
+        sigc::mem_fun(*this, &ExampleWindow::on_button_clicked_birth));
+
     simulation = s;
 }
 
@@ -62,7 +72,6 @@ Window::~Window()
 
 void Window::on_button_clicked_exit()
 {
-    cout << "Button exit clicked" << endl;
     exit(EXIT_SUCCESS);
 }
 
@@ -139,13 +148,19 @@ void Window::on_button_clicked_save()
 
 void Window::on_button_clicked_start()
 {
-    cout << "Button exit clicked" << endl;
+    cout << "Button start clicked" << endl;
     exit(EXIT_SUCCESS);
 }
 
 void Window::on_button_clicked_step()
 {
-    cout << "Button exit clicked" << endl;
+    cout << "Button step clicked" << endl;
+    exit(EXIT_SUCCESS);
+}
+
+void Window::on_button_clicked_birth()
+{
+    cout << "Button birth clicked" << endl;
     exit(EXIT_SUCCESS);
 }
 
