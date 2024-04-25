@@ -43,6 +43,9 @@ private:
     Gtk::Label label_nb_scavengers;
     DrawingArea drawing_area;
 
+    bool started(false);
+    bool step(false);
+
     // Button signal handlers
     void on_button_clicked_exit();
     void on_button_clicked_open();

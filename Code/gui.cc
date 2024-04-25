@@ -68,6 +68,12 @@ Window::Window(Simulation &s) : simulation(s),
     
     button_birth.signal_toggled().connect(sigc::mem_fun(*this,
               &Window::on_button_clicked_birth));
+
+    // Handling Keyboard Events.
+    auto commande_clavier = Gtk::EventControllerKey::create();
+    commande_clavier ->signal_key_pressed().connect(
+                  sigc::mem_fun(*this, &Window::on_key_pressed), false);
+    add_controller(commande_clavier);
     
     update_labels();
 }
@@ -183,12 +189,28 @@ bool Window::on_timer_timeout()
 
 void Window::on_button_clicked_step()
 {
-    step();
+    if(not timer_exists)
+        step();
 }
 
 void Window::on_button_clicked_birth()
 {
     simulation.set_birth(button_birth.get_active());
+}
+
+bool Window::on_key_pressed(guint keyval, guint, Gdk::ModifierType state)
+{
+	switch(gdk_keyval_to_unicode(keyval))
+	{
+		case 's':
+			on_button_clicked_start_stop();
+			return true;
+		case '1':
+			on_button_clicked_step();
+			return true;
+	}
+    //the event has not been handled
+    return false;
 }
 
 void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving)
