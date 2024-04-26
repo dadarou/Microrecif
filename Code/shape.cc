@@ -28,14 +28,6 @@ void Carre::dessin(Color color)
     dessin_carre(pos.x - side/2., pos.y - side/2., side);
 }
 
-
-Segment::Segment(S2d base, double angle, int length)
-    : base(base), angle(angle), length(length)
-{
-    assert(angle >= -M_PI && angle <= M_PI);
-    assert(length >= 0);
-}
-
 // Renvoie l’extrémité du segment.
 S2d Segment::get_extremity()
 {

@@ -17,17 +17,13 @@ using namespace std;
 
 void Simulation::lecture(string nom_fichier)
 {
-    //
-    reset(); // jsp si on va garder ça la mais bon.
-    //
+    reset();
 
     string ligne;
     ifstream l_fichier(nom_fichier);
 
     if (!l_fichier.fail())
     {
-        // getline donne un bool vrai si la ligne n'est pas la dernière et
-        // envoie la ligne dans la variable ligne.
         while (getline(l_fichier >> ws, ligne))
         {
             if (ligne[0] == '#')
@@ -35,12 +31,22 @@ void Simulation::lecture(string nom_fichier)
                 continue;
             }
             decodage(ligne);
+            if (lecture_error)
+            {
+                reset();
+                break;
+            }
+            if (lecture_finie)
+            {
+                cout << message::success();
+                break;
+            }
         }
     }
     else
     {
-        // Si l'ouverture du fichier marche pas on arrête le code.
         cout << "Error opening file" << endl;
+        reset();
     }
     l_fichier.close();
 }
@@ -49,13 +55,6 @@ void Simulation::lecture(string nom_fichier)
 void Simulation::decodage(string ligne)
 {
     istringstream data(ligne);
-    enum Etat_decodage {NbAlg, Alg, NbCor, Cor, Seg, NbSca, Sca};
-    static int etat(NbAlg);
-    static int compteur_entite(0);
-    static int total_entite(0);
-    static Corail corail_actuel;
-    static int compteur_segments(0);
-    static int total_segments(0);
 
     switch (etat)
     {
@@ -69,7 +68,7 @@ void Simulation::decodage(string ligne)
     case Alg:
     {
         ++compteur_entite;
-        Algue algue(data);
+        Algue algue(data, lecture_error);
         ajouter_algue(algue);
         if (compteur_entite == total_entite) etat = NbCor;
     }
@@ -86,7 +85,8 @@ void Simulation::decodage(string ligne)
     {
         ++compteur_entite;
         compteur_segments = 0;
-        corail_actuel = Corail(data);
+        corail_actuel = Corail(data, lecture_error);
+        if (lecture_error) return;
         total_segments = corail_actuel.get_nb_seg();
         if (total_segments == 0)  
         {
@@ -99,7 +99,7 @@ void Simulation::decodage(string ligne)
     case Seg:
     {
         ++compteur_segments;
-        corail_actuel.add_seg(data, corail_actuel.get_id());
+        corail_actuel.add_seg(data, corail_actuel.get_id(), lecture_error);
         if (compteur_segments == total_segments) 
         {
             ajouter_corail(corail_actuel);
@@ -112,16 +112,16 @@ void Simulation::decodage(string ligne)
     {
         compteur_entite = 0;
         total_entite = read_nb(data, "nbSca");
-        if (total_entite == 0) succes_lecture();
+        if (total_entite == 0) lecture_finie = true;
         else etat = Sca;
     }
     break;
     case Sca:
     {
         ++compteur_entite;
-        Scavenger scavenger(data);
+        Scavenger scavenger(data, lecture_error);
         ajouter_scavenger(scavenger);
-        if (compteur_entite == total_entite) succes_lecture();
+        if (compteur_entite == total_entite) lecture_finie = true;
     }
     break;
     }
@@ -139,8 +139,9 @@ void Simulation::ajouter_corail(Corail corail)
     if (id_corail_existe(id))
     {
         cout << message::lifeform_duplicated_id(id);
-        reset();
-    }    // simulatoin ou s ou Simulation
+        lecture_error = true;
+        return;
+    }
 
     corails.push_back(corail);
 
@@ -170,7 +171,8 @@ void Simulation::test_intersection_coraux(Corail corail)
                 if (!consec && seg.intersection(autre_seg, true))
                 {
                     cout << message::segment_collision(id1, i, id2, j);
-                    reset();
+                    lecture_error = true;
+                    return;
                 }
             }
         }
@@ -196,7 +198,8 @@ void Simulation::ajouter_scavenger(Scavenger scavenger)
     if (scavenger.get_etat() == EATING && !id_corail_existe(id))
     {
         cout << message::lifeform_invalid_id(id);
-        reset();
+        lecture_error = true;
+        return;
     }
     scavengers.push_back(scavenger);
 }
@@ -207,15 +210,10 @@ int Simulation::read_nb(istringstream &data, string section)
     if (!(data >> nb) or nb < 0)
     {
         cout << "Error reading " << section << endl;
-        reset();
+        lecture_error = true;
+        return 0;
     }
     return nb;
-}
-
-void Simulation::succes_lecture()
-{
-    cout << message::success();
-    // exit(0);
 }
 
 void Simulation::sauvegarde(string nom_fichier)
@@ -300,10 +298,20 @@ void Simulation::spawn_algue()
 
 void Simulation::reset()
 {
-    nb_sim = 0;
-    naissance_algue = false;
-    random_engine.seed(1);
     algues.clear();
     corails.clear();
     scavengers.clear();
+    random_engine.seed(1);
+
+    nb_sim = 0;
+    naissance_algue = false;
+
+    lecture_finie = false;
+    lecture_error = false;
+
+    etat = NbAlg;
+    compteur_entite = 0;
+    total_entite = 0;
+    compteur_segments = 0;
+    total_segments = 0;
 }

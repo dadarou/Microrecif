@@ -55,7 +55,8 @@ private:
 class Segment
 {
 public:
-    Segment(S2d base, double angle, int length);
+    Segment(S2d base, double angle, int length)
+    : base(base), angle(angle), length(length){};
     S2d get_extremity();
     double angular_gap(S2d point);
     double angular_gap(Segment other);

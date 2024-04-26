@@ -23,16 +23,18 @@ public:
 
 protected:
     unsigned int age;
-    bool erreur_lecture(std::string type);
-    bool test_age(unsigned int age);
-    bool test_pos(double x, double y);
+    void erreur_lecture(std::string type, bool &erreur);
+    void test_age(unsigned int age, bool &erreur);
+    void test_pos(double x, double y, bool &erreur);
 };
 
 class Algue : public Lifeform
 {
 public:
-    Algue(std::istringstream &data);
-    Algue(double pos_x, double pos_y) : Lifeform(0), cercle(pos_x, pos_y, r_alg){};
+    Algue(std::istringstream &data, bool &erreur);
+    // Comme l'age doit être strictemment positif dans le fichier, les nouvelles
+    // algue ont 1 an.
+    Algue(double pos_x, double pos_y) : Lifeform(1), cercle(pos_x, pos_y, r_alg){};
     void dessin() override;
     std::string ecriture();
 
@@ -45,11 +47,11 @@ class Corail : public Lifeform
 public:
     // Nécessaire pour initialiser corail_actuel dans decodage_line de Lifeform
     Corail() = default;
-    Corail(std::istringstream &data);
-    void add_seg(std::istringstream &data, int id);
-    bool test_longueur_segment(int id, unsigned int l_seg);
-    bool test_angle(int id, double angle);
-    bool inclusion_segment(int id, S2d base);
+    Corail(std::istringstream &data, bool &erreur);
+    void add_seg(std::istringstream &data, int id, bool &erreur);
+    void test_longueur_segment(int id, unsigned int l_seg, bool &erreur);
+    void test_angle(int id, double angle, bool &erreur);
+    void inclusion_segment(int id, S2d base, bool &erreur);
     int get_nb_seg() const { return nb_seg; };
     int get_id() const { return id; };
     std::vector<Segment> get_segs() const { return segs; };
@@ -69,8 +71,8 @@ private:
 class Scavenger : public Lifeform
 {
 public:
-    Scavenger(std::istringstream &data);
-    bool test_rayon(unsigned int r);
+    Scavenger(std::istringstream &data, bool &erreur);
+    void test_rayon(unsigned int r, bool &erreur);
     Status_sca get_etat() const { return etat; };
     int get_cible() const { return id_cible; };
     void dessin() override;

@@ -28,9 +28,6 @@ public:
     int get_nb_scavengers() { return scavengers.size(); };
 
 private:
-    int nb_sim;
-    bool naissance_algue;
-    default_random_engine random_engine;
     void decodage(std::string ligne);
     void ajouter_algue(Algue algue);
     void ajouter_corail(Corail corail);
@@ -38,7 +35,30 @@ private:
     bool id_corail_existe(int id);
     void ajouter_scavenger(Scavenger scavenger);
     int read_nb(std::istringstream &data, std::string section);
-    void succes_lecture();
+    
+    bool lecture_finie;
+    bool lecture_error;
+    enum Etat_decodage
+    {
+        NbAlg,
+        Alg,
+        NbCor,
+        Cor,
+        Seg,
+        NbSca,
+        Sca
+    };
+    Etat_decodage etat;
+    int compteur_entite;
+    int total_entite;
+    Corail corail_actuel;
+    int compteur_segments;
+    int total_segments;
+
+    bool naissance_algue = false;
+    int nb_sim = 0;
+
+    default_random_engine random_engine;
     std::vector<Algue> algues;
     std::vector<Corail> corails;
     std::vector<Scavenger> scavengers;

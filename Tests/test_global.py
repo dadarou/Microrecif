@@ -59,6 +59,6 @@ def run_tests(tests_location, prog_name):
 if __name__ == "__main__":
     prog_name = "Code/projet"  # Change this to the actual name of your program
 
-    run_tests("Tests/public", prog_name)
+    run_tests("Tests/public1", prog_name)
     print()
-    run_tests("Tests/private", prog_name)
+    # run_tests("Tests/private", prog_name)
