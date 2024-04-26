@@ -24,9 +24,8 @@ Window::Window(Simulation &s) : simulation(s),
                                 button_birth("Naissance des algues"),
                                 label_titre("Info : nombre de..."),
                                 drawing_area(s),
-                                // timer_exists(false),
-                                timer_disconnect(false),
-                                button_is_start(true)
+                                button_is_start(true),
+                                stop_clicked(false)
 {
     set_title("Microrécif");
     set_child(main_box);
@@ -160,28 +159,26 @@ void Window::on_button_clicked_start_stop()
 
 void Window::on_button_clicked_start()
 {
-    // if (not timer_exists)
-    // {
-        sigc::slot<bool()> my_slot = sigc::bind(sigc::mem_fun(*this,
-                                                &Window::on_timer_timeout));
-        Glib::signal_timeout().connect(my_slot, TIMEOUT);
-        button_start_stop.set_label("stop");
-        button_is_start = false;
-    // }
+
+    sigc::slot<bool()> timer = sigc::bind(sigc::mem_fun(*this,
+                                            &Window::on_timer_timeout));
+    Glib::signal_timeout().connect(timer, TIMEOUT);
+    button_start_stop.set_label("stop");
+    button_is_start = false;
 }
 
 void Window::on_button_clicked_stop()
 {
-    timer_disconnect = true;
+    stop_clicked = true;
 }
 
 bool Window::on_timer_timeout()
 {
-    if (timer_disconnect)
+    if (stop_clicked)
     {
-        timer_disconnect = false;
         button_start_stop.set_label("start");
         button_is_start = true;
+        stop_clicked = false;
         return false;
     }
     step();

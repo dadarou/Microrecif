@@ -47,8 +47,7 @@ private:
     DrawingArea drawing_area;
 
     bool button_is_start;
-    // bool timer_exists;
-    bool timer_disconnect;
+    bool stop_clicked;
 
     // Button signal handlers
     void on_button_clicked_exit();
