@@ -1,6 +1,6 @@
 // lifeform.cc : Entités de la simulation
-// Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 1 
+// Auteurs : Daniel Roulin (50%) & Joshua Hurlimann (50%)
+// Version 2 
 
 #include <sstream>
 #include <iostream>
@@ -12,6 +12,11 @@
 #include "constantes.h"
 #include "message.h"
 using namespace std;
+
+void Lifeform::update_age()
+{
+    age += 1;
+}
 
 void Lifeform::erreur_lecture(string type, bool &erreur)
 {
@@ -35,11 +40,6 @@ void Lifeform::test_pos(double x, double y, bool &erreur)
         cout << message::lifeform_center_outside(x, y);
         erreur = true;
     }
-}
-
-void Lifeform::update_age()
-{
-    age += 1;
 }
 
 Algue::Algue(istringstream &data, bool &erreur)

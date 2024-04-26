@@ -1,6 +1,6 @@
 // lifeform.h : Entités de la simulation
 // Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 1
+// Version 2
 
 #ifndef LIFEFORM_H
 #define LIFEFORM_H
@@ -16,10 +16,11 @@ class Lifeform
 public:
     // Nécessaire pour initialiser un Corail vide
     Lifeform() = default;
-    Lifeform(unsigned int a) : age(a){};
-    unsigned int get_age() const { return age; };
-    virtual void dessin() = 0;
+    Lifeform(unsigned int a)
+     : age(a){};
     void update_age();
+    virtual void dessin() = 0;
+    unsigned int get_age() const { return age; };
 
 protected:
     unsigned int age;
@@ -34,7 +35,8 @@ public:
     Algue(std::istringstream &data, bool &erreur);
     // Comme l'age doit être strictemment positif dans le fichier, les nouvelles
     // algue ont 1 an.
-    Algue(double pos_x, double pos_y) : Lifeform(1), cercle(pos_x, pos_y, r_alg){};
+    Algue(double pos_x, double pos_y)
+     : Lifeform(1), cercle(pos_x, pos_y, r_alg){};
     void dessin() override;
     std::string ecriture();
 
@@ -52,11 +54,11 @@ public:
     void test_longueur_segment(int id, unsigned int l_seg, bool &erreur);
     void test_angle(int id, double angle, bool &erreur);
     void inclusion_segment(int id, S2d base, bool &erreur);
+    void dessin() override;
+    std::string ecriture();
     int get_nb_seg() const { return nb_seg; };
     int get_id() const { return id; };
     std::vector<Segment> get_segs() const { return segs; };
-    void dessin() override;
-    std::string ecriture();
 
 private:
     Carre base;
@@ -73,10 +75,10 @@ class Scavenger : public Lifeform
 public:
     Scavenger(std::istringstream &data, bool &erreur);
     void test_rayon(unsigned int r, bool &erreur);
-    Status_sca get_etat() const { return etat; };
-    int get_cible() const { return id_cible; };
     void dessin() override;
     std::string ecriture();
+    Status_sca get_etat() const { return etat; };
+    int get_cible() const { return id_cible; };
 
 private:
     Cercle cercle;

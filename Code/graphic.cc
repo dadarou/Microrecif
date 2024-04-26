@@ -1,8 +1,12 @@
+// graphic.cc : Bibliothèque permettant d'afficher des formes géométriques simples 
+// Auteurs : Daniel Roulin (100%)
+// Version 2
+
 #include "graphic.h"
 #include "graphic_gui.h"
 
+constexpr double LINE_WIDTH = 1;
 static const Cairo::RefPtr<Cairo::Context>* ptcr(nullptr);
-static const double LINE_WIDTH = 1;
 
 void graphic_set_context(const Cairo::RefPtr<Cairo::Context>& cr)
 {

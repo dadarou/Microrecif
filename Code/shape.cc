@@ -1,6 +1,6 @@
 // shape.cc : Bibliothèque de formes
-// Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 1 
+// Auteurs : Daniel Roulin (100%)
+// Version 2
 
 #include <cmath>
 #include <cassert>
@@ -8,24 +8,21 @@
 #include "graphic.h"
 using namespace std;
 
-
-std::string to_string(const S2d& pos)
+std::string to_string(const S2d &pos)
 {
     return to_string(pos.x) + " " + to_string(pos.y);
 }
-
-
-void Cercle::dessin(Color color)
-{
-    set_color(color);
-    dessin_cercle(pos.x, pos.y, rayon);
-}
-
 
 void Carre::dessin(Color color)
 {
     set_color(color);
     dessin_carre(pos.x - side/2., pos.y - side/2., side);
+}
+
+void Cercle::dessin(Color color)
+{
+    set_color(color);
+    dessin_cercle(pos.x, pos.y, rayon);
 }
 
 // Renvoie l’extrémité du segment.

@@ -1,6 +1,6 @@
 // simulation.cc : Gestion de la simulation
-// Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 1 
+// Auteurs : Daniel Roulin (30%) & Joshua Hurlimann (70%)
+// Version 2 
 
 #include <iostream>
 #include <fstream>

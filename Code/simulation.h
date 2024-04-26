@@ -1,6 +1,6 @@
-// simulation.h : Gestion de la simulation
+// simulation.h : Entête de simulation.cc
 // Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 1 
+// Version 2 
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
@@ -8,20 +8,20 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include "lifeform.h" // Pour utiliser les types dans les vectors.
 #include <random>
-using namespace std;
+#include "lifeform.h" // Pour utiliser les types dans les vectors.
 
 class Simulation
 {
 public:
     void lecture(std::string nom_fichier);
-    void dessin();
     void sauvegarde(std::string nom_fichier);
+    void dessin();
     void step();
     void spawn_algue();
     void reset();
     void set_birth(bool b) { naissance_algue = b; };
+    bool get_birth() { return naissance_algue; };
     int get_nb_sim() { return nb_sim; };
     int get_nb_algues() { return algues.size(); };
     int get_nb_corails() { return corails.size(); };
@@ -58,7 +58,7 @@ private:
     bool naissance_algue = false;
     int nb_sim = 0;
 
-    default_random_engine random_engine;
+    std::default_random_engine random_engine;
     std::vector<Algue> algues;
     std::vector<Corail> corails;
     std::vector<Scavenger> scavengers;

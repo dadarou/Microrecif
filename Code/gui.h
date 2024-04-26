@@ -1,3 +1,7 @@
+// gui.h : Entête de gui.cc
+// Auteurs : Daniel Roulin & Joshua Hurlimann
+// Version 2
+
 #ifndef GUI_H
 #define GUI_H
 
@@ -19,7 +23,6 @@ private:
     void projection(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height);
 };
 
-
 class Window : public Gtk::Window
 {
 public:
@@ -27,7 +30,7 @@ public:
     virtual ~Window();
 
 private:
-    Simulation& simulation;
+    Simulation &simulation;
     Gtk::Box main_box;
     Gtk::Box gui_box;
     Gtk::Button button_exit;
@@ -42,6 +45,8 @@ private:
     Gtk::Label label_nb_corails;
     Gtk::Label label_nb_scavengers;
     DrawingArea drawing_area;
+    bool timer_exists;
+    bool timer_disconnect;
 
     // Button signal handlers
     void on_button_clicked_exit();
@@ -50,15 +55,15 @@ private:
     void on_button_clicked_start_stop();
     void on_button_clicked_step();
     void on_button_clicked_birth();
-    bool on_key_pressed(guint keyval, guint, Gdk::ModifierType state);
-    void on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving);
 
-    bool timer_exists;
-    bool timer_disconnect;
+    bool on_key_pressed(guint keyval, guint, Gdk::ModifierType state);
+    void on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog,
+                                 bool saving);
     bool on_timer_timeout();
 
     void step();
     void update_labels();
+    void reset();
 };
 
 #endif

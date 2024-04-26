@@ -1,6 +1,6 @@
-// shape.h : Bibliothèque de formes
-// Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 1 
+// shape.h : Entête de shape.cc
+// Auteurs : Daniel Roulin
+// Version 2 
 
 #ifndef SHAPE_H
 #define SHAPE_H

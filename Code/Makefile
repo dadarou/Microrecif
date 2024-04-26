@@ -1,5 +1,8 @@
-# Definitions de macros
+# Makefile : Orchestre la compilation
+# Auteurs : Daniel Roulin & Joshua Hurlimann
+# Version 2
 
+# Definitions de macros
 EXEC = projet
 TEST = test
 PACKAGES = gtkmm-4.0
@@ -12,12 +15,10 @@ PROJECT_OFILES = $(filter-out $(TEST).o, $(OFILES))
 TEST_OFILES = $(filter-out $(EXEC).o, $(OFILES))
 
 # Definition de la premiere regle
-
 $(EXEC): $(PROJECT_OFILES)
 	$(CXX) $(CXXFLAGS) $(PROJECT_OFILES) -o $(EXEC) $(LDLIBS)
 
 # Definitions de cibles particulieres
-
 depend:
 	@echo " *** MISE A JOUR DES DEPENDANCES ***"
 	@(sed '/^# DO NOT DELETE THIS LINE/q' Makefile && \
@@ -33,9 +34,7 @@ clean:
 test: $(TEST_OFILES)
 	$(CXX) $(CXXFLAGS) $(TEST_OFILES) -o $(TEST) $(LDLIBS)
 
-#
-# -- Regles de dependances generees automatiquement
-#
+# Règles de dependances generees automatiquement
 # DO NOT DELETE THIS LINE
 graphic.o: graphic.cc graphic.h graphic_gui.h
 gui.o: gui.cc gui.h simulation.h lifeform.h shape.h graphic.h \

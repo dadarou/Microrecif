@@ -1,3 +1,7 @@
+// gui.cc : Module responsable de l'interface utilisateur
+// Auteurs : Daniel Roulin (50%) & Joshua Hurlimann (50%)
+// Version 2
+
 #include <iostream>
 #include <string>
 #include "gui.h"
@@ -7,14 +11,10 @@
 
 using namespace std;
 
-static const unsigned int TIMEOUT = 250; // Time between updates in ms
+constexpr unsigned int TIMEOUT = 250; // Time between updates in ms
 
 Window::Window(Simulation &s) : simulation(s),
-                                // Horizontal: buttons a droite, dessins a gauche
-                                // 0 pixels de marge entre les deux
                                 main_box(Gtk::Orientation::HORIZONTAL, 0),
-                                // Vertical: buttons de haut en bas
-                                // 2 pixels de marge entre les boutons
                                 gui_box(Gtk::Orientation::VERTICAL, 2),
                                 button_exit("exit"),
                                 button_open("open"),
@@ -23,10 +23,6 @@ Window::Window(Simulation &s) : simulation(s),
                                 button_step("step"),
                                 button_birth("Naissance des algues"),
                                 label_titre("Info : nombre de..."),
-                                // label_nb_sim("mise à jour: 0"),
-                                // label_nb_algues("algues: 0"),
-                                // label_nb_corails("corails: 0"),
-                                // label_nb_scavengers("scavengers: 0"),
                                 drawing_area(s),
                                 timer_exists(false),
                                 timer_disconnect(false)
@@ -35,8 +31,6 @@ Window::Window(Simulation &s) : simulation(s),
     set_child(main_box);
     main_box.append(gui_box);
     main_box.append(drawing_area);
-
-    // Taille minium de la colonne de droite
     gui_box.set_size_request(200, -1);
     gui_box.append(button_exit);
     gui_box.append(button_open);
@@ -44,7 +38,6 @@ Window::Window(Simulation &s) : simulation(s),
     gui_box.append(button_start_stop);
     gui_box.append(button_step);
     gui_box.append(button_birth);
-
     gui_box.append(label_titre);
     gui_box.append(label_nb_sim);
     gui_box.append(label_nb_algues);
@@ -53,19 +46,14 @@ Window::Window(Simulation &s) : simulation(s),
 
     button_exit.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_exit));
-
     button_open.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_open));
-
     button_save.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_save));
-
     button_start_stop.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_start_stop));
-    
     button_step.signal_clicked().connect(
         sigc::mem_fun(*this, &Window::on_button_clicked_step));
-    
     button_birth.signal_toggled().connect(sigc::mem_fun(*this,
               &Window::on_button_clicked_birth));
 
@@ -175,17 +163,6 @@ void Window::on_button_clicked_start_stop()
     }
 }
 
-bool Window::on_timer_timeout()
-{
-    if (timer_disconnect)
-    {
-        timer_disconnect = false;
-        return false;
-    }
-    step();
-    return true;
-}
-
 void Window::on_button_clicked_step()
 {
     if(not timer_exists) step();
@@ -207,11 +184,11 @@ bool Window::on_key_pressed(guint keyval, guint, Gdk::ModifierType state)
 			on_button_clicked_step();
 			return true;
 	}
-    //the event has not been handled
     return false;
 }
 
-void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog, bool saving)
+void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog,
+                                     bool saving)
 {
     if (response_id == Gtk::ResponseType::OK)
     {
@@ -221,11 +198,21 @@ void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* di
         else
         {
             simulation.lecture(fichier);
-            update_labels();
-            drawing_area.queue_draw();
+            reset();
         }
     }
     delete dialog;
+}
+
+bool Window::on_timer_timeout()
+{
+    if (timer_disconnect)
+    {
+        timer_disconnect = false;
+        return false;
+    }
+    step();
+    return true;
 }
 
 void Window::step()
@@ -249,6 +236,15 @@ void Window::update_labels()
     label_nb_scavengers.set_text(scavengers_text);
 }
 
+void Window::reset()
+{
+    button_birth.set_active(simulation.get_birth());
+    timer_disconnect = true;   
+    timer_exists = false;
+    button_start_stop.set_label("start");
+    update_labels();
+    drawing_area.queue_draw();
+}
 
 DrawingArea::DrawingArea(Simulation &s) : simulation(s)
 {

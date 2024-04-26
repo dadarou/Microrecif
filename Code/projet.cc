@@ -1,6 +1,6 @@
 // project.cc : Point d'entrée du projet
-// Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 1
+// Auteurs : Daniel Roulin (50%) & Joshua Hurlimann (50%)
+// Version 2
 
 #include <iostream>
 #include <string>
