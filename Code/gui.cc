@@ -24,8 +24,9 @@ Window::Window(Simulation &s) : simulation(s),
                                 button_birth("Naissance des algues"),
                                 label_titre("Info : nombre de..."),
                                 drawing_area(s),
-                                timer_exists(false),
-                                timer_disconnect(false)
+                                // timer_exists(false),
+                                timer_disconnect(false),
+                                button_is_start(true)
 {
     set_title("Microrécif");
     set_child(main_box);
@@ -147,25 +148,49 @@ void Window::on_button_clicked_save()
 
 void Window::on_button_clicked_start_stop()
 {
-    if (not timer_exists)
+    if (button_is_start)
     {
-		sigc::slot<bool()> my_slot = sigc::bind(sigc::mem_fun(*this,
-		                                        &Window::on_timer_timeout));
-        Glib::signal_timeout().connect(my_slot, TIMEOUT);
-		timer_exists = true;
-        button_start_stop.set_label("stop");
+        on_button_clicked_start();
     }
     else
     {
-        timer_disconnect = true;   
-		timer_exists = false;
-        button_start_stop.set_label("start");
+        on_button_clicked_stop();
     }
+}
+
+void Window::on_button_clicked_start()
+{
+    // if (not timer_exists)
+    // {
+        sigc::slot<bool()> my_slot = sigc::bind(sigc::mem_fun(*this,
+                                                &Window::on_timer_timeout));
+        Glib::signal_timeout().connect(my_slot, TIMEOUT);
+        button_start_stop.set_label("stop");
+        button_is_start = false;
+    // }
+}
+
+void Window::on_button_clicked_stop()
+{
+    timer_disconnect = true;
+}
+
+bool Window::on_timer_timeout()
+{
+    if (timer_disconnect)
+    {
+        timer_disconnect = false;
+        button_start_stop.set_label("start");
+        button_is_start = true;
+        return false;
+    }
+    step();
+    return true;
 }
 
 void Window::on_button_clicked_step()
 {
-    if(not timer_exists) step();
+    if (button_is_start) step();
 }
 
 void Window::on_button_clicked_birth()
@@ -204,17 +229,6 @@ void Window::on_file_dialog_response(int response_id, Gtk::FileChooserDialog* di
     delete dialog;
 }
 
-bool Window::on_timer_timeout()
-{
-    if (timer_disconnect)
-    {
-        timer_disconnect = false;
-        return false;
-    }
-    step();
-    return true;
-}
-
 void Window::step()
 {
     simulation.step();
@@ -238,10 +252,11 @@ void Window::update_labels()
 
 void Window::reset()
 {
+    if (not button_is_start)
+    {
+        on_button_clicked_stop();
+    }
     button_birth.set_active(simulation.get_birth());
-    timer_disconnect = true;   
-    timer_exists = false;
-    button_start_stop.set_label("start");
     update_labels();
     drawing_area.queue_draw();
 }
