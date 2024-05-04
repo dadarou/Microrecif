@@ -35,7 +35,9 @@ private:
     bool id_corail_existe(int id);
     void ajouter_scavenger(Scavenger scavenger);
     int read_nb(std::istringstream &data, std::string section);
-    
+    template <typename T>
+    void mort_naturelle(std::vector<T> &entites, unsigned int max_age);
+
     bool lecture_finie;
     bool lecture_error;
     enum Etat_decodage

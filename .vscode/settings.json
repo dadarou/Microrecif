@@ -42,7 +42,14 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "algorithm": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "*.tcc": "cpp",
+        "unordered_map": "cpp",
+        "system_error": "cpp",
+        "array": "cpp"
     },
     "files.exclude": {
         "**/*.o": true

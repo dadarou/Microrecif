@@ -11,7 +11,7 @@
 
 using namespace std;
 
-constexpr unsigned int TIMEOUT(250); // Time between updates in ms
+constexpr unsigned int TIMEOUT(25); // Time between updates in ms
 constexpr unsigned taille_dessin(500); 
 
 Window::Window(Simulation &s) : simulation(s),

@@ -260,26 +260,38 @@ void Simulation::dessin()
     {
         scavenger.dessin();
     }
-} 
+}
+
+template <typename T>
+void Simulation::mort_naturelle(vector<T> &entites, unsigned int max_age)
+{
+    for (unsigned int i = 0; i < entites.size(); i++) 
+    {
+        T& entite = entites[i];
+        entite.update_age();
+        if (entite.get_age() >= max_age)
+        {
+            swap(entite, entites.back());
+            entites.pop_back();
+            i--;
+        }
+    }
+}
 
 void Simulation::step()
 {
     nb_sim += 1;
-    for (unsigned int i = 0; i < algues.size(); i++) 
-    {
-        Algue& algue = algues[i];
-        algue.update_age();
-        if (algue.get_age() >= max_life_alg)
-        {
-            swap(algue, algues.back());
-            algues.pop_back();
-            i--;
-        }
-    }
+
+    mort_naturelle(algues, max_life_alg);
+
     if (naissance_algue)
     {
         spawn_algue();
     }
+
+    mort_naturelle(corails, max_life_cor);
+
+    mort_naturelle(scavengers, max_life_sca);
 }
 
 void Simulation::spawn_algue()
