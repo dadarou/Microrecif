@@ -36,7 +36,12 @@ private:
     void ajouter_scavenger(Scavenger scavenger);
     int read_nb(std::istringstream &data, std::string section);
     template <typename T>
-    void mort_naturelle(std::vector<T> &entites, unsigned int max_age);
+    void disparition(std::vector<T> &entites, unsigned int max_age);
+    void mort_corails();
+    void update_corails();
+    Algue* closest_algue(Corail &corail, double &closest_angle);
+    void attempt_turn_corail(Corail &corail, double delta);
+    void attempt_eat_algue(Corail &corail, Algue &algue);
 
     bool lecture_finie;
     bool lecture_error;

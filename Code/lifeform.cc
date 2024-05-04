@@ -79,7 +79,7 @@ Corail::Corail(istringstream &data, bool &erreur)
         return;
     }
 
-    statut   = static_cast<Status_cor>(statut_int);
+    status   = static_cast<Status_cor>(statut_int);
     sens_rot = static_cast<Dir_rot_cor>(sens_rot_int);
     st_dev   = static_cast<Status_dev>(st_dev_int);
 
@@ -164,7 +164,7 @@ void Corail::dessin()
 string Corail::ecriture()
 {
     return to_string(base.get_pos()) + " " + to_string(age) + " " + to_string(id)
-         + " " + to_string(statut) + " " + to_string(sens_rot) + " "
+         + " " + to_string(status) + " " + to_string(sens_rot) + " "
          + to_string(st_dev) + " " + to_string(segs.size());
 }
 

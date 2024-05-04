@@ -13,6 +13,13 @@ std::string to_string(const S2d &pos)
     return to_string(pos.x) + " " + to_string(pos.y);
 }
 
+double distance(const S2d& pos1, const S2d& pos2)
+{
+    double dx = pos2.x - pos1.x;
+    double dy = pos2.y - pos1.y;
+    return sqrt(dx*dx + dy*dy);
+}
+
 void Carre::dessin(Color color)
 {
     set_color(color);
@@ -51,17 +58,17 @@ double Segment::angular_gap(Segment other)
 }
 
 // Normalize l'angle dans l’intervalle [-π, π]
-double Segment::normalize_angle(double angle)
+double Segment::normalize_angle(double angle_)
 {
-    if (angle > M_PI)
+    if (angle_ > M_PI)
     {
-        angle -= 2 * M_PI;
+        angle_ -= 2 * M_PI;
     }
-    else if (angle < -M_PI)
+    else if (angle_ < -M_PI)
     {
-        angle += 2 * M_PI;
+        angle_ += 2 * M_PI;
     }
-    return angle;
+    return angle_;
 }
 
 // Le booléen de superposition de 2 segments ayant la meme base (section 2.1).
@@ -172,5 +179,11 @@ void Segment::dessin(Color color)
 
 std::string Segment::ecriture()
 {
+    //TODO: Normalize angle between [0, 2PI]
     return to_string(angle) + " " + to_string(length);
+}
+
+void Segment::turn(double delta)
+{
+    angle = angle + delta;
 }

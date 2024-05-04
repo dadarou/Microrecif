@@ -6,6 +6,13 @@
 #define SHAPE_H
 
 #include "graphic.h"
+
+
+
+#include <iostream>
+using namespace std;
+
+
 #include <string>
 
 constexpr double epsil_zero(0.5);
@@ -17,6 +24,7 @@ struct S2d
 };
 
 std::string to_string(const S2d& pos);
+double distance(const S2d& pos1, const S2d& pos2);
 
 class Carre
 {
@@ -57,6 +65,8 @@ class Segment
 public:
     Segment(S2d base, double angle, int length)
     : base(base), angle(angle), length(length){};
+    int get_length() { return length; };
+    S2d get_base() { return base; };
     S2d get_extremity();
     double angular_gap(S2d point);
     double angular_gap(Segment other);
@@ -64,6 +74,7 @@ public:
     bool intersection(Segment other, bool lecture_fichier = false);
     void dessin(Color color);
     std::string ecriture();
+    void turn(double angle);
 
 private:
     S2d base;

@@ -263,13 +263,13 @@ void Simulation::dessin()
 }
 
 template <typename T>
-void Simulation::mort_naturelle(vector<T> &entites, unsigned int max_age)
+void Simulation::disparition(vector<T> &entites, unsigned int max_life)
 {
     for (unsigned int i = 0; i < entites.size(); i++) 
     {
         T& entite = entites[i];
         entite.update_age();
-        if (entite.get_age() >= max_age)
+        if (entite.get_age() >= max_life)
         {
             swap(entite, entites.back());
             entites.pop_back();
@@ -278,24 +278,92 @@ void Simulation::mort_naturelle(vector<T> &entites, unsigned int max_age)
     }
 }
 
+void Simulation::mort_corails()
+{
+    for (auto &corail : corails)
+    {
+        if (corail.get_age() >= max_life_cor)
+        {
+            corail.set_status(DEAD);
+        }
+    }
+}
+
+// Trouve l'algue la plus proche entre l'effecteur et l'angle.
+// On renvoie un pointer car le success n'est pas garanti.
+// En cas d'echec, retourne nullptr
+Algue* Simulation::closest_algue(Corail &corail, double &closest_angle)
+{
+    Algue* closest = nullptr;
+    Segment dernier = corail.get_segs().back();
+    for (auto &algue : algues)
+    {
+        // On ignore les algues trop lointaines
+        if (distance(dernier.get_base(), algue.get_pos()) > dernier.get_length())
+            continue;
+
+        double angle = dernier.angular_gap(algue.get_pos());
+        // On ignore les algues derrière l'effecteur 
+        if ((corail.get_sens_rot() == TRIGO and angle < 0)
+        or (corail.get_sens_rot() == INVTRIGO and angle > 0))
+            continue;
+        
+        // On garde le meilleur que l'on a trouvé
+        if (abs(angle) < abs(closest_angle))
+        {
+            closest = &algue;
+            closest_angle = angle;
+        }
+    }
+    return closest;
+}
+
+void Simulation::update_corails()
+{
+    for (auto &corail : corails)
+    {
+        double angle;
+        if (corail.get_sens_rot() == TRIGO)
+            angle = delta_rot;
+        else
+            angle = -delta_rot;
+
+        Algue* closest_ptr = closest_algue(corail, angle);
+        attempt_turn_corail(corail, angle); // TODO: Que faire en cas d'échec?
+        if (closest_ptr != nullptr)
+        {
+            attempt_eat_algue(corail, *closest_ptr);
+        }
+    }
+}
+
+void Simulation::attempt_turn_corail(Corail &corail, double delta)
+{
+    Segment &dernier = corail.get_segs().back();
+    dernier.turn(delta);
+}
+
+void Simulation::attempt_eat_algue(Corail &corail, Algue &algue)
+{
+    cout << "Miam!" << endl;
+}
+
 void Simulation::step()
 {
     nb_sim += 1;
 
-    mort_naturelle(algues, max_life_alg);
+    disparition(algues, max_life_alg);
+    spawn_algue();
 
-    if (naissance_algue)
-    {
-        spawn_algue();
-    }
-
-    mort_naturelle(corails, max_life_cor);
-
-    mort_naturelle(scavengers, max_life_sca);
+    mort_corails();
+    update_corails();
+    
+    disparition(scavengers, max_life_sca);
 }
 
 void Simulation::spawn_algue()
 {
+    if (!naissance_algue) return;
     double p(alg_birth_rate);
     bernoulli_distribution b(p);
     if (b(random_engine))

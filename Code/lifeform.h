@@ -34,6 +34,7 @@ public:
     Algue(std::istringstream &data, bool &erreur);
     Algue(double pos_x, double pos_y)
      : Lifeform(1), cercle(pos_x, pos_y, r_alg){};
+    S2d get_pos() { return cercle.get_pos(); };
     void dessin() override;
     std::string ecriture();
 
@@ -55,12 +56,16 @@ public:
     std::string ecriture();
     int get_nb_seg() const { return nb_seg; };
     int get_id() const { return id; };
-    std::vector<Segment> get_segs() const { return segs; };
+    std::vector<Segment>& get_segs() { return segs; };
+    Status_cor get_status() const { return status; };
+    void set_status(Status_cor s) { status = s; };
+    Dir_rot_cor get_sens_rot() const { return sens_rot; };
+    void set_sens_rot(Dir_rot_cor s) { sens_rot = s; };
 
 private:
     Carre base;
     int id;
-    Status_cor statut;
+    Status_cor status;
     Dir_rot_cor sens_rot;
     Status_dev st_dev;
     int nb_seg;
