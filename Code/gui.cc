@@ -11,7 +11,8 @@
 
 using namespace std;
 
-constexpr unsigned int TIMEOUT = 250; // Time between updates in ms
+constexpr unsigned int TIMEOUT(250); // Time between updates in ms
+constexpr unsigned taille_dessin(500); 
 
 Window::Window(Simulation &s) : simulation(s),
                                 main_box(Gtk::Orientation::HORIZONTAL, 0),
@@ -260,11 +261,8 @@ void Window::reset()
 
 DrawingArea::DrawingArea(Simulation &s) : simulation(s)
 {
-    // On choisis arbitrairement que la taille initiale de la fenêtre de dessin
-    // soit le double de sa taille minimale
-    set_content_width(dmax*2);
-    set_content_height(dmax*2);
-    // On permet à la zone de dessin de prendre l'espace horizontal
+    set_content_width(taille_dessin);
+    set_content_height(taille_dessin);
     set_hexpand(true);
     set_draw_func(sigc::mem_fun(*this, &DrawingArea::on_draw));
 }

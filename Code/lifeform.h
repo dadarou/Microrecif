@@ -16,8 +16,7 @@ class Lifeform
 public:
     // Nécessaire pour initialiser un Corail vide
     Lifeform() = default;
-    Lifeform(unsigned int a)
-     : age(a){};
+    Lifeform(unsigned int a) : age(a){};
     void update_age();
     virtual void dessin() = 0;
     unsigned int get_age() const { return age; };
@@ -33,8 +32,6 @@ class Algue : public Lifeform
 {
 public:
     Algue(std::istringstream &data, bool &erreur);
-    // Comme l'age doit être strictemment positif dans le fichier, les nouvelles
-    // algue ont 1 an.
     Algue(double pos_x, double pos_y)
      : Lifeform(1), cercle(pos_x, pos_y, r_alg){};
     void dessin() override;
