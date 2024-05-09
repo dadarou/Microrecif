@@ -18,6 +18,7 @@ public:
     void sauvegarde(std::string nom_fichier);
     void dessin();
     void step();
+    void sca_who_eat(int id); //en private ou pas 
     void spawn_algue();
     void reset();
     void set_birth(bool b) { naissance_algue = b; };
@@ -38,6 +39,7 @@ private:
     template <typename T>
     void disparition(std::vector<T> &entites, unsigned int max_age);
     void mort_corails();
+    void mort_scavengers();
     void update_corails();
     Algue* closest_algue(Corail &corail, double &closest_angle);
     bool attempt_turn_corail(Corail &corail, double delta);

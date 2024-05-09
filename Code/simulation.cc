@@ -290,6 +290,19 @@ void Simulation::mort_corails()
         if (corail.get_age() >= max_life_cor)
         {
             corail.set_status(DEAD);
+            sca_who_eat(corail.get_id());
+        }
+    }
+}
+
+void Simulation::mort_scavengers()
+{
+    for (auto &scavenger : scavengers)
+    {
+        scavenger.update_age();
+        if (scavenger.get_age() >= max_life_sca)
+        {
+            scavenger.set_status(DEAD);
         }
     }
 }
@@ -410,6 +423,7 @@ void Simulation::step()
     spawn_algue();
 
     mort_corails();
+    mort_scavengers();    
     update_corails();
     
     disparition(scavengers, max_life_sca);
@@ -428,6 +442,12 @@ void Simulation::spawn_algue()
         Algue nouvelle_algue(x, y);
         ajouter_algue(nouvelle_algue);
     }
+}
+
+void Simulation::sca_who_eat(int id)
+{
+    for (auto &scavenger : scavengers)
+    
 }
 
 void Simulation::reset()
