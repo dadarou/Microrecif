@@ -13,7 +13,7 @@
 #include "message.h"
 using namespace std;
 
-void Lifeform::update_age()
+void Lifeform:: update_age()
 {
     age += 1;
 }
@@ -89,7 +89,7 @@ Corail::Corail(istringstream &data, bool &erreur)
     base = Carre(pos_x, pos_y, d_cor);
 }
 
-void Corail::add_seg(istringstream &data, int id, bool &erreur)
+void Corail::add_seg(istringstream &data, bool &erreur)
 {
     double angle;
     int length;
@@ -99,8 +99,8 @@ void Corail::add_seg(istringstream &data, int id, bool &erreur)
         return;
     }
 
-    test_longueur_segment(id, length, erreur);
-    test_angle(id, angle, erreur);
+    test_longueur_segment(length, erreur);
+    test_angle(angle, erreur);
 
     S2d base_pos;
     int size = segs.size();
@@ -109,20 +109,21 @@ void Corail::add_seg(istringstream &data, int id, bool &erreur)
     else
         base_pos = segs[size - 1].get_extremity();
 
-    inclusion_segment(id, base_pos, erreur);
     Segment new_seg = Segment(base_pos, angle, length);
-    S2d extremite(new_seg.get_extremity());
-    inclusion_segment(id, extremite, erreur);
-
-    if (size != 0 && new_seg.superposition(segs[size - 1], true))
+    segs.push_back(new_seg);
+    if (!inclusion_dernier_segment(true))
+    {
+        erreur = true;
+        return;
+    }
+    if (size != 0 && new_seg.superposition_lecture(segs[size - 1]))
     {
         cout << message::segment_superposition(id, size - 1, size);
         erreur = true;
     }
-    segs.push_back(new_seg);
 }
 
-void Corail::test_longueur_segment(int id, unsigned int l_seg, bool &erreur)
+void Corail::test_longueur_segment(unsigned int l_seg, bool &erreur)
 {
     double l0(l_repro - l_seg_interne);
     if ((l_seg < l0) or (l_seg >= l_repro))
@@ -132,7 +133,7 @@ void Corail::test_longueur_segment(int id, unsigned int l_seg, bool &erreur)
     }
 }
 
-void Corail::test_angle(int id, double angle, bool &erreur)
+void Corail::test_angle(double angle, bool &erreur)
 {
     if ((angle < -M_PI) or (angle > M_PI))
     {
@@ -142,22 +143,35 @@ void Corail::test_angle(int id, double angle, bool &erreur)
 }
 
 // Vérifie que le segment est dans la simulation
-void Corail::inclusion_segment(int id, S2d pos, bool &erreur)
+bool Corail::inclusion_dernier_segment(bool lecture)
 {
-    if ((pos.x <= epsil_zero) or (pos.x >= (dmax - epsil_zero)) 
-    or  (pos.y <= epsil_zero) or (pos.y >= (dmax - epsil_zero)))
+    Segment dernier_segment = segs.back();
+    S2d pos = dernier_segment.get_extremity();
+    double tolerance = lecture ? 0 : epsil_zero;
+    if ((pos.x <= tolerance) or (pos.x >= (dmax - tolerance)) 
+    or  (pos.y <= tolerance) or (pos.y >= (dmax - tolerance)))
     {
-        cout << message::lifeform_computed_outside(id, pos.x, pos.y);
-        erreur = true;
+        if (lecture)
+        {
+            cout << message::lifeform_computed_outside(id, pos.x, pos.y);
+        }
+        return false;
     }
+    return true;
 }
 
 void Corail::dessin()
 {
-    base.dessin(BLEU);
+    Color couleur;
+    if (status == ALIVE)
+        couleur = BLEU;
+    else
+        couleur = NOIR;
+
+    base.dessin(couleur);
     for (auto& seg : segs)
     {
-        seg.dessin(BLEU);
+        seg.dessin(couleur);
     }
 }
 
@@ -166,6 +180,18 @@ string Corail::ecriture()
     return to_string(base.get_pos()) + " " + to_string(age) + " " + to_string(id)
          + " " + to_string(status) + " " + to_string(sens_rot) + " "
          + to_string(st_dev) + " " + to_string(segs.size());
+}
+
+void Corail::switch_rot()
+{
+    if (sens_rot == TRIGO)
+    {
+        sens_rot = INVTRIGO;
+    }
+    else
+    {
+        sens_rot = TRIGO;
+    }
 }
 
 

@@ -20,8 +20,13 @@ def run_test(prog_name, input_file, output_file):
         expected_output = f.read()
 
     # Run the program with input_file as input and capture the output
+    # result = subprocess.run(["./" + prog_name, input_file], text=True, 
+    #                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout  
+
+    # Ignore warning  
     result = subprocess.run(["./" + prog_name, input_file], text=True, 
-                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout    
+                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL).stdout    
+
 
     # Compare the result and the expected output
     if result == expected_output:

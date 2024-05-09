@@ -99,7 +99,7 @@ void Simulation::decodage(string ligne)
     case Seg:
     {
         ++compteur_segments;
-        corail_actuel.add_seg(data, corail_actuel.get_id(), lecture_error);
+        corail_actuel.add_seg(data, lecture_error);
         if (compteur_segments == total_segments) 
         {
             ajouter_corail(corail_actuel);
@@ -145,13 +145,13 @@ void Simulation::ajouter_corail(Corail corail)
 
     corails.push_back(corail);
 
-    test_intersection_coraux(corail);
+    test_intersection_coraux(corail, true);
 }
 
 // Intersections intra ou inter corail
 // L'agorithme actuel est en O(n^3)
 // On pourrait l'optimiser mais ce n'est pas demandé pour l'instant ¯\_(ツ)_/¯
-void Simulation::test_intersection_coraux(Corail corail)
+bool Simulation::test_intersection_coraux(Corail corail, bool lecture)
 {
     auto segs = corail.get_segs();
     for (unsigned int i = 0; i < segs.size(); i++) 
@@ -168,15 +168,19 @@ void Simulation::test_intersection_coraux(Corail corail)
                 // On ne teste pas l'intersection entre le même segments ou des 
                 // segments consecutifs d'un même corail.
                 bool consec = (id1 == id2) && (i == j || i == j + 1 || i == j - 1);
-                if (!consec && seg.intersection(autre_seg, true))
+                if (!consec && seg.intersection(autre_seg, lecture))
                 {
-                    cout << message::segment_collision(id1, i, id2, j);
-                    lecture_error = true;
-                    return;
+                    if (lecture)
+                    {
+                        cout << message::segment_collision(id1, i, id2, j);
+                        lecture_error = true;
+                    }
+                    return true;
                 }
             }
         }
     }
+    return false;
 }
 
 bool Simulation::id_corail_existe(int id)
@@ -282,6 +286,7 @@ void Simulation::mort_corails()
 {
     for (auto &corail : corails)
     {
+        corail.update_age();
         if (corail.get_age() >= max_life_cor)
         {
             corail.set_status(DEAD);
@@ -322,6 +327,9 @@ void Simulation::update_corails()
 {
     for (auto &corail : corails)
     {
+        if (corail.get_status() == DEAD)
+            continue;
+
         double angle;
         if (corail.get_sens_rot() == TRIGO)
             angle = delta_rot;
@@ -329,18 +337,64 @@ void Simulation::update_corails()
             angle = -delta_rot;
 
         Algue* closest_ptr = closest_algue(corail, angle);
-        attempt_turn_corail(corail, angle); // TODO: Que faire en cas d'échec?
-        if (closest_ptr != nullptr)
+        if (!attempt_turn_corail(corail, angle))
         {
-            attempt_eat_algue(corail, *closest_ptr);
+            corail.switch_rot();
+            return;
         }
+        // Manger
     }
 }
 
-void Simulation::attempt_turn_corail(Corail &corail, double delta)
+bool Simulation::attempt_turn_corail(Corail &corail, double delta)
 {
-    Segment &dernier = corail.get_segs().back();
-    dernier.turn(delta);
+    vector<Segment>& segs = corail.get_segs();
+    int size = segs.size();
+    Segment &dernier = segs[size - 1];
+    if (size > 1)
+    {
+        // Test de superposition pendant la mise à jour de la simulation
+        Segment &avant_dernier = segs[size - 2];
+        double previous_angle = dernier.angular_gap(avant_dernier);
+        dernier.turn(delta);
+        double angle = dernier.angular_gap(avant_dernier);
+
+        if (angle <= delta_rot and angle >= -delta_rot and previous_angle*angle < 0)
+        {
+            // L'angle appartient à l'intervalle  [-delta_rot, delta_rot] et 
+            // change de signe
+            dernier.turn(-delta);
+            return false;
+        }
+    }
+    else
+    {
+        dernier.turn(delta);
+    }
+
+    if (collision(corail)) 
+    {
+        dernier.turn(-delta);
+        return false;
+    }
+    return true;
+}
+
+bool Simulation::collision(Corail corail)
+{
+    // TODO: Test 32, 33 cheloux, à vérifier
+    // 35 aussi?
+    if (test_intersection_coraux(corail, false))
+    {
+        // cout << 2 << endl;
+        return true;
+    }
+    if (!corail.inclusion_dernier_segment(false))
+    {
+        // cout << 3 << endl;
+        return true;
+    }
+    return false;
 }
 
 void Simulation::attempt_eat_algue(Corail &corail, Algue &algue)

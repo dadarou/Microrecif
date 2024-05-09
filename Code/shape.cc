@@ -72,13 +72,12 @@ double Segment::normalize_angle(double angle_)
 }
 
 // Le booléen de superposition de 2 segments ayant la meme base (section 2.1).
-// Si lecture_fichier est vrai, epsil_zero est mis a zéro
+// En lecture de fichier la tolérance est nulle.
 // Renvoie vrai si l'angle entre les deux segments est proche de zéro.
-bool Segment::superposition(Segment other, bool lecture_fichier)
+bool Segment::superposition_lecture(Segment other)
 {
     double gap = angular_gap(other);
-    double tolerance = lecture_fichier ? 0 : epsil_zero;
-    return gap <= tolerance && gap >= -tolerance;
+    return gap == 0;
 }
 
 // Source: https://www.geeksforgeeks.org/orientation-3-ordered-points/

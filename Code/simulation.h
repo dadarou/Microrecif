@@ -31,7 +31,7 @@ private:
     void decodage(std::string ligne);
     void ajouter_algue(Algue algue);
     void ajouter_corail(Corail corail);
-    void test_intersection_coraux(Corail corail);
+    bool test_intersection_coraux(Corail corail, bool lecture);
     bool id_corail_existe(int id);
     void ajouter_scavenger(Scavenger scavenger);
     int read_nb(std::istringstream &data, std::string section);
@@ -40,8 +40,9 @@ private:
     void mort_corails();
     void update_corails();
     Algue* closest_algue(Corail &corail, double &closest_angle);
-    void attempt_turn_corail(Corail &corail, double delta);
+    bool attempt_turn_corail(Corail &corail, double delta);
     void attempt_eat_algue(Corail &corail, Algue &algue);
+    bool collision(Corail corail);
 
     bool lecture_finie;
     bool lecture_error;

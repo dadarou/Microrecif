@@ -48,10 +48,13 @@ public:
     // Nécessaire pour initialiser corail_actuel dans decodage_line de Lifeform
     Corail() = default;
     Corail(std::istringstream &data, bool &erreur);
-    void add_seg(std::istringstream &data, int id, bool &erreur);
-    void test_longueur_segment(int id, unsigned int l_seg, bool &erreur);
-    void test_angle(int id, double angle, bool &erreur);
-    void inclusion_segment(int id, S2d base, bool &erreur);
+    void add_seg(std::istringstream &data, bool &erreur);
+
+    // TODO: C'est vraiment public les tests?
+    void test_longueur_segment(unsigned int l_seg, bool &erreur);
+    void test_angle(double angle, bool &erreur);
+
+    bool inclusion_dernier_segment(bool lecture);
     void dessin() override;
     std::string ecriture();
     int get_nb_seg() const { return nb_seg; };
@@ -61,6 +64,7 @@ public:
     void set_status(Status_cor s) { status = s; };
     Dir_rot_cor get_sens_rot() const { return sens_rot; };
     void set_sens_rot(Dir_rot_cor s) { sens_rot = s; };
+    void switch_rot();
 
 private:
     Carre base;

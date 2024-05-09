@@ -70,7 +70,7 @@ public:
     S2d get_extremity();
     double angular_gap(S2d point);
     double angular_gap(Segment other);
-    bool superposition(Segment other, bool lecture_fichier = false);
+    bool superposition_lecture(Segment other);
     bool intersection(Segment other, bool lecture_fichier = false);
     void dessin(Color color);
     std::string ecriture();

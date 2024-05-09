@@ -26,7 +26,7 @@ void set_color(Color color)
 		break;
 	
 	case NOIR:
-		(*ptcr)->set_source_rgb(1., 1., 1.);
+		(*ptcr)->set_source_rgb(0., 0., 0.);
 		break;
 	
 	case ROUGE:
