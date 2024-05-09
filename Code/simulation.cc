@@ -290,9 +290,10 @@ void Simulation::mort_corails()
         if (corail.get_age() >= max_life_cor)
         {
             corail.set_status(DEAD);
-            sca_who_eat(corail.get_id(), corail.segs[segs.size()-1].get_extremity());
+            dead_corail.push_back(corail);
         }
     }
+    sca_who_eat();
 }
 
 void Simulation::mort_scavengers()
@@ -444,18 +445,47 @@ void Simulation::spawn_algue()
     }
 }
 
-void Simulation::sca_who_eat(int id, S2d extremity)
+void Simulation::sca_who_eat()
 {
-    double min_distance(256);
-    Scavenger sca_winner;
-    for (auto &sca : scavengers)
+    for (auto &dead_c : dead_corails)
     {
-        if (distance(sca.get_pos(), extremity) < min_distance)
-            min_distance = distance(sca.get_pos(), extremity)
-            sca_winner = sca
-    }
-    
+        double min_distance(256);
+        Scavenger sca_winner;
+        int id(dead_c.get_id());
+        S2d extremity(corail.segs[segs.size()-1].get_extremity());
+
+        for (auto &sca : scavengers)
+        {
+            if (distance(sca.get_pos(), extremity) <= min_distance)
+            {
+                min_distance = distance(sca.get_pos(), extremity);
+                sca_winner = sca;
+            }
+        }
+        if (corail_plus_proche(sca_winner, min_distance))
+            sca_winner.set_cible(id);
+        else
+            cout << "Je fais quoi ahhhhh";
+            
+    }    
 }
+
+bool Simulation::corail_plus_proche(Scavenger &sca, double min_distance)
+{
+    Corail corail_winner;
+    bool plus_proche(1);
+    for (auto &dead_c : dead_corails)
+    {
+        S2d extremity(corail.segs[segs.size()-1].get_extremity());
+        if (distance(sca.get_pos(), extremity) < min_distance)
+            min_distance = distance(sca.get_pos(), extremity);
+            corail_winner = dead_c;
+            plus_proche = 0;
+    }
+    sca.set_cible(corail_winner.get_id());
+    return plus_proche;
+}
+
 
 void Simulation::reset()
 {

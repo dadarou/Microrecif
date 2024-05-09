@@ -84,6 +84,7 @@ public:
     void dessin() override;
     std::string ecriture();
     Status_sca get_etat() const { return etat; };
+    void set_cible(int id) {id_cible = id};
     int get_cible() const { return id_cible; };
 
 private:

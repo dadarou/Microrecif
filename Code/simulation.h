@@ -18,7 +18,8 @@ public:
     void sauvegarde(std::string nom_fichier);
     void dessin();
     void step();
-    void sca_who_eat(int id, S2d extremity); //en private ou pas 
+    void sca_who_eat(); //en private ou pas
+    bool corail_plus_proche(Scavenger &sca, double min_distance); //private ?
     void spawn_algue();
     void reset();
     void set_birth(bool b) { naissance_algue = b; };
@@ -72,6 +73,7 @@ private:
     std::vector<Algue> algues;
     std::vector<Corail> corails;
     std::vector<Scavenger> scavengers;
+    std::vector<Corail> dead_corails;
 };
 
 #endif
