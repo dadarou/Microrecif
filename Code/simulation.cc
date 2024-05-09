@@ -290,7 +290,7 @@ void Simulation::mort_corails()
         if (corail.get_age() >= max_life_cor)
         {
             corail.set_status(DEAD);
-            sca_who_eat(corail.get_id());
+            sca_who_eat(corail.get_id(), corail.segs[segs.size()-1].get_extremity());
         }
     }
 }
@@ -444,9 +444,16 @@ void Simulation::spawn_algue()
     }
 }
 
-void Simulation::sca_who_eat(int id)
+void Simulation::sca_who_eat(int id, S2d extremity)
 {
-    for (auto &scavenger : scavengers)
+    double min_distance(256);
+    Scavenger sca_winner;
+    for (auto &sca : scavengers)
+    {
+        if (distance(sca.get_pos(), extremity) < min_distance)
+            min_distance = distance(sca.get_pos(), extremity)
+            sca_winner = sca
+    }
     
 }
 

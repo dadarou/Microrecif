@@ -18,7 +18,7 @@ public:
     void sauvegarde(std::string nom_fichier);
     void dessin();
     void step();
-    void sca_who_eat(int id); //en private ou pas 
+    void sca_who_eat(int id, S2d extremity); //en private ou pas 
     void spawn_algue();
     void reset();
     void set_birth(bool b) { naissance_algue = b; };
