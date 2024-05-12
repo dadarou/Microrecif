@@ -63,8 +63,11 @@ public:
     Status_cor get_status() const { return status; };
     void set_status(Status_cor s) { status = s; };
     Dir_rot_cor get_sens_rot() const { return sens_rot; };
+    Status_dev get_status_dev() const { return st_dev; };
     void set_sens_rot(Dir_rot_cor s) { sens_rot = s; };
     void switch_rot();
+    void extend();
+    void switch_st_dev();
 
 private:
     Carre base;

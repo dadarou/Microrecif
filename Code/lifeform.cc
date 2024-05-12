@@ -194,6 +194,24 @@ void Corail::switch_rot()
     }
 }
 
+void Corail::extend()
+{
+    Segment &dernier = segs.back();
+    dernier.set_length(l_seg_interne);
+    Segment nouveau_segment(dernier.get_extremity(), dernier.get_angle(), 
+                            l_repro - l_seg_interne);
+    segs.push_back(nouveau_segment);
+}
+
+void Corail::switch_st_dev()
+{
+    // TODO: Je crois y'a un bug par ici
+    if (st_dev == EXTEND)
+        st_dev = REPRO;
+    else
+        st_dev = EXTEND;
+}
+
 
 Scavenger::Scavenger(istringstream &data, bool &erreur)
 {

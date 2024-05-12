@@ -40,9 +40,12 @@ private:
     void mort_corails();
     void update_corails();
     Algue* closest_algue(Corail &corail, double &closest_angle);
-    bool attempt_turn_corail(Corail &corail, double delta);
-    void attempt_eat_algue(Corail &corail, Algue &algue);
+    bool turn_corail(Corail &corail, double delta);
+    bool eat_algue(Corail &corail, Algue *algue);
     bool collision(Corail corail);
+    void alimentation_corail(Corail &corail);
+    void reproduction_corail(Corail &corail);
+
 
     bool lecture_finie;
     bool lecture_error;
