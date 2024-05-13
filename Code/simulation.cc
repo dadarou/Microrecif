@@ -300,7 +300,7 @@ void Simulation::mort_corails()
 Algue* Simulation::closest_algue(Corail &corail, double &closest_angle)
 {
     Algue* closest = nullptr;
-    Segment dernier = corail.get_segs().back();
+    Segment& dernier = corail.get_segs().back();
     for (auto &algue : algues)
     {
         // On ignore les algues trop lointaines
@@ -325,15 +325,19 @@ Algue* Simulation::closest_algue(Corail &corail, double &closest_angle)
 
 void Simulation::update_corails()
 {
-    for (auto &corail : corails)
+    for (unsigned i = 0; i < corails.size(); i++)
     {
-        if (corail.get_status() == DEAD)
+        if (corails[i].get_status() == DEAD)
             continue;
-        
-        if (corail.get_segs().back().get_length() < l_repro)
-            alimentation_corail(corail);
+        if (corails[i].get_segs().back().get_length() < l_repro)
+        {
+            alimentation_corail(corails[i]);
+        }
         else
-            reproduction_corail(corail);
+        {
+            allongement_corail(corails[i]);
+            corails[i].switch_st_dev();
+        }
     }
 }
 
@@ -351,17 +355,39 @@ void Simulation::alimentation_corail(Corail &corail)
         corail.switch_rot();
 }
 
-void Simulation::reproduction_corail(Corail &corail)
+void Simulation::allongement_corail(Corail &corail)
 {
     if (corail.get_status_dev() == EXTEND)
     {
-        corail.extend();
+        corail.new_seg();
     }
     else
     {
-        // TODO
+        reproduction_corail(corail);
     }
-    corail.switch_st_dev();
+}
+
+void Simulation::reproduction_corail(Corail &corail)
+{
+    Segment& dernier = corail.get_segs().back();
+    int id = nouveau_id_corail();
+    Carre nouvelle_base(dernier.get_extremity(), d_cor);
+    Corail nouveau_corail(nouvelle_base, id,
+                          corail.get_status(), corail.get_sens_rot(), EXTEND);
+    Segment nouveau_segment(dernier.get_extremity(), dernier.get_angle(), l_nv_seg);
+    nouveau_corail.add_seg(nouveau_segment);
+    corails.push_back(nouveau_corail);
+    dernier.set_length(l_repro/2);
+}
+
+int Simulation::nouveau_id_corail()
+{
+    int id = 1;
+    while (id_corail_existe(id))
+    {
+        id += 1;
+    }
+    return id;
 }
 
 // Essaye de tourner le corail. Renvoie false en cas de collision

@@ -44,8 +44,9 @@ private:
     bool eat_algue(Corail &corail, Algue *algue);
     bool collision(Corail corail);
     void alimentation_corail(Corail &corail);
+    void allongement_corail(Corail &corail);
     void reproduction_corail(Corail &corail);
-
+    int nouveau_id_corail();
 
     bool lecture_finie;
     bool lecture_error;

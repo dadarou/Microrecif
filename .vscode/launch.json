@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/Code/projet",
             "args": [
-                "${workspaceFolder}/Tests/public3/t27.txt"
+                "${workspaceFolder}/Tests/public3/t41.txt"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
