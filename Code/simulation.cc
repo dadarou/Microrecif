@@ -370,6 +370,7 @@ void Simulation::allongement_corail(Corail &corail)
 void Simulation::reproduction_corail(Corail &corail)
 {
     Segment& dernier = corail.get_segs().back();
+    dernier.set_length(l_seg_interne);
     int id = nouveau_id_corail();
     Carre nouvelle_base(dernier.get_extremity(), d_cor);
     Corail nouveau_corail(nouvelle_base, id,
