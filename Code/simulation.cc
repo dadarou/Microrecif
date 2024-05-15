@@ -490,8 +490,8 @@ void Simulation::sca_who_eat(Corail c_who_eaten)
 
 void Simulation::mouvement_sca(Scavenger sca, Corail c_who_eaten)
 {
-    double dist_x = abs(sca.get_pos().x - c_who_eaten.get_pos().x);
-    double dist_y = abs(sca.get_pos().y - c_who_eaten.get_pos().y);
+    double dist_x = abs(sca.get_pos().x - c_who_eaten.get_extremity().x);
+    double dist_y = abs(sca.get_pos().y - c_who_eaten.get_extremity().y);
     double teta = atan2(dist_x, dist_y);
     double x = sca.get_pos().x + delta_l*cos(teta);
     double y = sca.get_pos().y + delta_l*sin(teta);
