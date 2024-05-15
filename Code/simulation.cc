@@ -296,17 +296,6 @@ void Simulation::mort_corails()
     sca_who_eat();
 }
 
-void Simulation::mort_scavengers()
-{
-    for (auto &scavenger : scavengers)
-    {
-        scavenger.update_age();
-        if (scavenger.get_age() >= max_life_sca)
-        {
-            scavenger.set_status(DEAD);
-        }
-    }
-}
 
 // Trouve l'algue la plus proche entre l'effecteur et l'angle.
 // On renvoie un pointer car le success n'est pas garanti.
@@ -423,8 +412,7 @@ void Simulation::step()
     disparition(algues, max_life_alg);
     spawn_algue();
 
-    mort_corails();
-    mort_scavengers();    
+    mort_corails();   
     update_corails();
     
     disparition(scavengers, max_life_sca);
@@ -443,47 +431,6 @@ void Simulation::spawn_algue()
         Algue nouvelle_algue(x, y);
         ajouter_algue(nouvelle_algue);
     }
-}
-
-void Simulation::sca_who_eat()
-{
-    for (auto &dead_c : dead_corails)
-    {
-        double min_distance(256);
-        Scavenger sca_winner;
-        int id(dead_c.get_id());
-        S2d extremity(corail.segs[segs.size()-1].get_extremity());
-
-        for (auto &sca : scavengers)
-        {
-            if (distance(sca.get_pos(), extremity) <= min_distance)
-            {
-                min_distance = distance(sca.get_pos(), extremity);
-                sca_winner = sca;
-            }
-        }
-        if (corail_plus_proche(sca_winner, min_distance))
-            sca_winner.set_cible(id);
-        else
-            cout << "Je fais quoi ahhhhh";
-            
-    }    
-}
-
-bool Simulation::corail_plus_proche(Scavenger &sca, double min_distance)
-{
-    Corail corail_winner;
-    bool plus_proche(1);
-    for (auto &dead_c : dead_corails)
-    {
-        S2d extremity(corail.segs[segs.size()-1].get_extremity());
-        if (distance(sca.get_pos(), extremity) < min_distance)
-            min_distance = distance(sca.get_pos(), extremity);
-            corail_winner = dead_c;
-            plus_proche = 0;
-    }
-    sca.set_cible(corail_winner.get_id());
-    return plus_proche;
 }
 
 

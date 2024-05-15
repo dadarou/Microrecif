@@ -51,7 +51,8 @@ public:
         : pos(pos), rayon(rayon){};
     Cercle(double pos_x, double pos_y, int rayon)
         : pos({pos_x, pos_y}), rayon(rayon){};
-    S2d get_pos() const { return pos; }
+    S2d get_pos() const { return pos; };
+    void set_pos(S2d new_pos) { pos = new_pos }
     int get_rayon() const { return rayon; }
     void dessin(Color color);
 
