@@ -290,10 +290,21 @@ void Simulation::mort_corails()
         if (corail.get_age() >= max_life_cor)
         {
             corail.set_status(DEAD);
-            dead_corail.push_back(corail);
+            dead_corails.push_back(corail);
         }
     }
-    sca_who_eat();
+}
+
+void Simulation::mort_scavengers()
+{
+    for (auto &scavenger : scavengers)
+    {
+        scavenger.update_age();
+        if (scavenger.get_age() >= max_life_sca)
+        {
+            scavenger.set_status(DEAD);
+        }
+    }
 }
 
 
@@ -455,6 +466,38 @@ bool Simulation::eat_algue(Corail &corail, Algue *algue_ptr)
     algues.pop_back();
     return true;
 }
+void Simulation::verif_corail_eaten(Corail c_who_dead)
+{
+    for (auto &sca : scavengers)
+    {
+        if ((sca.get_id() == c_who_dead.get_id()) and sca.get_etat())
+            dead_corails.erase(0)
+    }
+    sca_who_eat(dead_corails[0]);
+}
+
+void Simulation::sca_who_eat(Corail c_who_eaten)
+{
+    for (auto &sca : scavengers)
+    {
+        if (!sca.get_id())
+        {
+            sca.set_cible(id);
+            mouvement_sca(sca, c_who_eaten);
+        }
+    }
+}
+
+void Simulation::mouvement_sca(Scavenger sca, Corail c_who_eaten)
+{
+    double dist_x = abs(sca.get_pos().x - c_who_eaten.get_pos().x);
+    double dist_y = abs(sca.get_pos().y - c_who_eaten.get_pos().y);
+    double teta = atan2(dist_x, dist_y);
+    double x = sca.get_pos().x + delta_l*cos(teta);
+    double y = sca.get_pos().y + delta_l*sin(teta);
+    sca.set_pos({x, y});
+
+}
 
 void Simulation::step()
 {
@@ -463,9 +506,10 @@ void Simulation::step()
     disparition(algues, max_life_alg);
     spawn_algue();
 
-    mort_corails();   
+    mort_corails();
+    mort_scavengers();    
     update_corails();
-    
+    verif_corail_eaten(dead_corails[0]);
     disparition(scavengers, max_life_sca);
 }
 
