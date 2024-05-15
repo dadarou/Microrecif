@@ -11,6 +11,8 @@
 #include "shape.h"
 #include "constantes.h"
 
+constexpr unsigned l_nv_seg(l_repro - l_seg_interne);
+
 class Lifeform
 {
 public:
@@ -45,10 +47,14 @@ private:
 class Corail : public Lifeform
 {
 public:
-    // Nécessaire pour initialiser corail_actuel dans decodage_line de Lifeform
     Corail() = default;
     Corail(std::istringstream &data, bool &erreur);
+    Corail(Carre base, int id, Status_cor status, Dir_rot_cor rot,
+           Status_dev st_dev) :  Lifeform(1), base(base), id(id), status(status), sens_rot(rot),
+           st_dev(st_dev), nb_seg(0) {};
+    
     void add_seg(std::istringstream &data, bool &erreur);
+    void add_seg(Segment &seg);
 
     // TODO: C'est vraiment public les tests?
     void test_longueur_segment(unsigned int l_seg, bool &erreur);
@@ -63,8 +69,11 @@ public:
     Status_cor get_status() const { return status; };
     void set_status(Status_cor s) { status = s; };
     Dir_rot_cor get_sens_rot() const { return sens_rot; };
+    Status_dev get_status_dev() const { return st_dev; };
     void set_sens_rot(Dir_rot_cor s) { sens_rot = s; };
     void switch_rot();
+    void new_seg();
+    void switch_st_dev();
 
 private:
     Carre base;

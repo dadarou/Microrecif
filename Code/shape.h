@@ -6,13 +6,6 @@
 #define SHAPE_H
 
 #include "graphic.h"
-
-
-
-#include <iostream>
-using namespace std;
-
-
 #include <string>
 
 constexpr double epsil_zero(0.5);
@@ -66,8 +59,10 @@ class Segment
 public:
     Segment(S2d base, double angle, int length)
     : base(base), angle(angle), length(length){};
-    int get_length() { return length; };
+    unsigned get_length() { return length; };
+    void set_length(int l) { length = l; };
     S2d get_base() { return base; };
+    double get_angle() { return angle; };
     S2d get_extremity();
     double angular_gap(S2d point);
     double angular_gap(Segment other);
@@ -76,13 +71,15 @@ public:
     void dessin(Color color);
     std::string ecriture();
     void turn(double angle);
+    void grow(int amount);
 
 private:
     S2d base;
     double angle;
     int length;
+    double norme(S2d p1, S2d p2);
     double normalize_angle(double angle);
-    int orientation(S2d p, S2d q, S2d r, int length, double tolerance);
+    int orientation(S2d p, S2d q, S2d r, double tolerance);
     bool on_segment(S2d p, S2d q, S2d r, double tolerance);
 };
 

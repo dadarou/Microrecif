@@ -60,11 +60,11 @@ double Segment::angular_gap(Segment other)
 // Normalize l'angle dans l’intervalle [-π, π]
 double Segment::normalize_angle(double angle_)
 {
-    if (angle_ > M_PI)
+    while (angle_ > M_PI)
     {
         angle_ -= 2 * M_PI;
     }
-    else if (angle_ < -M_PI)
+    while (angle_ < -M_PI)
     {
         angle_ += 2 * M_PI;
     }
@@ -80,26 +80,20 @@ bool Segment::superposition_lecture(Segment other)
     return gap == 0;
 }
 
+// Renvoie la norme du vecteur p1->p2
+double Segment::norme(S2d p1, S2d p2)
+{
+    return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+}
+
 // Source: https://www.geeksforgeeks.org/orientation-3-ordered-points/
 // Length est la longueur de pq, c'est la longeur du segment.
-int Segment::orientation(S2d p, S2d q, S2d r, int length, double tolerance)
+int Segment::orientation(S2d p, S2d q, S2d r, double tolerance)
 {
-    // Surface rectangulaire signée donnée par le produit de la longueur
-    // du segment pq par la distance séparant le point r de la droite passant
-    // par le segment pq.
-    double val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-
-    // Distance signée de r à la droite passant par pq.
-    // On ne recalcule pas la longueur de pq car c'est la longueur du segment.
-    double d = val / length;
-
-    if (d < epsil_zero && d > -epsil_zero)
-    {
-        // Le point est dans l'alignement du segment.
+    double val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y); 
+    double d = val/norme(p, q);
+    if (abs(d) <= tolerance)
         return 0;
-    }
-
-    // Sens horaire ou anti-horaire.
     return (val > 0) ? 1 : 2;
 }
 
@@ -124,7 +118,7 @@ bool Segment::on_segment(S2d p, S2d q, S2d r, double tolerance)
     // Norme de la projection de pq sur pr
     double x = s / norme_pr;
 
-    return -epsil_zero <= x && x <= norme_pr + epsil_zero;
+    return -tolerance <= x && x <= norme_pr + tolerance;
 }
 
 // Renvoie le booléen d’intersection ou de superposition de 2 segments indépendants
@@ -133,20 +127,20 @@ bool Segment::on_segment(S2d p, S2d q, S2d r, double tolerance)
 bool Segment::intersection(Segment other, bool lecture_fichier)
 {
     double tolerance = lecture_fichier ? 0 : epsil_zero;
-
     S2d p1 = base;
     S2d q1 = get_extremity();
-    S2d p2 = other.base;
+    S2d p2 = other.get_base();
     S2d q2 = other.get_extremity();
 
     // Find the four orientations needed for general and special cases
-    int o1 = orientation(p1, q1, p2, length, tolerance);
-    int o2 = orientation(p1, q1, q2, length, tolerance);
-    int o3 = orientation(p2, q2, p1, other.length, tolerance);
-    int o4 = orientation(p2, q2, q1, other.length, tolerance);
+    int o1 = orientation(p1, q1, p2, tolerance);
+    int o2 = orientation(p1, q1, q2, tolerance);
+    int o3 = orientation(p2, q2, p1, tolerance);
+    int o4 = orientation(p2, q2, q1, tolerance);
 
     // General case
-    if (o1 != o2 && o3 != o4)
+    // Condition adapté, voir https://edstem.org/eu/courses/1163/discussion/109642
+    if (o1 && o2 && o3 && o4 && o1 != o2 && o3 != o4)
         return true;
 
     // Special Cases
@@ -178,11 +172,16 @@ void Segment::dessin(Color color)
 
 std::string Segment::ecriture()
 {
-    //TODO: Normalize angle between [0, 2PI]
-    return to_string(angle) + " " + to_string(length);
+    // On renvoie l'angle dans [0, 2PI]
+    return to_string(fmod(angle, 2*M_PI)) + " " + to_string(length);
 }
 
 void Segment::turn(double delta)
 {
     angle = angle + delta;
+}
+
+void Segment::grow(int amount)
+{
+    length += amount;
 }

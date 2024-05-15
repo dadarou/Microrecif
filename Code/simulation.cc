@@ -303,7 +303,7 @@ void Simulation::mort_corails()
 Algue* Simulation::closest_algue(Corail &corail, double &closest_angle)
 {
     Algue* closest = nullptr;
-    Segment dernier = corail.get_segs().back();
+    Segment& dernier = corail.get_segs().back();
     for (auto &algue : algues)
     {
         // On ignore les algues trop lointaines
@@ -311,9 +311,9 @@ Algue* Simulation::closest_algue(Corail &corail, double &closest_angle)
             continue;
 
         double angle = dernier.angular_gap(algue.get_pos());
-        // On ignore les algues derrière l'effecteur 
-        if ((corail.get_sens_rot() == TRIGO and angle < 0)
-        or (corail.get_sens_rot() == INVTRIGO and angle > 0))
+        // On ignore les algues derrière et sur l'effecteur
+        if ((corail.get_sens_rot() == TRIGO and angle <= 0)
+        or (corail.get_sens_rot() == INVTRIGO and angle >= 0))
             continue;
         
         // On garde le meilleur que l'on a trouvé
@@ -328,28 +328,74 @@ Algue* Simulation::closest_algue(Corail &corail, double &closest_angle)
 
 void Simulation::update_corails()
 {
-    for (auto &corail : corails)
+    for (unsigned i = 0; i < corails.size(); i++)
     {
-        if (corail.get_status() == DEAD)
+        if (corails[i].get_status() == DEAD)
             continue;
-
-        double angle;
-        if (corail.get_sens_rot() == TRIGO)
-            angle = delta_rot;
-        else
-            angle = -delta_rot;
-
-        Algue* closest_ptr = closest_algue(corail, angle);
-        if (!attempt_turn_corail(corail, angle))
+        if (corails[i].get_segs().back().get_length() < l_repro)
         {
-            corail.switch_rot();
-            return;
+            alimentation_corail(corails[i]);
         }
-        // Manger
+        else
+        {
+            allongement_corail(corails[i]);
+            corails[i].switch_st_dev();
+        }
     }
 }
 
-bool Simulation::attempt_turn_corail(Corail &corail, double delta)
+void Simulation::alimentation_corail(Corail &corail)
+{
+    double angle;
+    if (corail.get_sens_rot() == TRIGO)
+        angle = delta_rot;
+    else
+        angle = -delta_rot;
+    Algue* algue_ptr = closest_algue(corail, angle);
+    if (!turn_corail(corail, angle) or !eat_algue(corail, algue_ptr))
+        // Si on arrive pas à tourner ou à manger 
+        // on change la direction de rotation
+        corail.switch_rot();
+}
+
+void Simulation::allongement_corail(Corail &corail)
+{
+    if (corail.get_status_dev() == EXTEND)
+    {
+        corail.new_seg();
+    }
+    else
+    {
+        reproduction_corail(corail);
+    }
+}
+
+void Simulation::reproduction_corail(Corail &corail)
+{
+    Segment& dernier = corail.get_segs().back();
+    dernier.set_length(l_seg_interne);
+    int id = nouveau_id_corail();
+    Carre nouvelle_base(dernier.get_extremity(), d_cor);
+    Corail nouveau_corail(nouvelle_base, id,
+                          corail.get_status(), corail.get_sens_rot(), EXTEND);
+    Segment nouveau_segment(dernier.get_extremity(), dernier.get_angle(), l_nv_seg);
+    nouveau_corail.add_seg(nouveau_segment);
+    corails.push_back(nouveau_corail);
+    dernier.set_length(l_repro/2);
+}
+
+int Simulation::nouveau_id_corail()
+{
+    int id = 1;
+    while (id_corail_existe(id))
+    {
+        id += 1;
+    }
+    return id;
+}
+
+// Essaye de tourner le corail. Renvoie false en cas de collision
+bool Simulation::turn_corail(Corail &corail, double delta)
 {
     vector<Segment>& segs = corail.get_segs();
     int size = segs.size();
@@ -385,24 +431,29 @@ bool Simulation::attempt_turn_corail(Corail &corail, double delta)
 
 bool Simulation::collision(Corail corail)
 {
-    // TODO: Test 32, 33 cheloux, à vérifier
-    // 35 aussi?
-    if (test_intersection_coraux(corail, false))
-    {
-        // cout << 2 << endl;
-        return true;
-    }
-    if (!corail.inclusion_dernier_segment(false))
-    {
-        // cout << 3 << endl;
-        return true;
-    }
-    return false;
+    return test_intersection_coraux(corail, false)
+    or    !corail.inclusion_dernier_segment(false);
 }
 
-void Simulation::attempt_eat_algue(Corail &corail, Algue &algue)
+// Essaie de manger l'algue. Renvoie false en cas de collision
+bool Simulation::eat_algue(Corail &corail, Algue *algue_ptr)
 {
-    cout << "Miam!" << endl;
+    if (algue_ptr == nullptr)
+        return true;
+
+    Segment &dernier = corail.get_segs().back();
+    dernier.grow(delta_l);
+
+    if (collision(corail))
+    {
+        dernier.grow(-delta_l);
+        return false;
+    }
+
+    // On supprime l'algue mangé
+    swap(*algue_ptr, algues.back());
+    algues.pop_back();
+    return true;
 }
 
 void Simulation::step()

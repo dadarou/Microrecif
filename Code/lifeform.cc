@@ -123,10 +123,15 @@ void Corail::add_seg(istringstream &data, bool &erreur)
     }
 }
 
+void Corail::add_seg(Segment &seg)
+{
+    segs.push_back(seg);
+    nb_seg += 1;
+}
+
 void Corail::test_longueur_segment(unsigned int l_seg, bool &erreur)
 {
-    double l0(l_repro - l_seg_interne);
-    if ((l_seg < l0) or (l_seg >= l_repro))
+    if ((l_seg < l_nv_seg) or (l_seg >= l_repro))
     {
         cout << message::segment_length_outside(id, l_seg);
         erreur = true;
@@ -185,13 +190,25 @@ string Corail::ecriture()
 void Corail::switch_rot()
 {
     if (sens_rot == TRIGO)
-    {
         sens_rot = INVTRIGO;
-    }
     else
-    {
         sens_rot = TRIGO;
-    }
+}
+
+void Corail::new_seg()
+{
+    Segment &dernier = segs.back();
+    dernier.set_length(l_seg_interne);
+    Segment nouveau_segment(dernier.get_extremity(), dernier.get_angle(), l_nv_seg);
+    add_seg(nouveau_segment);
+}
+
+void Corail::switch_st_dev()
+{
+    if (st_dev == EXTEND)
+        st_dev = REPRO;
+    else
+        st_dev = EXTEND;
 }
 
 
