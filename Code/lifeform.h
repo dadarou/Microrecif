@@ -93,8 +93,10 @@ public:
     void dessin() override;
     std::string ecriture();
     Status_sca get_etat() const { return etat; };
-    void set_cible(int id) {id_cible = id};
+    void set_cible(int id) {id_cible = id;};
     int get_cible() const { return id_cible; };
+    S2d get_pos() { return cercle.get_pos(); };
+    void set_pos(S2d new_pos) { cercle.set_position(new_pos); };
 
 private:
     Cercle cercle;
