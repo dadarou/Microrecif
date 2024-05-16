@@ -287,10 +287,12 @@ void Simulation::mort_corails()
     for (auto &corail : corails)
     {
         corail.update_age();
-        if (corail.get_age() >= max_life_cor)
+        if (corail.get_age() >= max_life_cor and corail.get_status() == ALIVE)
         {
             corail.set_status(DEAD);
             dead_corails.push_back(corail);
+            /*swap(corail, corails.back());// est ce que ok ?
+            corails.pop_back();*/
         }
     }
 }
@@ -471,14 +473,21 @@ void Simulation::sca_who_eat(Corail &c_who_eaten)
 {
     for (auto &sca : scavengers)
     {   
-        if (sca.get_etat() == FREE)
+        //cout << "corail qui est ciblé" << c_who_eaten.get_id();
+        if (dead_corails.size()!= 0) // ce if est a enleve
         {
-            if (sca.get_cible() == 0)
-            {
-                sca.set_cible(c_who_eaten.get_id());    
-            }
-            mouvement_sca(sca, c_who_eaten);
+            if (sca.get_etat() == FREE)
+            {   
+                if (sca.get_cible() == 0)
+                {
+                    sca.set_cible(c_who_eaten.get_id());    
+                }
+                mouvement_sca(sca, c_who_eaten);
+            }    
         }
+        else
+            break;
+        
     }
 }
 
@@ -489,10 +498,23 @@ void Simulation::mouvement_sca(Scavenger &sca, Corail &c_who_eaten)
     double dist_x = sca.get_pos().x - pos.x;
     double dist_y = sca.get_pos().y - pos.y;
     double teta = atan2(dist_y, dist_x);
-    double x = sca.get_pos().x - delta_l*cos(teta);
-    double y = sca.get_pos().y - delta_l*sin(teta);
-    sca.set_pos({x, y});
-
+    if (distance(sca.get_pos(), pos) > delta_l)
+    {
+        double x = sca.get_pos().x - delta_l*cos(teta);
+        double y = sca.get_pos().y - delta_l*sin(teta);
+        sca.set_pos({x, y});    
+    }
+    else
+    {
+        double x = sca.get_pos().x - distance(sca.get_pos(), pos)*cos(teta);
+        double y = sca.get_pos().y - distance(sca.get_pos(), pos)*sin(teta);
+        sca.set_pos({x, y});
+        sca.set_etat(EATING);
+        /*swap(c_who_eaten, dead_corails.back());
+        dead_corails.pop_back();
+        if (dead_corails.size()!= 0)
+            c_who_eaten = dead_corails[0];*/
+    } 
 }
 
 void Simulation::step()
