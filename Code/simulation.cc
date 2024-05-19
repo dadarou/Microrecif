@@ -290,7 +290,7 @@ void Simulation::mort_corails()
         if (corail.get_age() >= max_life_cor and corail.get_status() == ALIVE)
         {
             corail.set_status(DEAD);
-            dead_corails.push_back(&&corail);
+            dead_corails.push_back(&corail);
         }
     }
 }
