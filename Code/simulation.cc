@@ -290,7 +290,7 @@ void Simulation::mort_corails()
         if (corail.get_age() >= max_life_cor and corail.get_status() == ALIVE)
         {
             corail.set_status(DEAD);
-            dead_corails.push_back(&corail);
+            dead_corails.push_back(&&corail);
         }
     }
 }
@@ -507,42 +507,32 @@ void Simulation::manger_corail()
     }
 }
 
-void Simulation::manger_segment(Corail* &c_attaque, Scavenger* &sca_eat)
+void Simulation::manger_segment(Corail* c_attaque, Scavenger* sca_eat)
 {
-    int size = (*c_attaque).get_segs().size();
-    if (size >= 1 )
+    int size = c_attaque->get_segs().size();
+    if (size != 0 )
     {
-        if((size -1) > 0)
-        {
-            cout << "Je prend l'extremité" << endl;
-            Segment& dernier_seg = (*c_attaque).get_segs()[size - 2];
-            S2d pos = dernier_seg.get_extremity();
-            (*sca_eat).deplacement(pos);
-            (*c_attaque).raccourcissement(pos, (*sca_eat).get_pos());
-            bebe_sca((*sca_eat));
-        }
-        else
-        {
-            S2d pos = (*c_attaque).get_base().get_pos();
-            cout << "Je prend la base" << pos.x << "," << pos.y << endl;
-            (*sca_eat).deplacement(pos);
-            (*c_attaque).raccourcissement(pos, (*sca_eat).get_pos());
-            bebe_sca((*sca_eat));
-        }
+        // Racourcissement
+        Segment &dernier_seg = c_attaque->get_segs().back();
+        S2d pos = dernier_seg.get_base();
+        sca_eat->deplacement(pos);
+        c_attaque->raccourcissement(pos, sca_eat->get_pos());
     }
     else
     {
-        //swap((*c_attaque), corails_attaque.back());
-        //corails_attaque.pop_back();
-        (*sca_eat).set_etat(FREE);
-        (*sca_eat).set_cible(0);
-        //swap((*sca_eat), eating_sca.back());
-        //eating_sca.pop_back();
-        //cout << "(*c_attaque)" << (*c_attaque).get_id() << endl;
-        //cout << "Avant changement :" << corails[corails.size() -1].get_id() << endl;
-        swap((*c_attaque), corails.back());
-        //cout << "Apres changement :" << corails[corails.size() -1].get_id() << endl;
-        corails.pop_back();
+        // Disparition
+
+        // //swap((*c_attaque), corails_attaque.back());
+        // //corails_attaque.pop_back();
+        // (*sca_eat).set_etat(FREE);
+        // (*sca_eat).set_cible(0);
+        // //swap((*sca_eat), eating_sca.back());
+        // //eating_sca.pop_back();
+        // //cout << "(*c_attaque)" << (*c_attaque).get_id() << endl;
+        // //cout << "Avant changement :" << corails[corails.size() -1].get_id() << endl;
+        // swap((*c_attaque), corails.back());
+        // //cout << "Apres changement :" << corails[corails.size() -1].get_id() << endl;
+        // corails.pop_back();
     }
 }
 
@@ -576,6 +566,7 @@ void Simulation::step()
     mort_corails();   
     update_corails();
 
+    disparition(scavengers, max_life_sca);
     disparition(scavengers, max_life_sca);
     sca_who_eat();
     manger_corail();
