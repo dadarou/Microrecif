@@ -211,6 +211,20 @@ void Corail::switch_st_dev()
         st_dev = EXTEND;
 }
 
+void Corail::raccourcissement(S2d pos1, S2d pos2)
+{
+    int length = segs.back().get_length();
+    cout << "test, length :" << length << " pos sca:" << pos2.x << "," << pos2.y << endl;
+    if (distance(pos1, pos2) > delta_l)
+    {
+        segs.back().grow(-delta_l);    
+    }
+    else
+    {
+        nb_seg--;
+        segs.pop_back();
+    } 
+}
 
 Scavenger::Scavenger(istringstream &data, bool &erreur)
 {
@@ -258,3 +272,36 @@ string Scavenger::ecriture()
         return scavenger + " " + to_string(id_cible);
     return scavenger;
 }
+
+void Scavenger::deplacement(S2d arrive)
+{
+    double dist_x = get_pos().x - arrive.x;
+    double dist_y = get_pos().y - arrive.y;
+    double teta = atan2(dist_y, dist_x);
+    if (distance(get_pos(), arrive) > delta_l)
+    {
+        double x = get_pos().x - delta_l*cos(teta);//pk avec - ca marche
+        double y = get_pos().y - delta_l*sin(teta);
+        set_pos({x, y});    
+    }
+    else
+    {
+        etat = EATING;
+        set_pos(arrive);
+    } 
+}
+
+bool Scavenger::croissance()
+{
+    unsigned int r = cercle.get_rayon();
+    if(r >= r_sca_repro)
+    {
+        cercle.set_rayon(r_sca);
+        return true;
+    } 
+    else
+    {
+        cercle.set_rayon(r + delta_r_sca);
+        return false;
+    } 
+} 

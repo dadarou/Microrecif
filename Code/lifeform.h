@@ -50,8 +50,8 @@ public:
     Corail() = default;
     Corail(std::istringstream &data, bool &erreur);
     Corail(Carre base, int id, Status_cor status, Dir_rot_cor rot,
-           Status_dev st_dev) :  Lifeform(1), base(base), id(id), status(status), sens_rot(rot),
-           st_dev(st_dev), nb_seg(0) {};
+           Status_dev st_dev) :  Lifeform(1), base(base), id(id), status(status), 
+                                sens_rot(rot), st_dev(st_dev), nb_seg(0) {};
     
     void add_seg(std::istringstream &data, bool &erreur);
     void add_seg(Segment &seg);
@@ -74,6 +74,8 @@ public:
     void switch_rot();
     void new_seg();
     void switch_st_dev();
+    void raccourcissement(S2d pos1, S2d pos2);
+
 
 private:
     Carre base;
@@ -89,6 +91,8 @@ class Scavenger : public Lifeform
 {
 public:
     Scavenger(std::istringstream &data, bool &erreur);
+    Scavenger(Cercle c, Status_sca et, int cible) :  Lifeform(1), cercle(c), etat(et)
+                                                    ,id_cible(cible) {};
     void test_rayon(unsigned int r, bool &erreur);
     void dessin() override;
     std::string ecriture();
@@ -98,6 +102,8 @@ public:
     int get_cible() const { return id_cible; };
     S2d get_pos() { return cercle.get_pos(); };
     void set_pos(S2d new_pos) { cercle.set_position(new_pos); };
+    void deplacement(S2d arrive);
+    bool croissance();
 
 private:
     Cercle cercle;

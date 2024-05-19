@@ -45,6 +45,9 @@ private:
     void verif_corail_eaten(Scavenger &sca);//en private ou pas
     void sca_who_eat(); //en private ou pas
     void mouvement_sca(Scavenger &sca, Corail &c_who_eaten);//en private ou pas
+    void manger_corail();
+    void manger_segment(Corail &c_attaque, Scavenger &sca_eat);
+    void bebe_sca(Scavenger &sca);
     bool collision(Corail corail);
     void alimentation_corail(Corail &corail);
     void allongement_corail(Corail &corail);
@@ -78,6 +81,8 @@ private:
     std::vector<Corail> corails;
     std::vector<Scavenger> scavengers;
     std::vector<Corail> dead_corails;
+    std::vector<Corail> corails_attaque;
+    std::vector<Scavenger> eating_sca;
 };
 
 #endif

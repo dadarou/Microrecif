@@ -47,6 +47,7 @@ public:
     S2d get_pos() const { return pos; };
     void set_position(S2d new_pos) { pos = new_pos; };
     int get_rayon() const { return rayon; };
+    void set_rayon(int r) { rayon = r; };
     void dessin(Color color);
 
 private:

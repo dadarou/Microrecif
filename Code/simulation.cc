@@ -464,6 +464,7 @@ void Simulation::verif_corail_eaten(Scavenger &sca)
         Corail c_who_dead = dead_corails[0];
         if ((sca.get_cible() == c_who_dead.get_id()) and sca.get_etat() == EATING)
         {
+            corails_attaque.push_back(c_who_dead);
             swap(c_who_dead, dead_corails.back());
             dead_corails.pop_back();
         }
@@ -477,7 +478,6 @@ void Simulation::sca_who_eat()
         if (dead_corails.size()!= 0)
         {
             Corail c_who_eaten = dead_corails[0];
-            //cout << "corail qui est ciblé" << c_who_eaten.get_id();
             if (sca.get_etat() == FREE)
             {   
                 sca.set_cible(c_who_eaten.get_id());        
@@ -492,23 +492,82 @@ void Simulation::mouvement_sca(Scavenger &sca, Corail &c_who_eaten)
 {
     Segment& dernier_seg = c_who_eaten.get_segs().back();
     S2d pos = dernier_seg.get_extremity();
-    double dist_x = sca.get_pos().x - pos.x;
-    double dist_y = sca.get_pos().y - pos.y;
-    double teta = atan2(dist_y, dist_x);
-    if (distance(sca.get_pos(), pos) > delta_l)
+    sca.deplacement(pos);
+    if (sca.get_etat() == EATING)
     {
-        double x = sca.get_pos().x - delta_l*cos(teta);
-        double y = sca.get_pos().y - delta_l*sin(teta);
-        sca.set_pos({x, y});    
+        eating_sca.push_back(sca);
+    }
+}
+
+void Simulation::manger_corail()
+{
+    for(auto &corail : corails_attaque)
+    {
+        for(auto &sca : eating_sca)
+        {
+            if (sca.get_cible() == corail.get_id())
+                manger_segment(corail, sca);
+        }
+    }
+}
+
+void Simulation::manger_segment(Corail &c_attaque, Scavenger &sca_eat)
+{
+    int size = c_attaque.get_segs().size();
+    if (size != 0 )
+    {
+        if((size -1) > 0)
+        {
+            Segment& dernier_seg = c_attaque.get_segs()[size - 2];
+            S2d pos = dernier_seg.get_extremity();
+            sca_eat.deplacement(pos);
+            c_attaque.raccourcissement(pos, sca_eat.get_pos());
+            bebe_sca(sca_eat);
+        }
+        else
+        {
+            Segment& dernier_seg = c_attaque.get_segs().back();
+            S2d pos = dernier_seg.get_base();
+            sca_eat.deplacement(pos);
+            c_attaque.raccourcissement(pos, sca_eat.get_pos());
+            bebe_sca(sca_eat);
+        }
     }
     else
     {
-        /*double x = sca.get_pos().x - distance(sca.get_pos(), pos)*cos(teta);
-        double y = sca.get_pos().y - distance(sca.get_pos(), pos)*sin(teta);*/
-        sca.set_pos(pos);
-        sca.set_etat(EATING);
-    } 
+        //swap(c_attaque, corails_attaque.back());
+        //corails_attaque.pop_back();
+        sca_eat.set_etat(FREE);
+        sca_eat.set_cible(0);
+        //swap(sca_eat, eating_sca.back());
+        //eating_sca.pop_back();
+        cout << "c_attaque" << c_attaque.get_id() << endl;
+        cout << "Avant changement :" << corails[corails.size() -1].get_id() << endl;
+        swap(c_attaque, corails.back());
+        cout << "Apres changement :" << corails[corails.size() -1].get_id() << endl;
+        corails.pop_back();
+    }
 }
+
+void Simulation::bebe_sca(Scavenger &sca)
+{
+    bool repro = sca.croissance();
+    if (repro)
+    {
+        Cercle c(sca.get_pos(), r_sca); // la pos doit etre decallée
+        Scavenger bebe(c, FREE, 0);
+        scavengers.push_back(bebe);
+    }
+}
+
+/*void Simulation::verif_sca_free()
+{
+    if (sca.get_pos() == pos)
+    {
+        sca.set_etat(FREE);
+
+    }
+}*/
 
 void Simulation::step()
 {
@@ -519,9 +578,10 @@ void Simulation::step()
 
     mort_corails();   
     update_corails();
-    for (auto &sca : scavengers)
-        verif_corail_eaten(sca);
+    /*for (auto &sca : scavengers)
+        verif_corail_eaten(sca);*/
     sca_who_eat();
+    manger_corail();
     disparition(scavengers, max_life_sca);
 }
 
@@ -547,6 +607,8 @@ void Simulation::reset()
     corails.clear();
     scavengers.clear();
     dead_corails.clear();
+    corails_attaque.clear();
+    eating_sca.clear();
     random_engine.seed(1);
 
     nb_sim = 0;
