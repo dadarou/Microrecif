@@ -222,8 +222,13 @@ void Corail::raccourcissement(S2d pos1, S2d pos2)
     }
     else
     {
-        nb_seg--;
-        segs.pop_back();
+        if(segs.size() >= 2)
+        {
+            --nb_seg;
+            segs.pop_back();
+        }
+        else
+            segs.clear();
     } 
 }
 

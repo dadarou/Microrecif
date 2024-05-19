@@ -75,6 +75,7 @@ public:
     void new_seg();
     void switch_st_dev();
     void raccourcissement(S2d pos1, S2d pos2);
+    Carre get_base() { return base; };
 
 
 private:
