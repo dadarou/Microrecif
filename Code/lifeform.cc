@@ -213,11 +213,12 @@ void Corail::switch_st_dev()
 
 void Corail::raccourcissement(S2d pos1, S2d pos2)
 {
-    int length = segs.back().get_length();
+    Segment& dernier_seg = segs.back();
+    int length = dernier_seg.get_length();
     cout << "test, length :" << length << " pos sca:" << pos2.x << "," << pos2.y << endl;
     if (distance(pos1, pos2) > delta_l)
     {
-        segs.back().grow(-delta_l);    
+        dernier_seg.grow(-delta_l);    
     }
     else
     {
@@ -292,16 +293,17 @@ void Scavenger::deplacement(S2d arrive)
 }
 
 bool Scavenger::croissance()
-{
-    unsigned int r = cercle.get_rayon();
+{   
+    Cercle& c = cercle;
+    unsigned int r = c.get_rayon();
     if(r >= r_sca_repro)
     {
-        cercle.set_rayon(r_sca);
+        c.set_rayon(r_sca);
         return true;
     } 
     else
     {
-        cercle.set_rayon(r + delta_r_sca);
+        c.set_rayon(r + delta_r_sca);
         return false;
     } 
 } 
