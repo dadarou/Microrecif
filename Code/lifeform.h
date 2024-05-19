@@ -92,8 +92,9 @@ class Scavenger : public Lifeform
 {
 public:
     Scavenger(std::istringstream &data, bool &erreur);
-    Scavenger(Cercle c, Status_sca et, int cible) :  Lifeform(1), cercle(c), etat(et)
-                                                    ,id_cible(cible) {};
+    Scavenger(S2d pos, int rayon, Status_sca et, int cible) 
+                                :  Lifeform(1), cercle(pos, rayon), etat(et),
+                                    id_cible(cible) {};
     void test_rayon(unsigned int r, bool &erreur);
     void dessin() override;
     std::string ecriture();
@@ -103,7 +104,7 @@ public:
     int get_cible() const { return id_cible; };
     S2d get_pos() { return cercle.get_pos(); };
     void set_pos(S2d new_pos) { cercle.set_position(new_pos); };
-    void deplacement(S2d arrive);
+    void deplacement(S2d arrive, int i);
     bool croissance();
 
 private:

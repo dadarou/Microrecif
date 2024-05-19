@@ -43,11 +43,14 @@ private:
     bool turn_corail(Corail &corail, double delta);
     bool eat_algue(Corail &corail, Algue *algue);
     void verif_corail_eaten(Scavenger &sca);//en private ou pas
+    void cible_a_0();
     void sca_who_eat(); //en private ou pas
-    void mouvement_sca(Scavenger &sca, Corail *c_who_eaten);//en private ou pas
+    void mouvement_sca(Scavenger* sca, Corail* c_who_eaten);//en private ou pas
     void manger_corail();
     void manger_segment(Corail *c_attaque, Scavenger *sca_eat);
-    void bebe_sca(Scavenger &sca);
+    void trie_corails_attaque();
+    void trie_eating_sca();
+    void bebe_sca(Corail &corail, Scavenger &sca, bool repro);
     bool collision(Corail corail);
     void alimentation_corail(Corail &corail);
     void allongement_corail(Corail &corail);

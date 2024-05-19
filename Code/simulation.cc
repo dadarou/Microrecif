@@ -463,7 +463,17 @@ void Simulation::verif_corail_eaten(Scavenger &sca)
             corails_attaque.push_back(c_who_dead);
             swap(c_who_dead, dead_corails.back());
             dead_corails.pop_back();
+            cible_a_0();
         }
+    }
+}
+
+ void Simulation::cible_a_0()
+{
+    for (auto &sca : scavengers)
+    { 
+        if(sca.get_etat() == FREE)
+            sca.set_cible(0);
     }
 }
 
@@ -471,27 +481,28 @@ void Simulation::sca_who_eat()
 {
     for (auto &sca : scavengers)
     {   
+        cout << "test, etat de sca" << sca.get_etat() << endl;
         if (dead_corails.size() != 0) //Cette cond est pas utile je crois
         {
             Corail* c_who_eaten = dead_corails[0];
             if (sca.get_etat() == FREE)
             {   
                 sca.set_cible(c_who_eaten->get_id());        
-                mouvement_sca(sca, c_who_eaten);
+                mouvement_sca((&sca), c_who_eaten);
             }
             verif_corail_eaten(sca);
         }
     }
 }
 
-void Simulation::mouvement_sca(Scavenger &sca, Corail *c_who_eaten)
+void Simulation::mouvement_sca(Scavenger* sca, Corail* c_who_eaten)
 {
     Segment& dernier_seg = c_who_eaten->get_segs().back();
     S2d pos = dernier_seg.get_extremity();
-    sca.deplacement(pos);
-    if (sca.get_etat() == EATING)
+    sca->deplacement(pos, 1);
+    if (sca->get_etat() == EATING)
     {
-        eating_sca.push_back((&sca));
+        eating_sca.push_back(sca);
     }
 }
 
@@ -501,7 +512,7 @@ void Simulation::manger_corail()
     {
         for(auto &sca : eating_sca)
         {
-            if ((*sca).get_cible() == (*corail).get_id())
+            if (sca->get_cible() == corail->get_id())
                 manger_segment(corail, sca);
         }
     }
@@ -515,8 +526,10 @@ void Simulation::manger_segment(Corail* c_attaque, Scavenger* sca_eat)
         // Racourcissement
         Segment &dernier_seg = c_attaque->get_segs().back();
         S2d pos = dernier_seg.get_base();
-        sca_eat->deplacement(pos);
+        sca_eat->deplacement(pos, 1);
         c_attaque->raccourcissement(pos, sca_eat->get_pos());
+        bool repro = sca_eat->croissance();
+        bebe_sca((* c_attaque), (*sca_eat), repro);
     }
     else
     {
@@ -524,26 +537,51 @@ void Simulation::manger_segment(Corail* c_attaque, Scavenger* sca_eat)
 
         // //swap((*c_attaque), corails_attaque.back());
         // //corails_attaque.pop_back();
-        // (*sca_eat).set_etat(FREE);
-        // (*sca_eat).set_cible(0);
+        (*sca_eat).set_etat(FREE);
+        (*sca_eat).set_cible(0);
         // //swap((*sca_eat), eating_sca.back());
         // //eating_sca.pop_back();
-        // //cout << "(*c_attaque)" << (*c_attaque).get_id() << endl;
-        // //cout << "Avant changement :" << corails[corails.size() -1].get_id() << endl;
-        // swap((*c_attaque), corails.back());
-        // //cout << "Apres changement :" << corails[corails.size() -1].get_id() << endl;
-        // corails.pop_back();
+        swap((*c_attaque), corails.back());
+        corails.pop_back();
     }
 }
 
-void Simulation::bebe_sca(Scavenger &sca)
+void Simulation::trie_corails_attaque()
 {
-    bool repro = sca.croissance();
+    for(auto &corail : corails_attaque)
+    {
+        if(corail->get_nb_seg() == 0)
+        {
+            swap(corail, corails_attaque.back());
+            corails_attaque.pop_back();
+        }
+    }
+}
+
+void Simulation::trie_eating_sca()
+{
+    for(auto &sca : eating_sca)
+    {
+        if(sca->get_etat() == FREE)
+        {
+            swap(sca, eating_sca.back());
+            eating_sca.pop_back();
+        }
+    }
+}
+
+void Simulation::bebe_sca(Corail &corail, Scavenger &sca, bool repro)
+{
     if (repro)
     {
-        Cercle c(sca.get_pos(), r_sca); // la pos doit etre decallée
-        Scavenger bebe(c, FREE, 0);
+        cout << "test" << endl;
+        Scavenger bebe(sca.get_pos(), r_sca, FREE, 0);
+        Segment &dernier_seg = corail.get_segs().back();
+        S2d pos = dernier_seg.get_base();
+        bebe.deplacement(pos, -1);
+        cout << "test, avant ajout : taille vector" << scavengers.size()<< endl;
         scavengers.push_back(bebe);
+        cout << "test, apres ajout : taille vector" << scavengers.size()<< endl;
     }
 }
 
@@ -567,9 +605,11 @@ void Simulation::step()
     update_corails();
 
     disparition(scavengers, max_life_sca);
-    disparition(scavengers, max_life_sca);
     sca_who_eat();
     manger_corail();
+    trie_corails_attaque();
+    trie_eating_sca();
+
 }
 
 void Simulation::spawn_algue()
@@ -590,12 +630,12 @@ void Simulation::spawn_algue()
 
 void Simulation::reset()
 {
+    corails_attaque.clear();
+    eating_sca.clear();
+    dead_corails.clear();
     algues.clear();
     corails.clear();
     scavengers.clear();
-    dead_corails.clear();
-    corails_attaque.clear();
-    eating_sca.clear();
     random_engine.seed(1);
 
     nb_sim = 0;
