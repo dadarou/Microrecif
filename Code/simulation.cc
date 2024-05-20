@@ -94,6 +94,11 @@ void Simulation::decodage(string ligne)
             if (compteur_entite == total_entite) etat = NbSca;   
         }
         else etat = Seg;
+        if(corail_actuel->get_status() == DEAD)
+        {
+            cout << "test" << endl;
+            dead_corails.push_back(corail_actuel);
+        }
     }
     break;
     case Seg:
@@ -349,8 +354,6 @@ void Simulation::alimentation_corail(Corail *corail)
         angle = -delta_rot;
     Algue *algue_ptr = closest_algue(corail, angle);
     if (!turn_corail(corail, angle) or !eat_algue(corail, algue_ptr))
-    {
-        cout << "corail :" << corail.get_id() << "changement" << endl;       
         // Si on arrive pas à tourner ou à manger 
         // on change la direction de rotation
         corail->switch_rot();
@@ -465,17 +468,17 @@ bool Simulation::eat_algue(Corail *corail, Algue *algue_ptr)
 
 void Simulation::verif_corail_eaten(Scavenger *sca)
 {
-    if (dead_corails.size()!= 0)
-    {
+    //if (dead_corails.size()!= 0)
+    //{
         Corail *c_who_dead = dead_corails[0];
         if ((sca->get_cible() == c_who_dead->get_id()) and sca->get_etat() == EATING)
         {
             corails_attaque.push_back(c_who_dead);
-            swap(c_who_dead, dead_corails.back());
+            swap(dead_corails[0], dead_corails.back());
             dead_corails.pop_back();
             cible_a_0();
         }
-    }
+    //}
 }
 
 void Simulation::cible_a_0()
@@ -490,9 +493,8 @@ void Simulation::cible_a_0()
 void Simulation::sca_who_eat()
 {
     for (auto &sca : scavengers)
-    {   
-        // cout << "test, etat de sca" << sca.get_etat() << endl;
-        if (dead_corails.size() != 0) //Cette cond est pas utile je crois
+    {
+        if (dead_corails.size() != 0)
         {
             Corail* c_who_eaten = dead_corails[0];
             if (sca->get_etat() == FREE)
