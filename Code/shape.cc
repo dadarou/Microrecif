@@ -1,5 +1,5 @@
 // shape.cc : Bibliothèque de formes
-// Auteurs : Daniel Roulin (100%)
+// Auteurs : Daniel Roulin (95%) & Joshua Hurlimann (5%)
 // Version 2
 
 #include <cmath>

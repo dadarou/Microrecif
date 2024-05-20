@@ -1,5 +1,5 @@
 // lifeform.cc : Entités de la simulation
-// Auteurs : Daniel Roulin (50%) & Joshua Hurlimann (50%)
+// Auteurs : Daniel Roulin (40%) & Joshua Hurlimann (60%)
 // Version 2 
 
 #include <sstream>

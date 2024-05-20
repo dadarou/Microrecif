@@ -1,5 +1,5 @@
 // simulation.cc : Gestion de la simulation
-// Auteurs : Daniel Roulin (30%) & Joshua Hurlimann (70%)
+// Auteurs : Daniel Roulin (35%) & Joshua Hurlimann (65%)
 // Version 2 
 
 #include <iostream>
@@ -345,19 +345,24 @@ void Simulation::update_corails()
 void Simulation::alimentation_corail(Corail &corail)
 {
     double angle;
+    cout << "corail :" << corail.get_id() << "et rot" << corail.get_sens_rot();
     if (corail.get_sens_rot() == TRIGO)
         angle = delta_rot;
     else
         angle = -delta_rot;
     Algue* algue_ptr = closest_algue(corail, angle);
     if (!turn_corail(corail, angle) or !eat_algue(corail, algue_ptr))
+    {
+        cout << "corail :" << corail.get_id() << "changement" << endl;       
         // Si on arrive pas à tourner ou à manger 
         // on change la direction de rotation
         corail.switch_rot();
+    }
 }
 
 void Simulation::allongement_corail(Corail &corail)
 {
+    cout << "corail :" << corail.get_id() << "et rot" << corail.get_sens_rot();
     if (corail.get_status_dev() == EXTEND)
     {
         corail.new_seg();
