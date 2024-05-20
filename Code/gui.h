@@ -53,12 +53,12 @@ private:
     void on_button_clicked_exit();
     void on_button_clicked_open();
     void on_button_clicked_save();
-    void on_button_clicked_step();
-    void on_button_clicked_birth();
     void on_button_clicked_start_stop();
     void on_button_clicked_start();
     void on_button_clicked_stop();
     bool on_timer_timeout();
+    void on_button_clicked_step();
+    void on_button_clicked_birth();
 
     bool on_key_pressed(guint keyval, guint, Gdk::ModifierType state);
     void on_file_dialog_response(int response_id, Gtk::FileChooserDialog* dialog,

@@ -78,8 +78,8 @@ private:
     S2d base;
     double angle;
     int length;
-    double norme(S2d p1, S2d p2);
     double normalize_angle(double angle);
+    double norme(S2d p1, S2d p2);
     int orientation(S2d p, S2d q, S2d r, double tolerance);
     bool on_segment(S2d p, S2d q, S2d r, double tolerance);
 };

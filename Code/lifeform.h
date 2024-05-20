@@ -58,6 +58,10 @@ public:
     bool inclusion_dernier_segment(bool lecture);
     void dessin() override;
     std::string ecriture();
+    void switch_rot();
+    void new_seg();
+    void switch_st_dev();
+    void raccourcissement(double d);
     int get_nb_seg() const { return nb_seg; };
     int get_id() const { return id; };
     std::vector<Segment>& get_segs() { return segs; };
@@ -66,10 +70,6 @@ public:
     Dir_rot_cor get_sens_rot() const { return sens_rot; };
     Status_dev get_status_dev() const { return st_dev; };
     void set_sens_rot(Dir_rot_cor s) { sens_rot = s; };
-    void switch_rot();
-    void new_seg();
-    void switch_st_dev();
-    void raccourcissement(double d);
     Carre get_base() { return base; };
 
 
@@ -95,14 +95,14 @@ public:
     void test_rayon(unsigned int r, bool &erreur);
     void dessin() override;
     std::string ecriture();
+    void deplacement(S2d arrive, int dir);
+    bool croissance();
     void set_etat(Status_sca etat_sca) { etat = etat_sca; };
     Status_sca get_etat() const { return etat; };
     void set_cible(int id) { id_cible = id; };
     int get_cible() const { return id_cible; };
     S2d get_pos() { return cercle.get_pos(); };
     void set_pos(S2d new_pos) { cercle.set_position(new_pos); };
-    void deplacement(S2d arrive, int dir);
-    bool croissance();
 
 private:
     Cercle cercle;

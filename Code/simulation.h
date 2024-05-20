@@ -38,9 +38,14 @@ private:
     template <typename T>
     void disparition(std::vector<T> &entites, unsigned int max_age);
     void mort_corails();
-    void update_corails();
     Algue* closest_algue(Corail *corail, double &closest_angle);
+    void update_corails();
+    void alimentation_corail(Corail *corail);
+    void allongement_corail(Corail *corail);
+    void reproduction_corail(Corail *corail);
+    int nouveau_id_corail();
     bool turn_corail(Corail *corail, double delta);
+    bool collision(Corail *corail);
     bool eat_algue(Corail *corail, Algue *algue);
     void verif_corail_eaten(Scavenger *sca);
     void cible_a_0();
@@ -51,11 +56,9 @@ private:
     void trie_corails_attaque();
     void trie_eating_sca();
     void bebe_sca(Corail *corail, Scavenger *sca);
-    bool collision(Corail *corail);
-    void alimentation_corail(Corail *corail);
-    void allongement_corail(Corail *corail);
-    void reproduction_corail(Corail *corail);
-    int nouveau_id_corail();
+    
+    
+    
     template <typename T>
     void vider(std::vector<T*> entites);
 
