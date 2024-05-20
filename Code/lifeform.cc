@@ -211,12 +211,11 @@ void Corail::switch_st_dev()
         st_dev = EXTEND;
 }
 
-void Corail::raccourcissement(S2d pos1, S2d pos2)
+void Corail::raccourcissement(double d)
 {
-    Segment& dernier_seg = segs.back();
-    //cout << "test, length :" << length << " pos sca:" << pos2.x << "," << pos2.y << endl;
-    if (distance(pos1, pos2) > delta_l)
+    if (d > delta_l)
     {
+        Segment& dernier_seg = segs.back();
         dernier_seg.grow(-delta_l);    
     }
     else
@@ -227,7 +226,9 @@ void Corail::raccourcissement(S2d pos1, S2d pos2)
             segs.pop_back();
         }
         else
+        {
             segs.clear();
+        }
     } 
 }
 
@@ -278,30 +279,32 @@ string Scavenger::ecriture()
     return scavenger;
 }
 
-void Scavenger::deplacement(S2d arrive, int i)
+void Scavenger::deplacement(S2d arrive, int dir)
 {
     double dist_x = get_pos().x - arrive.x;
     double dist_y = get_pos().y - arrive.y;
     double teta = atan2(dist_y, dist_x);
     if (distance(get_pos(), arrive) > delta_l)
     {
-        double x = get_pos().x - (i)*delta_l*cos(teta);//pk avec - ca marche
-        double y = get_pos().y - (i)*delta_l*sin(teta);
+        double x = get_pos().x - dir*(delta_l*cos(teta));
+        double y = get_pos().y - dir*(delta_l*sin(teta));
         set_pos({x, y});    
     }
     else
-    {   if(etat == FREE)
+    {
+        if(etat == FREE)
             etat = EATING; 
         set_pos(arrive);
     } 
 }
 
+// Renvoie vrai si besoin de faire un bébé
 bool Scavenger::croissance()
 {   
     unsigned int r = cercle.get_rayon();
     if(r >= r_sca_repro)
     {
-        cout << "test, rayon avant : " << cercle.get_rayon() << endl;
+        // cout << "test, rayon avant : " << cercle.get_rayon() << endl;
         cercle.set_rayon(r_sca);
         return true;
     } 

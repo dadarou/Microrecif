@@ -19,6 +19,7 @@ public:
     // Nécessaire pour initialiser un Corail vide
     Lifeform() = default;
     Lifeform(unsigned int a) : age(a){};
+    virtual ~Lifeform() {}
     void update_age();
     virtual void dessin() = 0;
     unsigned int get_age() const { return age; };
@@ -47,7 +48,6 @@ private:
 class Corail : public Lifeform
 {
 public:
-    Corail() = default;
     Corail(std::istringstream &data, bool &erreur);
     Corail(Carre base, int id, Status_cor status, Dir_rot_cor rot,
            Status_dev st_dev) :  Lifeform(1), base(base), id(id), status(status), 
@@ -55,11 +55,6 @@ public:
     
     void add_seg(std::istringstream &data, bool &erreur);
     void add_seg(Segment &seg);
-
-    // TODO: C'est vraiment public les tests?
-    void test_longueur_segment(unsigned int l_seg, bool &erreur);
-    void test_angle(double angle, bool &erreur);
-
     bool inclusion_dernier_segment(bool lecture);
     void dessin() override;
     std::string ecriture();
@@ -74,11 +69,13 @@ public:
     void switch_rot();
     void new_seg();
     void switch_st_dev();
-    void raccourcissement(S2d pos1, S2d pos2);
+    void raccourcissement(double d);
     Carre get_base() { return base; };
 
 
 private:
+    void test_longueur_segment(unsigned int l_seg, bool &erreur);
+    void test_angle(double angle, bool &erreur);
     Carre base;
     int id;
     Status_cor status;
@@ -104,7 +101,7 @@ public:
     int get_cible() const { return id_cible; };
     S2d get_pos() { return cercle.get_pos(); };
     void set_pos(S2d new_pos) { cercle.set_position(new_pos); };
-    void deplacement(S2d arrive, int i);
+    void deplacement(S2d arrive, int dir);
     bool croissance();
 
 private:
