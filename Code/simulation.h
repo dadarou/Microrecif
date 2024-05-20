@@ -88,7 +88,6 @@ private:
     std::vector<Corail*> dead_corails;
     std::vector<Corail*> corails_attaque;
     std::vector<Scavenger*> eating_sca;
-    std::vector<Lifeform*> entites; //On a toujours besoin de ça?
 };
 
 #endif

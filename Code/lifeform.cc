@@ -304,7 +304,6 @@ bool Scavenger::croissance()
     unsigned int r = cercle.get_rayon();
     if(r >= r_sca_repro)
     {
-        // cout << "test, rayon avant : " << cercle.get_rayon() << endl;
         cercle.set_rayon(r_sca);
         return true;
     } 

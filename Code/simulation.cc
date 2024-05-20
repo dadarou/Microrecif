@@ -95,10 +95,7 @@ void Simulation::decodage(string ligne)
         }
         else etat = Seg;
         if(corail_actuel->get_status() == DEAD)
-        {
-            cout << "test" << endl;
             dead_corails.push_back(corail_actuel);
-        }
     }
     break;
     case Seg:
@@ -454,13 +451,14 @@ bool Simulation::eat_algue(Corail *corail, Algue *algue_ptr)
     }
 
     // On supprime l'algue mangée
-    // Difficile de  swap et pop back ici car algue_ptr est une copie
+    // On doit aller la chercher car algue_ptr est une copie
     for (unsigned i = 0; i < algues.size(); i++)
     {
         if (algues[i] == algue_ptr)
         {
-            delete algue_ptr;
-            algues.erase(algues.begin() + i);
+            swap(algues[i], algues.back());
+            delete algues.back();
+            algues.pop_back();
         }
     }
     return true;
@@ -550,14 +548,15 @@ void Simulation::manger_segment(Corail *c_attaque, Scavenger *sca_eat)
         sca_eat->set_cible(0);
 
         // On supprime le corail
-        // On ne peux swap et pop back ici car c_attaque viens d'un autre vector
-        // que corails.
+        // On doit aller le chercher car c_attaque viens d'un autre vector
+        // que corails
         for (unsigned i = 0; i < corails.size(); i++)
         {
             if (corails[i] == c_attaque)
             {
-                delete c_attaque;
-                corails.erase(corails.begin() + i);
+                swap(corails[i], corails.back());
+                delete corails.back();
+                corails.pop_back();
             }
         }
     }
@@ -632,24 +631,28 @@ void Simulation::spawn_algue()
     }
 }
 
-template <typename T>
-void Simulation::vider(vector<T*> enties)
-{
-    for (auto &ptr : entites)
-    {
-        delete ptr;
-    }
-    enties.clear();
-}
-
 void Simulation::reset()
 {
     corails_attaque.clear();
     eating_sca.clear();
     dead_corails.clear();
-    vider(algues);
-    vider(corails);
-    vider(scavengers);
+
+    for (auto &algue : algues)
+    {
+        delete algue;
+    }
+    for (auto &corail : corails)
+    {
+        delete corail;
+    }
+    for (auto &scavenger : scavengers)
+    {
+        delete scavenger;
+    }
+
+    algues.clear();
+    corails.clear();
+    scavengers.clear();
 
     random_engine.seed(1);
     nb_sim = 0;
