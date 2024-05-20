@@ -1,6 +1,6 @@
 // graphic_gui.h : Entête de graphic.cc destinée à être incluse uniquement par gui.cc
 // Auteurs : Daniel Roulin
-// Version 2
+// Version 3
 
 #ifndef GRAPHIC_GUI_H
 #define GRAPHIC_GUI_H

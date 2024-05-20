@@ -1,6 +1,6 @@
 // gui.cc : Module responsable de l'interface utilisateur
 // Auteurs : Daniel Roulin (50%) & Joshua Hurlimann (50%)
-// Version 2
+// Version 3
 
 #include <iostream>
 #include <string>

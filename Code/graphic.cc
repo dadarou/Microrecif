@@ -1,6 +1,6 @@
 // graphic.cc : Bibliothèque permettant d'afficher des formes géométriques simples 
 // Auteurs : Daniel Roulin (100%)
-// Version 2
+// Version 3
 
 #include "graphic.h"
 #include "graphic_gui.h"

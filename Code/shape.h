@@ -1,6 +1,6 @@
 // shape.h : Entête de shape.cc
 // Auteurs : Daniel Roulin
-// Version 2 
+// Version 3 
 
 #ifndef SHAPE_H
 #define SHAPE_H
@@ -72,7 +72,7 @@ public:
     void dessin(Color color);
     std::string ecriture();
     void turn(double angle);
-    void grow(int amount);
+    void changer_taille(int amount);
 
 private:
     S2d base;

@@ -1,6 +1,6 @@
 // simulation.h : Entête de simulation.cc
 // Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 2 
+// Version 3 
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
@@ -50,7 +50,7 @@ private:
     void manger_segment(Corail *c_attaque, Scavenger *sca_eat);
     void trie_corails_attaque();
     void trie_eating_sca();
-    void bebe_sca(Corail *corail, Scavenger *sca, bool repro);
+    void bebe_sca(Corail *corail, Scavenger *sca);
     bool collision(Corail *corail);
     void alimentation_corail(Corail *corail);
     void allongement_corail(Corail *corail);

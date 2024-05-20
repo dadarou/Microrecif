@@ -1,6 +1,6 @@
 // lifeform.h : Entités de la simulation
 // Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 2
+// Version 3
 
 #ifndef LIFEFORM_H
 #define LIFEFORM_H

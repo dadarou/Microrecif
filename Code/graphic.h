@@ -1,7 +1,7 @@
 // graphic.h : Entête de graphic.cc
 //             Ne doit pas être incluse par gui.cc
 // Auteurs : Daniel Roulin
-// Version 2
+// Version 3
 
 #ifndef GRAPHIC_H
 #define GRAPHIC_H

@@ -1,6 +1,6 @@
 // lifeform.cc : Entités de la simulation
 // Auteurs : Daniel Roulin (40%) & Joshua Hurlimann (60%)
-// Version 2 
+// Version 3 
 
 #include <sstream>
 #include <iostream>
@@ -216,7 +216,7 @@ void Corail::raccourcissement(double d)
     if (d > delta_l)
     {
         Segment& dernier_seg = segs.back();
-        dernier_seg.grow(-delta_l);    
+        dernier_seg.changer_taille(-delta_l);    
     }
     else
     {
@@ -279,6 +279,8 @@ string Scavenger::ecriture()
     return scavenger;
 }
 
+// Déplace le scavenger dans l'axe du point d'une distance delta_l
+// dir peut être soit 1 ou -1 et définit la direction de déplacement
 void Scavenger::deplacement(S2d arrive, int dir)
 {
     double dist_x = get_pos().x - arrive.x;

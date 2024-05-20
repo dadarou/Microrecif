@@ -1,6 +1,6 @@
 // shape.cc : Bibliothèque de formes
 // Auteurs : Daniel Roulin (95%) & Joshua Hurlimann (5%)
-// Version 2
+// Version 3
 
 #include <cmath>
 #include <cassert>
@@ -181,7 +181,7 @@ void Segment::turn(double delta)
     angle = angle + delta;
 }
 
-void Segment::grow(int amount)
+void Segment::changer_taille(int amount)
 {
     length += amount;
 }

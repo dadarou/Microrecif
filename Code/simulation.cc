@@ -1,6 +1,6 @@
 // simulation.cc : Gestion de la simulation
-// Auteurs : Daniel Roulin (35%) & Joshua Hurlimann (65%)
-// Version 2 
+// Auteurs : Daniel Roulin (40%) & Joshua Hurlimann (60%)
+// Version 3 
 
 #include <iostream>
 #include <fstream>
@@ -356,6 +356,7 @@ void Simulation::alimentation_corail(Corail *corail)
         corail->switch_rot();
 }
 
+// Forme soit un nouveau segment, soit un nouveau corail
 void Simulation::allongement_corail(Corail *corail)
 {
     if (corail->get_status_dev() == EXTEND)
@@ -369,6 +370,7 @@ void Simulation::allongement_corail(Corail *corail)
     corail->switch_st_dev();
 }
 
+// Création d'un nouveau corail
 void Simulation::reproduction_corail(Corail *corail)
 {
     Segment& dernier = corail->get_segs().back();
@@ -442,11 +444,11 @@ bool Simulation::eat_algue(Corail *corail, Algue *algue_ptr)
         return true;
 
     Segment &dernier = corail->get_segs().back();
-    dernier.grow(delta_l);
+    dernier.changer_taille(delta_l);
 
     if (collision(corail))
     {
-        dernier.grow(-delta_l);
+        dernier.changer_taille(-delta_l);
         return false;
     }
 
@@ -466,17 +468,16 @@ bool Simulation::eat_algue(Corail *corail, Algue *algue_ptr)
 
 void Simulation::verif_corail_eaten(Scavenger *sca)
 {
-    //if (dead_corails.size()!= 0)
-    //{
-        Corail *c_who_dead = dead_corails[0];
-        if ((sca->get_cible() == c_who_dead->get_id()) and sca->get_etat() == EATING)
-        {
-            corails_attaque.push_back(c_who_dead);
-            swap(dead_corails[0], dead_corails.back());
-            dead_corails.pop_back();
-            cible_a_0();
-        }
-    //}
+    Corail *c_who_dead = dead_corails[0];
+    if ((sca->get_cible() == c_who_dead->get_id()) and sca->get_etat() == EATING)
+    {
+        corails_attaque.push_back(c_who_dead);
+        // On ne libère pas la mémoire car le corail existe toujours 
+        // dans corails_attaque
+        swap(dead_corails[0], dead_corails.back());
+        dead_corails.pop_back();
+        cible_a_0();
+    }
 }
 
 void Simulation::cible_a_0()
@@ -484,7 +485,9 @@ void Simulation::cible_a_0()
     for (auto &sca : scavengers)
     { 
         if(sca->get_etat() == FREE)
+        {
             sca->set_cible(0);
+        }
     }
 }
 
@@ -540,13 +543,16 @@ void Simulation::manger_segment(Corail *c_attaque, Scavenger *sca_eat)
         double d = distance(pos, sca_eat->get_pos());
         c_attaque->raccourcissement(d);
         bool repro = sca_eat->croissance();
-        bebe_sca(c_attaque, sca_eat, repro);
+        if (repro)
+        {
+            bebe_sca(c_attaque, sca_eat);
+        }
     }
     else
     {
+        // Décès
         sca_eat->set_etat(FREE);
         sca_eat->set_cible(0);
-
         // On supprime le corail
         // On doit aller le chercher car c_attaque viens d'un autre vector
         // que corails
@@ -568,6 +574,8 @@ void Simulation::trie_corails_attaque()
     {
         if(corail->get_nb_seg() == 0)
         {
+            // On ne libère pas la mémoire car le corail existe toujours 
+            // dans corails
             swap(corail, corails_attaque.back());
             corails_attaque.pop_back();
         }
@@ -580,22 +588,21 @@ void Simulation::trie_eating_sca()
     {
         if(sca->get_etat() == FREE)
         {
+            // On ne libère pas la mémoire car le scavenger existe toujours 
+            // dans scavengers            
             swap(sca, eating_sca.back());
             eating_sca.pop_back();
         }
     }
 }
 
-void Simulation::bebe_sca(Corail *corail, Scavenger *sca, bool repro)
+void Simulation::bebe_sca(Corail *corail, Scavenger *sca)
 {
-    if (repro)
-    {
-        Scavenger* bebe = new Scavenger(sca->get_pos(), r_sca, FREE, 0);
-        Segment &dernier_seg = corail->get_segs().back();
-        S2d pos = dernier_seg.get_base();
-        bebe->deplacement(pos, -1);
-        scavengers.push_back(bebe);
-    }
+    Scavenger *bebe = new Scavenger(sca->get_pos(), r_sca, FREE, 0);
+    Segment &dernier_seg = corail->get_segs().back();
+    S2d pos = dernier_seg.get_base();
+    bebe->deplacement(pos, -1);
+    scavengers.push_back(bebe);
 }
 
 void Simulation::step()
@@ -613,7 +620,6 @@ void Simulation::step()
     manger_corail();
     trie_corails_attaque();
     trie_eating_sca();
-
 }
 
 void Simulation::spawn_algue()

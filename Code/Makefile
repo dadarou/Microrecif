@@ -1,6 +1,6 @@
 # Makefile : Orchestre la compilation
 # Auteurs : Daniel Roulin & Joshua Hurlimann
-# Version 2
+# Version 3
 
 # Definitions de macros
 EXEC = projet

@@ -1,6 +1,6 @@
 // gui.h : Entête de gui.cc
 // Auteurs : Daniel Roulin & Joshua Hurlimann
-// Version 2
+// Version 3
 
 #ifndef GUI_H
 #define GUI_H
