@@ -47,4 +47,3 @@ projet.o: projet.cc simulation.h lifeform.h shape.h graphic.h \
 shape.o: shape.cc shape.h graphic.h
 simulation.o: simulation.cc simulation.h lifeform.h shape.h graphic.h \
  constantes.h message.h
-test.o: test.cc shape.h graphic.h

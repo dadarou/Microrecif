@@ -7,7 +7,6 @@
 #include "gui.h"
 #include "simulation.h"
 #include "graphic_gui.h"
-#include "constantes.h"
 
 using namespace std;
 
